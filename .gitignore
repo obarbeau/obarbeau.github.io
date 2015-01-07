@@ -9,6 +9,7 @@
 /reports
 /resources/public/js/gen
 /_site
+/.sass-cache
 /target
 /tmp
 .checkstyle
@@ -24,6 +25,7 @@
 .project
 .ruleset
 .settings
+Gemfile.lock
 pom.xml
 pom.xml.asc
 release.properties
