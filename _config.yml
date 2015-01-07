@@ -1,0 +1,42 @@
+# Site settings
+name: My blog
+title: My blog
+
+email: olivier.barbeau@gmail.com
+description: > # this means to ignore newlines until "baseurl:"
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your feed.xml site description.
+
+# baseurl will often be '', but for a project page on gh-pages, it needs to
+# be the project name.
+# *** IMPORTANT: If your local "jekyll serve" throws errors change this to '' or
+#     run it like so: jekyll serve --baseurl=''
+baseurl: "" # the subpath of your site, e.g. /blog/
+
+url: "http://obarbeau.github.io" # the base hostname & protocol for your site
+twitter_username: obarbeau
+github_username:  obarbeau
+
+# Build settings    redcarpet
+markdown: kramdown
+
+# Set this to your UA-# value, or '' to disable the block completely
+gaaccount: ''
+
+# Set this to your disqus shortname to enable comments. Note that the 'comments'
+# setting below must also be true. Individual posts can override 'comments' to
+# disable on a post-by-post basis
+disqus: ''
+comments: true
+
+permalink: /:year/:month/:title
+paginate: 3
+
+# Rouge
+highlighter: pygments
+
+# This can be '' to hide the Github nav button
+github: 'obarbeau/obarbeau.github.io'
+
+exclude: ['README.md', 'LICENSE', "exclude/"]
