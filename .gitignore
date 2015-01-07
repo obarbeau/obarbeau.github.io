@@ -3,6 +3,7 @@
 /classes
 /deploy
 /ehcache.disk.store.dir
+/exclude
 /lib
 /media
 /out
