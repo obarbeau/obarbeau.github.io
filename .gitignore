@@ -8,6 +8,7 @@
 /out
 /reports
 /resources/public/js/gen
+/_site
 /target
 /tmp
 .checkstyle
