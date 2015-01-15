@@ -3,6 +3,7 @@ title: Moving Git repo to GitHub
 layout: post
 date:   2015-01-14 10:26:00
 categories: blog
+tags: [git github]
 ---
 
 Today I pushed my [`repl-tasks`]{:target="_blank"} project to GitHub,
