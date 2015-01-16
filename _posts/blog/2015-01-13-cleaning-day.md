@@ -1,5 +1,5 @@
 ---
-title: Day 1
+title: Cleaning day
 layout: post
 date:   2015-01-13 16:37:00
 categories: blog
