@@ -210,7 +210,8 @@ body {
 .entry-tags {
 	display: block;
 	margin-top: 2em;
-	text-transform: uppercase;
+  /* font-variant: small-caps; OBA */
+	text-transform: capitalize;
 	@include font-size(16);
 	font-weight: 600;
 	a { 
