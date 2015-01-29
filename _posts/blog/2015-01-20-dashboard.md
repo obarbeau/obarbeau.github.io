@@ -3,7 +3,7 @@ title: Dashboard
 layout: post
 date:   2015-01-20 15:59:00
 categories: blog
-tags: [clojure dashboard hiccup ring compojure LightTable]
+tags: [clojure compojure dashboard hiccup lightTable ring]
 ---
 
 Since three days I work on a dashboard that

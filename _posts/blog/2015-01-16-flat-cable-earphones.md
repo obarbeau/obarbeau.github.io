@@ -3,7 +3,7 @@ title: Flat Cable Earphones
 layout: post
 date:   2015-01-16 11:46:00
 categories: blog
-tags: [music food]
+tags: [food music]
 ---
 
 The last time that I went to the market,
