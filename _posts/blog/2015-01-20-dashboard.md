@@ -11,11 +11,12 @@ will display statistics in the form of tables and graphs.
 
 I am using with great pleasure the following tools:
 
-* [ring] for the server,
-* [compojure] for the  routing,
-* [hiccup] for dynamic generation of html pages,
-* also [simple-time] for handling dates,
-  I found it to be more lightweight and concise as [clj-time].
+* [ring]{:target="_blank"} for the server,
+* [compojure]{:target="_blank"} for the  routing,
+* [hiccup]{:target="_blank"} for dynamic generation of html pages,
+* also [simple-time]{:target="_blank"} for handling dates,
+  I found it to be more lightweight and concise as
+  [clj-time]{:target="_blank"}.
 
 Thanks to the `ring.middleware.reload` middleware and the tip
 which is to set in ring the compojure's routes as a var quote (`#'app-routes`),
@@ -25,10 +26,10 @@ without the need to reload the namespace in the REPL.
 I have not yet chosen between Dimple.js and Epoch
 for the display part.
 
-Finally, [doric] helps me to show my data in chart form in
+Finally, [doric]{:target="_blank"} helps me to show my data in chart form in
 the REPL, which is appreciable.
 
-Of course the IDE I use is [Light Table], a must :-)
+Of course the IDE I use is [Light Table]{:target="_blank"}, a must :-)
 
 [ring]: https://github.com/ring-clojure/ring
 [compojure]: https://github.com/weavejester/compojure
