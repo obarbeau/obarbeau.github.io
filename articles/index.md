@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Articles are coming soon
+title: Articles
 excerpt: "An archive of articles sorted by date."
 ---
 

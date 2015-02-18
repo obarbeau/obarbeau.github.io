@@ -35,4 +35,3 @@ This project needs some refactoring and documentation, I'll do it ASAP...
 [Synology]: https://www.synology.com/
 [`repl-tasks`]: https://github.com/obarbeau/repl-tasks
 [post]: http://www.smashingmagazine.com/2014/05/19/moving-git-repository-new-server/
-

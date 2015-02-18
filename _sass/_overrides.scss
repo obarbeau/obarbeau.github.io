@@ -1,0 +1,69 @@
+.alert {
+ padding: 15px;
+ margin-bottom: 20px;
+ border: 1px solid transparent;
+ border-radius: 4px;
+}
+.alert-warning {
+ background-color: #fcf8e3;
+ border-color: #D0A346;
+ color: #8a6d3b;
+}
+
+body {
+ counter-reset: counterh1 counterh2 counterh3 counterh4 counterh5;
+}
+
+/* on ne commence pas à h1 car il n'y a qu'un seul h1 par page; c'est le titre 'global' */
+h2:before {
+ content: counter(counterh2, upper-roman) ". ";
+ counter-increment: counterh2;
+}
+h3:before {
+ content: counter(counterh2, upper-roman) "." counter(counterh3) ". ";
+ counter-increment: counterh3;
+}
+h4:before {
+ content: counter(counterh2, upper-roman) "." counter(counterh3) "."
+  counter(counterh4) ". ";
+ counter-increment: counterh4;
+}
+h1.unnumbered,h2.unnumbered,h3.unnumbered,h4.unnumbered {
+ counter-reset: none;
+}
+
+h1.unnumbered:before,h2.unnumbered:before,h3.unnumbered:before,h4.unnumbered:before,h5.unnumbered:before
+{
+ content: none;
+ counter-increment: none;
+}
+
+h1 {
+ counter-reset: counterh2;
+}
+h2 {
+ counter-reset: counterh3;
+}
+h3 {
+ counter-reset: counterh4;
+}
+h4 {
+ counter-reset: counterh5;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+ color: #317eac;
+ //  font-family: "Cantarell", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.highlight {
+ .lineno { display:inline-block;  border-right:1px solid #ccc; }
+}
+
+p,
+li {
+ code {
+  background-color: rgba(189, 222, 240, 0.42); /* OBA */
+ }
+}

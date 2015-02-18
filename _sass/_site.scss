@@ -43,7 +43,7 @@ li {
 h1, h2, h3, h4, h5, h6 {
 	font-family: $heading-font;
 	text-rendering: optimizeLegibility; // Fix the character spacing for headings
-    color: #317eac; /* OBA */
+	color: #317eac;
 }
 h1 {
 	@include font-size(36);
@@ -226,8 +226,7 @@ li {
 		margin: 0 2px;
 		padding: 0 5px;
 		border: 1px solid rgba(183, 71, 71, 0.36);
-		/*background-color: lighten($black, 95);*/
-        background-color: rgba(189, 222, 240, 0.42); /* OBA */
+		background-color: lighten($black, 95);
 		@include rounded(3px);
 	}
 }

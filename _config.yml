@@ -9,7 +9,7 @@ description: >
 url:
 
 # Jekyll configuration
-permalink: /:year/:month/:categories/:title
+permalink: /:categories/:year/:month/:day/:title
 markdown: kramdown
 highlighter: pygments
 sass:
