@@ -30,7 +30,7 @@ exclude: ["drafts/", "exclude/", "lib", "config.rb", "Capfile", "config", "log",
 # Site owner
 owner:
   name: Olivier Barbeau
-  avatar: 306801.jpg
+  avatar: http://www.gravatar.com/avatar/ec6f7490f93e67769305e34f88652035.png?s=200
   email: olivier.barbeau@gmail.com
   disqus-shortname:
   twitter: obarbeau
