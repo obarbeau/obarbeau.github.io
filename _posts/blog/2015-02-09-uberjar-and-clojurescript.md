@@ -38,15 +38,15 @@ Once, in the `~/.lein/profiles.clj` file:
 
 :uberjar-common {:aot :all
                  <other options>}
-:uberjar-overrides {} ; nothing by default
-:uberjar [:uberjar-common :uberjar-overrides]
+:uberjar-additional {} ; nothing by default
+:uberjar [:uberjar-common :uberjar-additional]
 {% endhighlight %}
 
 In every ClojureScript projects, in their `project.clj` file:
 
 {% highlight clojure linenos %}
 ; overrides profile to include new `source-path` definition
-:profiles {:uberjar-overrides [:sources-level-down]}
+:profiles {:uberjar-additional [:sources-level-down]}
 {% endhighlight %}
 
 Remember that the JavaScript compilation will not be automatic
