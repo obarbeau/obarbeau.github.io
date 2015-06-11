@@ -162,6 +162,7 @@ to display last exception
 * `im.chit/vinyasa`
 
 Injects functions in namespaces.
+See <http://z.caudate.me/a-more-refined-vinyasa-inject>.
 
 * `lein-autoreload`
 
