@@ -314,6 +314,8 @@ With mini scripts `lein-exec(-p)` it is possible to use
     mv boot ~/bin/boot
 {% endhighlight %}
 
+Immutable File System -> boot task -> boot task2 -> ...
+
 [plugins universe]: https://github.com/technomancy/leiningen/wiki/Plugins
 [here]: http://jakemccrary.com/blog/2015/01/11/overview-of-my-leiningen-profiles-dot-clj/
 [there]: http://www.corfield.org/blog/post.cfm/insanely-useful-leiningen-plugins
