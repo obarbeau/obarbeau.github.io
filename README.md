@@ -1,1 +1,1 @@
-Start local server: use `oba-start-blog.sh`
+Start local server: use `start-blog.sh`

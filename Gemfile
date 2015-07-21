@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
-gem 'jekyll'
+gem 'jekyll', '2.4.0'
+gem 'jekyll-coffeescript'
 gem 'jekyll-sitemap'
 
 require 'json'
