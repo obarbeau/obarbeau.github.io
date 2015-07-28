@@ -271,7 +271,9 @@ Show a graph of your Clojure namespaces.
 
 The `slamhound` alias is available for the shell
 but this tools can also be launched within a REPL:
+`(require '[slam.hound])`
 `(slam.hound/-main "src/my/namespace.clj")`
+`(slam.hound/-main "src")`
 
 ## Tools
 
