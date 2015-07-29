@@ -45,11 +45,11 @@ It can also update the `project.clj` and `~/.lein/profiles.clj` files,
 automatically or interactively.
 
 {% highlight clojure linenos %}
-    lein ancient [upgrade :interactive]
+lein ancient [upgrade :interactive]
 {% endhighlight %}
 
 {% highlight clojure linenos %}
-    lein ancient [upgrade-]profiles
+lein ancient [upgrade-]profiles
 {% endhighlight %}
 
 <div class="alert alert-warning">
@@ -273,9 +273,9 @@ The `slamhound` alias is available for the shell
 but this tools can also be launched within a REPL:
 
 {% highlight clojure linenos %}
-    (require '[slam.hound])
-    (slam.hound/-main "src/my/namespace.clj")
-    (slam.hound/-main "src")
+(require '[slam.hound])
+(slam.hound/-main "src/my/namespace.clj")
+(slam.hound/-main "src")
 {% endhighlight %}
 
 ## Tools
@@ -302,7 +302,7 @@ Add this profile the the `:user` profile in your `~/.lein/profiles.clj`
 config file.
 
 {% highlight clojure linenos %}
-    {:plugins [[lein-exec "0.3.1"]]}
+{:plugins [[lein-exec "0.3.1"]]}
 {% endhighlight %}
 
 Then `lein exec standalone.clj`.
@@ -313,10 +313,10 @@ With mini scripts `lein-exec(-p)` it is possible to use
 ## Boot
 
 {% highlight bash linenos %}
-    wget https://clojars.org/repo/tailrecursion/boot/1.1.1/boot-1.1.1.jar
-    mv boot-1.1.1.jar boot
-    chmod a+x boot
-    mv boot ~/bin/boot
+wget https://clojars.org/repo/tailrecursion/boot/1.1.1/boot-1.1.1.jar
+mv boot-1.1.1.jar boot
+chmod a+x boot
+mv boot ~/bin/boot
 {% endhighlight %}
 
 Immutable File System -> boot task -> boot task2 -> ...
