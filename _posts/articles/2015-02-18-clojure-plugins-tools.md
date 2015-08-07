@@ -93,7 +93,7 @@ Can be injected in the REPL with `im.chit/vinyasa`.
 
 #### Generate
 
-* `gdeer81/lein-marginalia`
+* `gdeer81/lein-marginalia` et `michaelblume/lein-marginalia` (clj 1.7+)
 
 Use `lein marg <options>` in the project's root directory.
 Generates `docs/uberdoc.html`.
