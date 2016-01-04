@@ -14,7 +14,7 @@ body {
  counter-reset: counterh1 counterh2 counterh3 counterh4 counterh5;
 }
 
-/* on ne commence pas à h1 car il n'y a qu'un seul h1 par page; c'est le titre 'global' */
+// on ne commence pas a h1 car il n'y a qu'un seul h1 par page; c'est le titre 'global'
 h2:before {
  content: counter(counterh2, upper-roman) ". ";
  counter-increment: counterh2;
