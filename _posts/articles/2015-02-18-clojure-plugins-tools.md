@@ -131,6 +131,12 @@ This plugin does not work when the project's description is written as
 Generating API documentation from Clojure source code.
 The default css is somewhat austere, blue text on gray background.
 
+*Cross Reference All the Things* with `"Document [[module.submodule/var]]"`
+
+*Hide Auto-Generated Record Constructors* par exemple pour les records,
+avec `MyRecord`, on obtient automatiquement `->MyRecord & map->MyRecord`.
+`(alter-meta! #'->RecordName assoc :no-doc true)`
+
 * `lein-autodoc`
 
 Generates documentation for a project.
