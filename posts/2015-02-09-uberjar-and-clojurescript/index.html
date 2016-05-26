@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Wiaa: Archives</title>
-    <link rel="canonical" href="https://obarbeau.github.io/archives/">
+    <title>Wiaa: Uberjar with ClojureScript</title>
+    <link rel="canonical" href="https://obarbeau.github.io/posts/2015-02-09-uberjar-and-clojurescript/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" type="text/css">-->
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Averia+Libre' type='text/css'>
@@ -33,7 +33,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li ><a href="/">Home</a></li>
                 <li
-                 class="active" ><a href="/archives/">Archives</a></li>
+                ><a href="/archives/">Archives</a></li>
                 
                 <li
                 >
@@ -54,62 +54,54 @@
         <div class="col-lg-9">
             <div id="content">
                 
-<div id="posts">
-    <div id="page-header">
-        <h2>Archives</h2>
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">9 février 2015</div>
+        
     </div>
+    <h1>Uberjar with ClojureScript</h1>
+</div>
+<div class="post-excerpt"></div>
+<div>
     
-        <h4>2016 mai</h4>
-        <ul>
-        
-        <li>
-            mai 26 - <a href="/posts/2016-05-26-clojure-cheat-sheet/">Clojure core functions - Cheat Sheet</a>
-        </li>
-        
-        </ul>
+    <p>Today I wanted to deploy a <code>ring</code> project with a ClojureScript part.</p><p>Deployment is done with an uberjar, which I find effective. I use an additional directory to separate the sources, which are located in <code>src/clj/ns</code> and <code>src/cljs/ns</code>.</p><p>So, during the compilation, <code>lein</code> complains it could not locate the namespace:</p><pre><code class="java">...FileNotFoundException: Could not locate ns/main&#95;&#95;init.class ...
+</code></pre><p>The reason is that the standard content of the <code>source-paths</code> option, which is usually <code>src/ns</code>, is no more suitable. So I changed the <code>uberjar</code> profile in order to specify the different structure of the source directories.</p><p>Firstly, the <code>sources-level-down</code> profile shown below replaces the standard content of the <code>source-paths</code>. I found a tip on the Leiningen site to define profiles overrides. It therefore allows to include this kind of source paths only for projects with ClojureScript:</p><p>Once, in the <code>&#126;/.lein/profiles.clj</code> file:</p><pre><code class="clojure">:sources-level-down {:source-paths &#94;:replace &#91;&quot;src/clj&quot; &quot;src/cljs&quot;&#93;}
+
+:uberjar-common {:aot :all
+                 &lt;other options&gt;}
+:uberjar-additional {} ; nothing by default
+:uberjar &#91;:uberjar-common :uberjar-additional&#93;
+</code></pre><p>In every ClojureScript projects, in their <code>project.clj</code> file:</p><pre><code class="clojure">; overrides profile to include new `source-path` definition
+:profiles {:uberjar-additional &#91;:sources-level-down&#93;}
+</code></pre><p>Remember that the JavaScript compilation will not be automatic during the uberjar build.</p><p>No doubt a hook can be added to the workflow, but in the meantime I recommend using <a href='https://github.com/oakmac/cuttle' target='_blank'><code>cuttle</code></a> defined itself as an <i>User Interface for the ClojureScript Compiler</i>, to keep an eye on the JS compilation status.</p><p>Happy uberjar!</p>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
     
-        <h4>2015 février</h4>
-        <ul>
-        
-        <li>
-            févr. 18 - <a href="/posts/2015-02-18-clojure-plugins-tools/">Clojure - Plugins &amp; tools</a>
-        </li>
-        
-        <li>
-            févr. 09 - <a href="/posts/2015-02-09-uberjar-and-clojurescript/">Uberjar with ClojureScript</a>
-        </li>
-        
-        <li>
-            févr. 05 - <a href="/posts/2015-02-05-dashboard-part2/">Dashboard, part 2</a>
-        </li>
-        
-        </ul>
+    <a href="/tags/clojureScript/">clojureScript</a>
     
-        <h4>2015 janvier</h4>
-        <ul>
-        
-        <li>
-            janv. 26 - <a href="/posts/2015-01-26-link-with-editor/">Link with editor</a>
-        </li>
-        
-        <li>
-            janv. 20 - <a href="/posts/2015-01-20-dashboard/">Dashboard</a>
-        </li>
-        
-        <li>
-            janv. 16 - <a href="/posts/2015-01-16-flat-cable-earphones/">Flat Cable Earphones</a>
-        </li>
-        
-        <li>
-            janv. 14 - <a href="/posts/2015-01-14-moving-git-repo-to-github/">Moving Git repo to GitHub</a>
-        </li>
-        
-        <li>
-            janv. 13 - <a href="/posts/2015-01-13-cleaning-day/">Cleaning day</a>
-        </li>
-        
-        </ul>
+    <a href="/tags/clojure/">clojure</a>
     
+    <a href="/tags/leiningen/">leiningen</a>
+    
+    <a href="/tags/uberjar/">uberjar</a>
+    
+</div>
+
+
+    <div id="prev-next">
+        
+        <a href="/posts/2015-02-05-dashboard-part2/">&laquo; Dashboard, part 2</a>
+        
+        
+        <a class="right" href="/posts/2015-02-18-clojure-plugins-tools/">Clojure - Plugins &amp; tools &raquo;</a>
+        
+    </div>
+
+    
+
 
 </div>
 

@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Wiaa: Archives</title>
-    <link rel="canonical" href="https://obarbeau.github.io/archives/">
+    <title>Wiaa: Moving Git repo to GitHub</title>
+    <link rel="canonical" href="https://obarbeau.github.io/posts/2015-01-14-moving-git-repo-to-github/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" type="text/css">-->
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Averia+Libre' type='text/css'>
@@ -33,7 +33,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li ><a href="/">Home</a></li>
                 <li
-                 class="active" ><a href="/archives/">Archives</a></li>
+                ><a href="/archives/">Archives</a></li>
                 
                 <li
                 >
@@ -54,62 +54,52 @@
         <div class="col-lg-9">
             <div id="content">
                 
-<div id="posts">
-    <div id="page-header">
-        <h2>Archives</h2>
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">14 janvier 2015</div>
+        
     </div>
+    <h1>Moving Git repo to GitHub</h1>
+</div>
+<div class="post-excerpt"></div>
+<div>
     
-        <h4>2016 mai</h4>
-        <ul>
-        
-        <li>
-            mai 26 - <a href="/posts/2016-05-26-clojure-cheat-sheet/">Clojure core functions - Cheat Sheet</a>
-        </li>
-        
-        </ul>
+    <p>Today I pushed my <a href='https://github.com/obarbeau/repl-tasks' target='_blank'><code>repl-tasks</code></a> project to GitHub, whose repository was previously on a personal <a href='https://www.synology.com/' target='_blank'>Synology</a> server.</p><pre><code class="bash"># add the new repo on GitHub
+git remote add new-origin git@github.com:obarbeau/repl-tasks.git
+# push everything
+git push --all new-origin
+git push --tags new-origin
+# rename old syno repo
+git remote rename origin previous-on-syno
+# rename new repo to master
+git remote rename new-origin origin
+# change destination of local master branch to new repo
+git branch master --set-upstream-to=origin/master
+</code></pre><p>The history is preserved.</p><p>If some branches had existed, it would have been necessary to pull them first to the local repo and then push them to the new one.</p><p>See this <a href='http://www.smashingmagazine.com/2014/05/19/moving-git-repository-new-server/' target='_blank'>post</a> for more information.</p><p>This project needs some refactoring and documentation, I'll do it ASAP...</p>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
     
-        <h4>2015 février</h4>
-        <ul>
-        
-        <li>
-            févr. 18 - <a href="/posts/2015-02-18-clojure-plugins-tools/">Clojure - Plugins &amp; tools</a>
-        </li>
-        
-        <li>
-            févr. 09 - <a href="/posts/2015-02-09-uberjar-and-clojurescript/">Uberjar with ClojureScript</a>
-        </li>
-        
-        <li>
-            févr. 05 - <a href="/posts/2015-02-05-dashboard-part2/">Dashboard, part 2</a>
-        </li>
-        
-        </ul>
+    <a href="/tags/github/">github</a>
     
-        <h4>2015 janvier</h4>
-        <ul>
-        
-        <li>
-            janv. 26 - <a href="/posts/2015-01-26-link-with-editor/">Link with editor</a>
-        </li>
-        
-        <li>
-            janv. 20 - <a href="/posts/2015-01-20-dashboard/">Dashboard</a>
-        </li>
-        
-        <li>
-            janv. 16 - <a href="/posts/2015-01-16-flat-cable-earphones/">Flat Cable Earphones</a>
-        </li>
-        
-        <li>
-            janv. 14 - <a href="/posts/2015-01-14-moving-git-repo-to-github/">Moving Git repo to GitHub</a>
-        </li>
-        
-        <li>
-            janv. 13 - <a href="/posts/2015-01-13-cleaning-day/">Cleaning day</a>
-        </li>
-        
-        </ul>
+    <a href="/tags/git/">git</a>
     
+</div>
+
+
+    <div id="prev-next">
+        
+        <a href="/posts/2015-01-13-cleaning-day/">&laquo; Cleaning day</a>
+        
+        
+        <a class="right" href="/posts/2015-01-16-flat-cable-earphones/">Flat Cable Earphones &raquo;</a>
+        
+    </div>
+
+    
+
 
 </div>
 

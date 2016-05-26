@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Wiaa: Archives</title>
-    <link rel="canonical" href="https://obarbeau.github.io/archives/">
+    <title>Wiaa: Dashboard, part 2</title>
+    <link rel="canonical" href="https://obarbeau.github.io/posts/2015-02-05-dashboard-part2/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" type="text/css">-->
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Averia+Libre' type='text/css'>
@@ -33,7 +33,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li ><a href="/">Home</a></li>
                 <li
-                 class="active" ><a href="/archives/">Archives</a></li>
+                ><a href="/archives/">Archives</a></li>
                 
                 <li
                 >
@@ -54,62 +54,45 @@
         <div class="col-lg-9">
             <div id="content">
                 
-<div id="posts">
-    <div id="page-header">
-        <h2>Archives</h2>
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">5 février 2015</div>
+        
     </div>
+    <h1>Dashboard, part 2</h1>
+</div>
+<div class="post-excerpt"></div>
+<div>
     
-        <h4>2016 mai</h4>
-        <ul>
-        
-        <li>
-            mai 26 - <a href="/posts/2016-05-26-clojure-cheat-sheet/">Clojure core functions - Cheat Sheet</a>
-        </li>
-        
-        </ul>
+    <p>After a break for more important projects, I'm back on the dashboard project. Since the first version was working fine, I decided to redo everything, according to a well-known principle in application development...</p><p>I replaced vanilla JavaScript by ClojureScript, and Ajax calls on <code>Compojure</code> routes (to retrieve data) by <code>core.async</code> on a <code>websocket</code>.</p><p>I had previously used on another project websockets with <code>httpkit</code> and <code>webbitserver</code>. It was working on two different ports, and management (and building) of websocket brought a lot of boilerplate.</p><p>It was also necessary to convert data to json with <code>cheshire</code> on the server side and Javascript functions on the front side.</p><p>For websockets I started using <a href='https://github.com/ptaoussanis/sente' target='_blank'>sente</a>, which seemed to meet my needs perfectly. This library is from the same author than the excellent logging library <code>timbre</code>. Alas, a version conflicts and a recalcitrant macro prevented me from using it.</p><p>So I focused my attention on <a href='https://github.com/james-henderson/chord' target='_blank'>chord</a>. Same core functionality than <code>sente</code>. The merge with the Compojure routes is done with the <code>wrap-websocket-handler</code> wrapper; the <code> transit</code> format is default, so everything is perfect.</p><p>There's no need anymore to worry about the <code>onOpen</code>, <code>onClose</code> and <code>onMessage</code> methods of the websocket, everything is automatic. It lets the user focus on data to transit the ws-channel, with <code>core.async</code> <code>get</code> and <code>put</code>. And of course all is done without having to explicitly convert the data to json.</p><p>On the front side, I use <a href='https://github.com/levand/domina' target='_blank'>domina</a>, which allows me to easily manipulate the elements of the page as well as events.</p>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
     
-        <h4>2015 février</h4>
-        <ul>
-        
-        <li>
-            févr. 18 - <a href="/posts/2015-02-18-clojure-plugins-tools/">Clojure - Plugins &amp; tools</a>
-        </li>
-        
-        <li>
-            févr. 09 - <a href="/posts/2015-02-09-uberjar-and-clojurescript/">Uberjar with ClojureScript</a>
-        </li>
-        
-        <li>
-            févr. 05 - <a href="/posts/2015-02-05-dashboard-part2/">Dashboard, part 2</a>
-        </li>
-        
-        </ul>
+    <a href="/tags/dashboard/">dashboard</a>
     
-        <h4>2015 janvier</h4>
-        <ul>
-        
-        <li>
-            janv. 26 - <a href="/posts/2015-01-26-link-with-editor/">Link with editor</a>
-        </li>
-        
-        <li>
-            janv. 20 - <a href="/posts/2015-01-20-dashboard/">Dashboard</a>
-        </li>
-        
-        <li>
-            janv. 16 - <a href="/posts/2015-01-16-flat-cable-earphones/">Flat Cable Earphones</a>
-        </li>
-        
-        <li>
-            janv. 14 - <a href="/posts/2015-01-14-moving-git-repo-to-github/">Moving Git repo to GitHub</a>
-        </li>
-        
-        <li>
-            janv. 13 - <a href="/posts/2015-01-13-cleaning-day/">Cleaning day</a>
-        </li>
-        
-        </ul>
+    <a href="/tags/websocket/">websocket</a>
     
+    <a href="/tags/clojure/">clojure</a>
+    
+    <a href="/tags/core.async/">core.async</a>
+    
+</div>
+
+
+    <div id="prev-next">
+        
+        <a href="/posts/2015-01-26-link-with-editor/">&laquo; Link with editor</a>
+        
+        
+        <a class="right" href="/posts/2015-02-09-uberjar-and-clojurescript/">Uberjar with ClojureScript &raquo;</a>
+        
+    </div>
+
+    
+
 
 </div>
 

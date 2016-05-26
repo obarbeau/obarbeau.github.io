@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Wiaa: Archives</title>
-    <link rel="canonical" href="https://obarbeau.github.io/archives/">
+    <title>Wiaa: Link with editor</title>
+    <link rel="canonical" href="https://obarbeau.github.io/posts/2015-01-26-link-with-editor/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" type="text/css">-->
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Averia+Libre' type='text/css'>
@@ -33,7 +33,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li ><a href="/">Home</a></li>
                 <li
-                 class="active" ><a href="/archives/">Archives</a></li>
+                ><a href="/archives/">Archives</a></li>
                 
                 <li
                 >
@@ -54,62 +54,45 @@
         <div class="col-lg-9">
             <div id="content">
                 
-<div id="posts">
-    <div id="page-header">
-        <h2>Archives</h2>
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">26 janvier 2015</div>
+        
     </div>
+    <h1>Link with editor</h1>
+</div>
+<div class="post-excerpt"></div>
+<div>
     
-        <h4>2016 mai</h4>
-        <ul>
-        
-        <li>
-            mai 26 - <a href="/posts/2016-05-26-clojure-cheat-sheet/">Clojure core functions - Cheat Sheet</a>
-        </li>
-        
-        </ul>
+    <p>I released a very simple LightTable plugin that highlight in the <code>Workspace</code> view the file currently edited. The sources are available on my <a href='https://github.com/obarbeau/lt-link-with-editor' target='_blank'>GitHub repo</a>.</p><p>It has been build upon the <a href='https://github.com/mdhaney/lt-plugin-template' target='_blank'><code>mdhaney/lt-plugin-template</code></a>, with the lein command: <code>lein new lt-plugin link-with-editor</code>.</p><p>This template generates the same structure and files than those in the <code>&#126;.config/LightTable/User</code> directory, which is the default user plugin namespace.</p><p>I suggest to symlink the project's directory to the Light Table plugin dir <code>&#126;/.config/LightTable/plugins/</code>. Thus, by running the commands <code>Plugins: Refresh plugin list</code> then <code>App: reload behaviors</code>, your plugin is available and ready to test inside Light Table.</p><p>Then, running <code>Editor: Build file or project</code> recompiles the Javascript file. One can also connect to <code>Light Table UI</code>. Any change made in the source files is taken into account automatically.</p><p>Don't forget to open the LT console because all output (via <code>println</code>) are redirected here.</p><p>Finally the <a href='https://github.com/LightTable/LightTable/tree/master/src/lt' target='_blank'>LT's GitHub</a> is mandatory for discovering useful namespaces, behaviors and commands for your plugin.</p>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
     
-        <h4>2015 février</h4>
-        <ul>
-        
-        <li>
-            févr. 18 - <a href="/posts/2015-02-18-clojure-plugins-tools/">Clojure - Plugins &amp; tools</a>
-        </li>
-        
-        <li>
-            févr. 09 - <a href="/posts/2015-02-09-uberjar-and-clojurescript/">Uberjar with ClojureScript</a>
-        </li>
-        
-        <li>
-            févr. 05 - <a href="/posts/2015-02-05-dashboard-part2/">Dashboard, part 2</a>
-        </li>
-        
-        </ul>
+    <a href="/tags/clojureScript/">clojureScript</a>
     
-        <h4>2015 janvier</h4>
-        <ul>
-        
-        <li>
-            janv. 26 - <a href="/posts/2015-01-26-link-with-editor/">Link with editor</a>
-        </li>
-        
-        <li>
-            janv. 20 - <a href="/posts/2015-01-20-dashboard/">Dashboard</a>
-        </li>
-        
-        <li>
-            janv. 16 - <a href="/posts/2015-01-16-flat-cable-earphones/">Flat Cable Earphones</a>
-        </li>
-        
-        <li>
-            janv. 14 - <a href="/posts/2015-01-14-moving-git-repo-to-github/">Moving Git repo to GitHub</a>
-        </li>
-        
-        <li>
-            janv. 13 - <a href="/posts/2015-01-13-cleaning-day/">Cleaning day</a>
-        </li>
-        
-        </ul>
+    <a href="/tags/plugin/">plugin</a>
     
+    <a href="/tags/lightTable/">lightTable</a>
+    
+    <a href="/tags/code/">code</a>
+    
+</div>
+
+
+    <div id="prev-next">
+        
+        <a href="/posts/2015-01-20-dashboard/">&laquo; Dashboard</a>
+        
+        
+        <a class="right" href="/posts/2015-02-05-dashboard-part2/">Dashboard, part 2 &raquo;</a>
+        
+    </div>
+
+    
+
 
 </div>
 

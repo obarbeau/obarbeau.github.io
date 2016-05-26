@@ -12,17 +12,17 @@ https://obarbeau.github.io/
 Blog about Clojure and various thoughts.
 </description>
 <lastBuildDate>
-Thu, 26 May 2016 17:09:05 +0200
+Thu, 26 May 2016 17:25:39 +0200
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
 <item>
 <guid>
-https://obarbeau.github.io/posts-output/2016-05-26-clojure-cheat-sheet/
+https://obarbeau.github.io/posts/2016-05-26-clojure-cheat-sheet/
 </guid>
 <link>
-https://obarbeau.github.io/posts-output/2016-05-26-clojure-cheat-sheet/
+https://obarbeau.github.io/posts/2016-05-26-clojure-cheat-sheet/
 </link>
 <title>
 Clojure core functions - Cheat Sheet
@@ -390,10 +390,10 @@ Thu, 26 May 2016 00:00:00 +0200
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts-output/2015-02-18-clojure-plugins-tools/
+https://obarbeau.github.io/posts/2015-02-18-clojure-plugins-tools/
 </guid>
 <link>
-https://obarbeau.github.io/posts-output/2015-02-18-clojure-plugins-tools/
+https://obarbeau.github.io/posts/2015-02-18-clojure-plugins-tools/
 </link>
 <title>
 Clojure - Plugins &amp; tools
@@ -444,10 +444,10 @@ Wed, 18 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts-output/2015-02-09-uberjar-and-clojurescript/
+https://obarbeau.github.io/posts/2015-02-09-uberjar-and-clojurescript/
 </guid>
 <link>
-https://obarbeau.github.io/posts-output/2015-02-09-uberjar-and-clojurescript/
+https://obarbeau.github.io/posts/2015-02-09-uberjar-and-clojurescript/
 </link>
 <title>
 Uberjar with ClojureScript
@@ -473,10 +473,10 @@ Mon, 09 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts-output/2015-02-05-dashboard-part2/
+https://obarbeau.github.io/posts/2015-02-05-dashboard-part2/
 </guid>
 <link>
-https://obarbeau.github.io/posts-output/2015-02-05-dashboard-part2/
+https://obarbeau.github.io/posts/2015-02-05-dashboard-part2/
 </link>
 <title>
 Dashboard, part 2
@@ -493,10 +493,10 @@ Thu, 05 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts-output/2015-01-26-link-with-editor/
+https://obarbeau.github.io/posts/2015-01-26-link-with-editor/
 </guid>
 <link>
-https://obarbeau.github.io/posts-output/2015-01-26-link-with-editor/
+https://obarbeau.github.io/posts/2015-01-26-link-with-editor/
 </link>
 <title>
 Link with editor
@@ -513,10 +513,10 @@ Mon, 26 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts-output/2015-01-20-dashboard/
+https://obarbeau.github.io/posts/2015-01-20-dashboard/
 </guid>
 <link>
-https://obarbeau.github.io/posts-output/2015-01-20-dashboard/
+https://obarbeau.github.io/posts/2015-01-20-dashboard/
 </link>
 <title>
 Dashboard
@@ -533,10 +533,10 @@ Tue, 20 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts-output/2015-01-16-flat-cable-earphones/
+https://obarbeau.github.io/posts/2015-01-16-flat-cable-earphones/
 </guid>
 <link>
-https://obarbeau.github.io/posts-output/2015-01-16-flat-cable-earphones/
+https://obarbeau.github.io/posts/2015-01-16-flat-cable-earphones/
 </link>
 <title>
 Flat Cable Earphones
@@ -553,10 +553,10 @@ Fri, 16 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts-output/2015-01-14-moving-git-repo-to-github/
+https://obarbeau.github.io/posts/2015-01-14-moving-git-repo-to-github/
 </guid>
 <link>
-https://obarbeau.github.io/posts-output/2015-01-14-moving-git-repo-to-github/
+https://obarbeau.github.io/posts/2015-01-14-moving-git-repo-to-github/
 </link>
 <title>
 Moving Git repo to GitHub
@@ -584,10 +584,10 @@ Wed, 14 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts-output/2015-01-13-cleaning-day/
+https://obarbeau.github.io/posts/2015-01-13-cleaning-day/
 </guid>
 <link>
-https://obarbeau.github.io/posts-output/2015-01-13-cleaning-day/
+https://obarbeau.github.io/posts/2015-01-13-cleaning-day/
 </link>
 <title>
 Cleaning day
