@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <title>Wiaa: Posts Tagged &quot;lightTable&quot;</title>
-    <link rel="canonical" href="http://blogawesome.com/tags-output/lightTable/">
+    <link rel="canonical" href="https://obarbeau.github.io/tags-output/lightTable/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" type="text/css">-->
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Averia+Libre' type='text/css'>
@@ -87,11 +87,11 @@
                     <h3>Recent Posts</h3>
                     <ul>
                         
+                        <li><a href="/posts-output/2016-05-26-clojure-cheat-sheet/">Clojure core functions - Cheat Sheet</a></li>
+                        
                         <li><a href="/posts-output/2015-02-18-clojure-plugins-tools/">Clojure - Plugins &amp; tools</a></li>
                         
                         <li><a href="/posts-output/2015-02-09-uberjar-and-clojurescript/">Uberjar with ClojureScript</a></li>
-                        
-                        <li><a href="/posts-output/2015-02-05-dashboard-part2/">Dashboard, part 2</a></li>
                         
                     </ul>
                 </div>
@@ -148,6 +148,24 @@
 <!-- includes clojure: -->
 <script src="/js/highlight.pack.js" type="text/javascript"></script>
 <script>hljs.initHighlightingOnLoad();</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    processEscapes: true
+  }
+});
+console.info("MathJax.Hub.lastError enabled");
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+  console.info(message[1]);
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+console.info(message[2]);
+});
+</script>
+<script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+</script>
 <!-- Asynchronous Google Analytics snippet -->
 <script>
     var _gaq = _gaq || [];

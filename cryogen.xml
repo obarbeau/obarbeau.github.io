@@ -1,18 +1,18 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <rss version='2.0' xmlns:atom='http://www.w3.org/2005/Atom'>
 <channel>
-<atom:link href='http://blogawesome.com/' rel='self' type='application/rss+xml'/>
+<atom:link href='https://obarbeau.github.io/' rel='self' type='application/rss+xml'/>
 <title>
 Wiaa
 </title>
 <link>
-http://blogawesome.com/
+https://obarbeau.github.io/
 </link>
 <description>
 Blog about Clojure and various thoughts.
 </description>
 <lastBuildDate>
-Wed, 18 May 2016 17:27:33 +0200
+Thu, 26 May 2016 17:09:05 +0200
 </lastBuildDate>
 <generator>
 clj-rss

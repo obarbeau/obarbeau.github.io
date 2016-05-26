@@ -1,28 +1,399 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <rss version='2.0' xmlns:atom='http://www.w3.org/2005/Atom'>
 <channel>
-<atom:link href='http://blogawesome.com/' rel='self' type='application/rss+xml'/>
+<atom:link href='https://obarbeau.github.io/' rel='self' type='application/rss+xml'/>
 <title>
 Wiaa
 </title>
 <link>
-http://blogawesome.com/
+https://obarbeau.github.io/
 </link>
 <description>
 Blog about Clojure and various thoughts.
 </description>
 <lastBuildDate>
-Wed, 18 May 2016 17:27:33 +0200
+Thu, 26 May 2016 17:09:05 +0200
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
 <item>
 <guid>
-http://blogawesome.com/posts-output/2015-02-18-clojure-plugins-tools/
+https://obarbeau.github.io/posts-output/2016-05-26-clojure-cheat-sheet/
 </guid>
 <link>
-http://blogawesome.com/posts-output/2015-02-18-clojure-plugins-tools/
+https://obarbeau.github.io/posts-output/2016-05-26-clojure-cheat-sheet/
+</link>
+<title>
+Clojure core functions - Cheat Sheet
+</title>
+<description>
+&lt;p&gt;Here are some useful Clojure core functions along with examples  and MathML notation for fun.&lt;/p&gt;&lt;p&gt;Nothing new under the sun, but these notes had been dragging on for a long time in my drafts, so it was time to share them!&lt;/p&gt;&lt;p&gt;&lt;table style=&quot;border-spacing: 7px; border-collapse: separate;&quot;&gt; &lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;'a ⇔ &amp;#40;quote a&amp;#41;
+&amp;#91;syntax quote&amp;#93; `a ⇔ &amp;#40;quote user/a&amp;#41;
+
+;; Examples
+&amp;#40;read-string &amp;quot;`{:a 100}&amp;quot;&amp;#41;
+; =&amp;gt; {:a 100}
+`&amp;#91;:a &amp;#126;&amp;#40;+ 1 1&amp;#41; &amp;#126;'c d &amp;#126;`e&amp;#93;
+; =&amp;gt; &amp;#91;:a 2 c user/d user/e&amp;#93;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;&lt;code&gt;Syntax quoting&lt;/code&gt; brings optional &lt;code&gt;gensym&lt;/code&gt; (if &lt;code&gt;#&lt;/code&gt; at the end of var name. Useful for macros that create local vars, eg in &lt;code&gt;let&lt;/code&gt; or &lt;code&gt;loop&lt;/code&gt;) + namespace qualification of symbols. Produces code to reproduce the form. One can unquote inside a syntax-quoted form with the tilde &lt;code&gt;&amp;#126;&lt;/code&gt;.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;and arg &amp;#40;.method arg&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns &lt;code&gt;nil&lt;/code&gt; if arg is &lt;code&gt;nil&lt;/code&gt;, otherwise execute &lt;code&gt;method&lt;/code&gt; on arg. Thus avoids &lt;code&gt;nil&lt;/code&gt; checks.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;apply f x1 ... xn c
+→ &amp;#40;f x1 x2 ... c1 c2 ... cn&amp;#41;
+
+;; Examples
+&amp;#40;apply + 5 6 '&amp;#40;&amp;#41;&amp;#41; ; 11
+&amp;#40;apply max &amp;#91;1 2 3&amp;#93;&amp;#41; ; 3
+; but
+&amp;#40;max &amp;#91;1 2 3&amp;#93;&amp;#41; ; &amp;#91;1 2 3&amp;#93;
+&amp;#40;+ &amp;#91;1 2 3&amp;#93;&amp;#41; ; error
+&amp;#40;apply + &amp;#91;1 2 3&amp;#93;&amp;#41; ; 6
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Evaluates ƒ (must not be a macro) on &amp;#92;( x_n &amp;#92;) arguments prepended to the collection. Has similarities with &lt;code&gt;unquote splicing&lt;/code&gt; &lt;code&gt;&amp;#126;@&lt;/code&gt;.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;assoc map k 1 v1 ... k n v n
+assoc vec idx1 v1 ... idxn vn
+
+;; Examples
+&amp;#40;assoc &amp;#91;1 2 4&amp;#93; 3 10 0 12&amp;#41;
+; &amp;#91;12 2 4 10&amp;#93;
+&amp;#40;assoc {:k1 &amp;quot;old v1&amp;quot; :k2 &amp;quot;v2&amp;quot;}
+       :k1 &amp;quot;newv1&amp;quot; :k3 &amp;quot;v3&amp;quot;&amp;#41;
+; {:k3 &amp;quot;v3&amp;quot;, :k1 &amp;quot;newv1&amp;quot;, :k2 &amp;quot;v2&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;&lt;ul&gt;&lt;li&gt;applied on a &lt;code&gt;map&lt;/code&gt;, returns a &lt;code&gt;map&lt;/code&gt; of the same type (hashed/sorted) containing (or substituting) k/v of &lt;code&gt;map&lt;/code&gt; and (by) those specified.&lt;/li&gt;&lt;li&gt;applied on a &lt;code&gt;vector&lt;/code&gt;, replace the element at specified index or add it at the last position.&lt;/li&gt;&lt;/ul&gt;  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;assoc-in map &amp;#91;k1 ... kn&amp;#93; v
+assoc-in vec &amp;#91;k1 ... kn&amp;#93; v
+
+;; Examples
+&amp;#40;assoc-in &amp;#91;{:k1 &amp;quot;v1&amp;quot;} {:k2 &amp;quot;v2&amp;quot;}&amp;#93;
+          &amp;#91;1 :k2&amp;#93; &amp;quot;nv2&amp;quot;&amp;#41;
+; &amp;#91;{:k1 &amp;quot;v1&amp;quot;} {:k2 &amp;quot;nv2&amp;quot;}&amp;#93;
+&amp;#40;assoc-in {} &amp;#91;:k1 :k2 :k3&amp;#93; &amp;quot;nv&amp;quot;&amp;#41;
+; {:k1 {:k2 {:k3 &amp;quot;nv&amp;quot;}}}
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns the same type of associative structure, with v the value of nested key reached by &amp;#92;( k1 .. kn &amp;#92;). If any &amp;#92;( k_x &amp;#92;) level does not exist, hash-maps are created.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;bean java-object
+
+;; Examples
+&amp;#40;bean java.awt.Color/RED&amp;#41;
+; {:red 255:transparency : 1 ...}
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a &lt;code&gt;map&lt;/code&gt; with all getters of the java object.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;comp f1 f2 ... fn
+→ &amp;#40;f 1 &amp;#40;f2 ... &amp;#40;fn &amp;#95;&amp;#41;&amp;#41;&amp;#41;
+
+;; Examples
+&amp;#40;&amp;#40;comp str +&amp;#41; 8 8 8&amp;#41; ; « 24 »
+
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a function with undefined arity, applying &amp;#92;( f_x &amp;#92;) (from right to left) on arguments.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;concat x1 ... xn
+
+;; Examples
+&amp;#40;concat &amp;#91;:a :b&amp;#93; nil &amp;#91;1 &amp;#91;2 3&amp;#93; 4&amp;#93;&amp;#41;
+; &amp;#40;:a :b 1 &amp;#91;2 3&amp;#93; 4&amp;#41;
+
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a sequence including all &amp;#92;( x_k &amp;#92;) elements. Does not flatten nested colls.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;conj
+
+;; Examples
+; new element at the front
+&amp;#40;conj '&amp;#40;1 2 3&amp;#41; :a&amp;#41; ; &amp;#40;:a 1 2 3&amp;#41;
+; new element at the back
+&amp;#40;conj &amp;#91;1 2 3&amp;#93; :a&amp;#41; ; &amp;#91;1 2 3 :a&amp;#93;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;&lt;p&gt;  &lt;/td&gt; &lt;/tr&gt;&lt;/p&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;constantly x
+
+;; Examples
+&amp;#40;constantly x&amp;#41; 1 2 3 → x
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a function with undefined arity, that always results in x.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;contains? coll k
+
+;; Examples
+&amp;#40;contains? &amp;#91;1 2 3 4&amp;#93; 4&amp;#41;
+; false ; index outOfBounds
+&amp;#40;contains? &amp;#91;1 2 3 4&amp;#93; 0&amp;#41; ; true
+&amp;#40;contains? '&amp;#40;1 2 3 4&amp;#41; 2&amp;#41;
+; IllegalArgumentException
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns true if the &lt;strong&gt;key&lt;/strong&gt; k is present in the &lt;strong&gt;indexed&lt;/strong&gt; collection (&lt;code&gt;map&lt;/code&gt; and &lt;code&gt;set&lt;/code&gt;), or if the index exists in a &lt;code&gt;vector&lt;/code&gt;. Do not use with &lt;code&gt;list&lt;/code&gt;. Prefer &lt;code&gt;some&lt;/code&gt; to query for a value.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;defrecord
+
+;; Examples
+&amp;#40;defrecord Foo &amp;#91;a b c&amp;#93;&amp;#41; ; user.Foo
+&amp;#40;def f &amp;#40;Foo. 1 2 3&amp;#41;&amp;#41; ; #'user/f
+&amp;#40;:b f&amp;#41; ; 2
+&amp;#40;class f&amp;#41; ; user.Foo p
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Optionally with implementation of protocols.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;dissoc map k1 ... kn
+
+;; Examples
+&amp;#40;dissoc {:fname &amp;quot;John&amp;quot; :lname &amp;quot;Doe&amp;quot;}
+        :lname&amp;#41;
+; {:fname &amp;quot;John&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Opposite of &lt;code&gt;assoc&lt;/code&gt;. Returns an associative structure of the same type than &lt;code&gt;map&lt;/code&gt; but without the nested key reached by &amp;#92;( k&amp;#95;1 \cdots k&amp;#95;n &amp;#92;)  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;doseq dorun doall
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Force evaluation of lazy seqs (side effects). unlike &lt;code&gt;for&lt;/code&gt;, &lt;code&gt;doseq&lt;/code&gt; never returns a value but &lt;code&gt;nil&lt;/code&gt;. &lt;code&gt;doall &lt;/code&gt;retains the head and returns it. &lt;code&gt;dorun&lt;/code&gt; does not retain the head and returns &lt;code&gt;nil&lt;/code&gt;.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;dotimes bindings &amp;amp; body
+
+;; Examples
+&amp;#40;dotimes &amp;#91;n 5&amp;#93; &amp;#40;println &amp;quot;n is&amp;quot; n&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Runs body &amp;#92;( n &amp;#92;) times, from &amp;#92;( 0 \text{ to } n-1 &amp;#92;).  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;find map k
+find vec idx
+
+;; Examples
+&amp;#40;find {:b 2 :a 1 :c 3} :a&amp;#41; ; &amp;#91;:a 1&amp;#93;
+&amp;#40;find &amp;#91;:a :b :c :d&amp;#93; 2&amp;#41; ; &amp;#91;2 :c&amp;#93;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;&lt;ul&gt;&lt;li&gt;if &lt;code&gt;map&lt;/code&gt;, returns the map entry for key &amp;#92;( k &amp;#92;) or &lt;code&gt;nil&lt;/code&gt; if not found.&lt;/li&gt;&lt;li&gt;if &lt;code&gt;vector&lt;/code&gt;, returns entry for index &amp;#92;( idx &amp;#92;) or &lt;code&gt;nil&lt;/code&gt; if not found.  &lt;/td&gt;&lt;/tr&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;flatten
+
+;; Examples
+&amp;#40;flatten &amp;#91;1 &amp;#91;2 3 &amp;#91;4 5&amp;#93; 6&amp;#93;&amp;#93;&amp;#41;
+; &amp;#40;1 2 3 4 5 6&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Flattens the nested sequences.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;fnil f x1 ... xn
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a function that calls ƒ with &amp;#92;( x_k &amp;#92;) as an argument if the original argument is &lt;code&gt;nil&lt;/code&gt;. The arity of ƒ must be &amp;#92;( \geq n &amp;#92;).  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;for &amp;#91;x valx
+y valy
+...
+:let &amp;#91;z valz ...&amp;#93;
+:while test
+:when test&amp;#93;
+body
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;« List comprehension ». Returns a sequence containing the results of the execution of body. Not intended for side effects.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;frequencies coll
+
+;; Examples
+&amp;#40;frequencies &amp;#91;'a 'b 'a 'a&amp;#93;&amp;#41;
+; {a 3, b 1}
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns with a &lt;code&gt;map&lt;/code&gt; that indicates, for each separate element of &lt;code&gt;col&lt;/code&gt;, the frequency at with which it appears.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;group-by f coll
+
+;; Examples
+&amp;#40;group-by #&amp;#40;.length %&amp;#41;
+  &amp;#91;&amp;quot;some&amp;quot; &amp;quot;words&amp;quot; &amp;quot;with&amp;quot;
+  &amp;quot;different&amp;quot; &amp;quot;lengths&amp;quot;&amp;#93;&amp;#41;
+; {4 &amp;#91;&amp;quot;some&amp;quot; &amp;quot;with&amp;quot;&amp;#93;, 5 &amp;#91;&amp;quot;words&amp;quot;&amp;#93;,
+;  9 &amp;#91;&amp;quot;different&amp;quot;&amp;#93;, 7 &amp;#91;&amp;quot;lengths&amp;quot;&amp;#93;}
+
+&amp;#40;group-by #&amp;#40;&amp;lt; % 10&amp;#41; &amp;#91;1 2 20 21&amp;#93;&amp;#41;
+; {true &amp;#91;1 2&amp;#93; false &amp;#91;20 21&amp;#93;}
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a &lt;code&gt;map&lt;/code&gt; of &lt;code&gt;col&lt;/code&gt; elements, sorted by the return value of ƒ applied. to them.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;interleave c1 ... cn
+
+;; Examples
+&amp;#40;interleave &amp;#91;:a :b&amp;#93; &amp;#40;iterate inc 1&amp;#41;&amp;#41;
+; &amp;#40;:a 1 :b 2&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a sequence containing the first element of each &amp;#92;( c_x &amp;#92;), then the second, ...  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;interpose sep coll
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a sequence of elements of the collection separated by the &lt;code&gt;sep&lt;/code&gt; separator.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;into to from
+
+;; Examples
+&amp;#40;into {} &amp;#91;&amp;#91;1 2&amp;#93; &amp;#91;3 4&amp;#93;&amp;#93;&amp;#41;
+; {1 2, 3 4}
+&amp;#40;into &amp;#91;&amp;#93; {1 2, 3 4}&amp;#41;
+; &amp;#91;&amp;#91;1 2&amp;#93; &amp;#91;3 4&amp;#93;&amp;#93;
+&amp;#40;into &amp;#40;4&amp;#41; '&amp;#40;1 2 3&amp;#41;&amp;#41;
+; &amp;#40;3 2 1 4&amp;#41;
+&amp;#40;into '&amp;#40;1 2 3&amp;#41; '&amp;#40;:a :b :c&amp;#41;&amp;#41;
+; &amp;#40;:c :b :a 1 2 3&amp;#41;
+&amp;#40;into &amp;#91;1 2 3&amp;#93; &amp;#91;:a :b :c&amp;#93;&amp;#41;
+; &amp;#91;1 2 3 :a :b :c&amp;#93;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a collection of the same type than &lt;code&gt;to&lt;/code&gt;, appending all elements of collection &lt;code&gt;from&lt;/code&gt;.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;iterate f x
+→ &amp;#40;x &amp;#40;f x&amp;#41; &amp;#40;f &amp;#40;f x&amp;#41;&amp;#41; ...&amp;#41;
+
+;; Examples
+&amp;#40;iterate #&amp;#40;∗ 2&amp;#41; 2&amp;#41;
+; &amp;#40;2 4 8 16 ...&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;ƒ must be a pure function.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;juxt f 1 f2 ...
+&amp;#40;juxt f1 f2 f3&amp;#41; x
+→ &amp;#91;&amp;#40;f1 x&amp;#41; &amp;#40;f2 x&amp;#41; &amp;#40;f 3 x&amp;#41;&amp;#93;
+
+;; Examples
+&amp;#40;map &amp;#40;juxt second count&amp;#41;
+     &amp;#91;'&amp;#40;2 3&amp;#41; '&amp;#40;5 6 9&amp;#41;&amp;#93;&amp;#41;
+; &amp;#40;&amp;#91;3 2&amp;#93; &amp;#91;6 3&amp;#93;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a function that returns a &lt;code&gt;vector&lt;/code&gt; whose elements are the application of ƒ on the argument.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;keep f coll
+keep-indexed f coll
+
+;; Examples
+&amp;#40;keep #&amp;#40;when &amp;#40;odd? %&amp;#41; %&amp;#41; &amp;#40;range 10&amp;#41;&amp;#41;
+; &amp;#40;1 3 5 7 9&amp;#41;
+&amp;#40;map #&amp;#40;when &amp;#40;odd? %&amp;#41; %&amp;#41; &amp;#40;range 10&amp;#41;&amp;#41;
+; &amp;#40;nil 1 nil 3 nil 5 nil 7 nil 9&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a sequence made of non &lt;code&gt;nil&lt;/code&gt; results of the application of ƒ on every &lt;code&gt;coll&lt;/code&gt; elements. &lt;code&gt;false&lt;/code&gt; results are included. ƒ must be a pure function.&lt;code&gt;keep-indexed&lt;/code&gt; uses a function like &lt;code&gt;fn &amp;#91;idx v&amp;#93;&lt;/code&gt;.&lt;p&gt;  &lt;/td&gt; &lt;/tr&gt;&lt;/p&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;list x1 ... xn
+
+;; Examples
+'&amp;#40;a 2 3&amp;#41; ; &amp;#40;a 2 3&amp;#41;
+&amp;#40;list a 2 3&amp;#41;
+; Exception cannot resolve a
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a &lt;code&gt;list&lt;/code&gt; containing all &amp;#92;( x_n &amp;#92;) args, possibly &lt;code&gt;nil&lt;/code&gt;. Unlike literal notation list &lt;code&gt;'&amp;#40;...&amp;#41;&lt;/code&gt;, the elements are evaluated before insertion.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;list&amp;#42; x1 ... xn s
+→ &amp;#40;x1 ... xn s1 ... sn&amp;#41;
+list&amp;#42; x1 ... xn nil
+→ &amp;#40;x1 ... xn&amp;#41;
+list&amp;#42; x1 ... xn &amp;#40;&amp;#41;
+→ &amp;#40;x1 ... xn&amp;#41;
+
+;; Examples
+&amp;#40;list&amp;#42; 1 2 &amp;#91;3 4&amp;#93;&amp;#41;
+; &amp;#40;1 2 3 4&amp;#41;
+&amp;#40;list 1 2 &amp;#91;3 4&amp;#93;&amp;#41;
+; &amp;#40;1 2 &amp;#91;3 4&amp;#93;&amp;#41;
+&amp;#40;list&amp;#42; nil &amp;#91;1 2&amp;#93;&amp;#41; ; &amp;#40;nil 1 2&amp;#41;
+&amp;#40;list&amp;#42; 1 nil&amp;#41; ; &amp;#40;1&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a &lt;code&gt;list&lt;/code&gt; containing all &amp;#92;( x_n &amp;#92;) args, possibly &lt;code&gt;nil&lt;/code&gt;, as well as all elements of sequence s (if not empty and not &lt;code&gt;nil&lt;/code&gt;).  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#91;p&amp;#93;map f c1 c2 ...
+→ &amp;#40;&amp;#40;f c11 c21 ...&amp;#41;
+   &amp;#40;f c12 c22 ...&amp;#41; ...&amp;#41;
+
+&amp;#91;p&amp;#93;map f c ; &amp;#40;&amp;#40;f c1&amp;#41; &amp;#40;f c2&amp;#41; ...&amp;#41;
+
+&amp;#91;p&amp;#93; : means parallel
+
+mapv f c1 c2 ...
+→ &amp;#91;&amp;#40;f c1 1 c21 ...&amp;#41;
+   &amp;#40;f c1 2 c22 ...&amp;#41; ...&amp;#93;
+
+;; Examples
+; 7 et 8 seront ignorés
+map #&amp;#40;+ %%2%3&amp;#41; '&amp;#40;1 2 3&amp;#41;
+    '&amp;#40;4 5 6 7 8&amp;#41; '&amp;#40;9 10 11&amp;#41;
+; &amp;#40;14 17 20&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a sequence containing results of the application of ƒ on each first elements of every collections &amp;#92;( c_n &amp;#92;) then on each second elements, ... ƒ should have as many args as the number of collections. If a collection has too many arguments they will be ignored. With a single collection, &lt;code&gt;map&lt;/code&gt; applies the function on every elements. &lt;code&gt;mapv &lt;/code&gt;: same thing but returns a &lt;code&gt;vector&lt;/code&gt; and is not lazy.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;mapcat f c1 ... cn
+→ &amp;#40;concat &amp;#40;f c1&amp;#41; &amp;#40;f c2&amp;#41; ...&amp;#41;
+
+;; Examples
+&amp;#40;mapcat reverse &amp;#91;&amp;#91;3 2 1 0&amp;#93; &amp;#91;6 5 4&amp;#93;
+                 &amp;#91;9 8 7&amp;#93;&amp;#93;&amp;#41;
+; &amp;#40;0 1 2 3 4 5 6 7 8 9&amp;#41;
+&amp;#40;mapcat list &amp;#91;:a :b :c&amp;#93; &amp;#91;1 2 3&amp;#93;&amp;#41;
+; &amp;#40;:a 1 :b 2 :c 3&amp;#41;
+&amp;#40;mapcat &amp;#40;fn &amp;#91;x&amp;#93; &amp;#40;repeat x x&amp;#41;&amp;#41; &amp;#91;12 3&amp;#93;&amp;#41;
+; &amp;#40;1 2 2 3 3 3&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Equivalent to &lt;code&gt;&amp;#40;apply concat &amp;#40;map f c1 ... cn&amp;#41;&amp;#41;&lt;/code&gt;. Applies &lt;code&gt;concat&lt;/code&gt; on the result of the application of &lt;code&gt;map&lt;/code&gt; on ƒ and collections.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;memoize f
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a cached version of ƒ. ƒ must be pure.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#94;{:doc ...}
+
+;; Examples
+&amp;#40;def &amp;#94;{:doc &amp;quot;a var&amp;quot;} x 10&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Alternate docstring. Metadata does not affect equality.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;or supplied-val default-val
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns &lt;code&gt;supplied-val&lt;/code&gt; if not &lt;code&gt;nil&lt;/code&gt;, otherwise &lt;code&gt;default-val&lt;/code&gt;.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;partial f x1 ... xn
+
+;; Examples
+#&amp;#40;+ 1 %&amp;#41; ⇔ &amp;#40;partial + 1&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a function that takes &amp;#92;( n &amp;#92;) less args that what ƒ requires.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;partition n coll
+partition n step coll
+partition n step pad coll
+
+;; Examples
+&amp;#40;partition 2 &amp;#91;1 2 3&amp;#93;&amp;#41; ; &amp;#40;&amp;#40;1 2&amp;#41;&amp;#41;
+&amp;#40;partition 2 1 &amp;#40;repeat 0&amp;#41; &amp;#91;1 2 3&amp;#93;&amp;#41;
+; &amp;#40;&amp;#40;1 2&amp;#41; &amp;#40;2 3&amp;#41; &amp;#40;3 0&amp;#41;&amp;#41;
+&amp;#40;partition 2 1 &amp;#91;1 2 3&amp;#93;&amp;#41;
+; &amp;#40;&amp;#40;1 2&amp;#41; &amp;#40;2 3&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a lazy sequence containing lists of &amp;#92;( n &amp;#92;) elements each. If the final &lt;code&gt;list&lt;/code&gt; has less than &amp;#92;( n &amp;#92;) elements, it is not added, except with &lt;code&gt;partition-all&lt;/code&gt; (see below). The 'step', which is &amp;#92;( n &amp;#92;) by default, is the offset for the creation of each list. 'Pad' is a list designed to complement the latest if less than &amp;#92;( n &amp;#92;) elements.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;partition-all n coll
+
+;; Examples
+&amp;#40;partition-all 2 &amp;#91;1 2 3&amp;#93;&amp;#41;
+; &amp;#40;&amp;#40;1 2&amp;#41; &amp;#40;3&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Similar to &lt;code&gt;partition&lt;/code&gt;, but also builds the last &lt;code&gt;list&lt;/code&gt; even if there are less than &amp;#92;( n &amp;#92;) elements.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;partition-by f coll
+
+;; Examples
+&amp;#40;partition-by even? &amp;#91;1 2 3&amp;#93;&amp;#41;
+; &amp;#40;&amp;#40;1&amp;#41; &amp;#40;2&amp;#41; &amp;#40;3&amp;#41;&amp;#41;
+&amp;#40;partition-by &amp;#40;partial &amp;lt; 10&amp;#41;
+              &amp;#91;1 2 11 1&amp;#93;&amp;#41;
+; &amp;#40;&amp;#40;1 2&amp;#41; &amp;#40;11&amp;#41; &amp;#40;1&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Similar to &lt;code&gt;partition&lt;/code&gt;, but cut the list each times ƒ change its value.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;reduce f c
+→ &amp;#40;f &amp;#40;f &amp;#40;f c1 c2&amp;#41; c3&amp;#41; c4&amp;#41; ...
+; ƒ should have an arity without args
+reduce f '&amp;#40;&amp;#41; → f
+reduce f '&amp;#40;c1&amp;#41; → c1
+reduce f val c
+→ &amp;#40;f &amp;#40;f &amp;#40;f val c1&amp;#41; c2&amp;#41; c3&amp;#41; ...
+reduce f val '&amp;#40;&amp;#41; → val
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;  &lt;/td&gt;   &lt;td&gt; ƒ should have a 2 args arity, except when not used or indicated.  Returns the accumulator.   &lt;/td&gt; &lt;/tr&gt;&lt;/p&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;reductions
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a sequence of intermediate steps of &lt;code&gt;reduce&lt;/code&gt;.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;repeatedly f → '&amp;#40;f f f ...&amp;#41;
+repeatedly n f → '&amp;#40;f f f ... n&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;ƒ should have no args, possibly impure. Returns an infinite sequence (or size n) of successive calls to ƒ.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;repeat x → '&amp;#40;x x x ...&amp;#41;
+repeat n x → '&amp;#40;x x x ...n&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns an infinite sequence (or size n) of value x. If x is a function, only one call is made.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;seq coll
+sequencecoll
+
+;; Examples
+&amp;#40;seq {}&amp;#41; ou &amp;#40;seq nil&amp;#41; ; nil
+&amp;#40;sequence {}&amp;#41; ou &amp;#40;sequence nil&amp;#41;
+; &amp;#40;&amp;#41;
+&amp;#40;sequence &amp;#91;1 2&amp;#93;&amp;#41; ou &amp;#40;seq &amp;#91;1 2&amp;#93;&amp;#41;
+; &amp;#40;1 2&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a sequence from the collection &lt;code&gt;coll&lt;/code&gt;. For an &lt;code&gt;nil&lt;/code&gt; or empty collection, &lt;code&gt;seq&lt;/code&gt; and &lt;code&gt;sequence&lt;/code&gt; behave differently.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;sort coll
+sort comp coll
+sort-by keyfn coll
+sort-by keyfn comp coll
+
+;; Examples
+&amp;#40;sort &amp;#91;1 56 2 23 45 34 6 43&amp;#93;&amp;#41;
+; &amp;#40;1 2 6 23 34 43 45 56&amp;#41;
+&amp;#40;sort &amp;gt; &amp;#91; 1 56 2 23 45 34 6 43&amp;#93;&amp;#41;
+; &amp;#40;56 45 43 34 23 6 2 1&amp;#41;
+&amp;#40;sort-by #&amp;#40;.length %&amp;#41;
+         &amp;#91;&amp;quot;the&amp;quot; &amp;quot;quick&amp;quot;
+          &amp;quot;brown&amp;quot; &amp;quot;fox&amp;quot;&amp;#93;&amp;#41;
+; &amp;#40;&amp;quot;the&amp;quot; &amp;quot;fox&amp;quot; &amp;quot;quick&amp;quot; &amp;quot;brown&amp;quot;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a sorted sequence.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;split-at n coll
+
+;; Examples
+&amp;#40;split-at 2 &amp;#91;:a :b :c :d :e&amp;#93;&amp;#41;
+; &amp;#91;&amp;#40;:a :b&amp;#41; &amp;#40;:c :d :e&amp;#41;&amp;#93;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a vector of &lt;code&gt;&amp;#91;&amp;#40;take n coll&amp;#41; &amp;#40;drop n coll&amp;#41;&amp;#93;&lt;/code&gt;.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;split-with pred coll
+
+;; Examples
+&amp;#40;split-with &amp;#40;partial &amp;gt;= 3&amp;#41;
+; &amp;#91;1 2 3 4 5&amp;#93;&amp;#41; &amp;#91;&amp;#40;1 2 3&amp;#41; &amp;#40;4 5&amp;#41;&amp;#93;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a vector of &lt;code&gt;&amp;#91;&amp;#40;take-while pred coll&amp;#41; &amp;#40;drop-while pred coll&amp;#41;&amp;#93;&lt;/code&gt;.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;take-nth n c
+
+;; Examples
+&amp;#40;take-nth 3 '&amp;#40;2 5 9 6 8 9 10 11&amp;#41;&amp;#41;
+; &amp;#40;2 6 10&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Takes the first and every nth elements of &lt;code&gt;c&lt;/code&gt;.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;take-while pred coll
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns elements of &lt;code&gt;coll&lt;/code&gt; as long as predicate &lt;code&gt;pred&lt;/code&gt; is true.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;tranpoline f &amp;amp; args
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Used for mutual recursion without consumming the stack. Performs the ping pong as long as what is returned is a function.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;update-in map &amp;#91;k1 .. kn&amp;#93; f &amp;amp; args
+
+;; Examples
+&amp;#40;def jdoe {:name &amp;quot;John Doe&amp;quot;
+           : address {:zip 41,...}}&amp;#41;
+&amp;#40;update-in jdoe &amp;#91;:address :zip&amp;#93; inc&amp;#41;
+; {:name &amp;quot;John Doe&amp;quot;
+;  :address {:zip 42}}
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns an associative structure identical to &lt;code&gt;map&lt;/code&gt; but with the value of the nested key reached by &amp;#92;( k&amp;#95;1 \cdots k&amp;#95;n &amp;#92;)  updated by ƒ (and its optional arguments).  If the &amp;#92;( k_x &amp;#92;) level does not exist, hash-maps will be created.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;vec c → &amp;#91;c1 c2 ...&amp;#93;
+vec nil → &amp;#91;&amp;#93;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a &lt;code&gt;vector&lt;/code&gt; containing the elements of c.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;vector x1 x2 ... → &amp;#91;x1 x2 ...&amp;#93;
+vector nil → &amp;#91;nil&amp;#93;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a vector containing all arguments &amp;#92;( x_\n &amp;#92;).  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;vector-of t
+vector-of t &amp;amp; x1 ... xn
+
+;; Examples
+&amp;#40;conj &amp;#40;vector-of :int 4&amp;#41; 1 2 3&amp;#41;
+; &amp;#91;4 1 2 3&amp;#93;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;Returns a &lt;code&gt;vector&lt;/code&gt; of primitive types (:int :long :float :double :byte :short :char or :boolean) containing all optional &amp;#92;( x_\n &amp;#92;) arguments.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;zipmap keys vals → &amp;#40;k1 v1 ... kn vn&amp;#41;
+zipmap &amp;#91;k1 k2&amp;#93; &amp;#91;v1&amp;#93; → &amp;#40;k1 v1&amp;#41;
+zipmap &amp;#91;k&amp;#93; &amp;#91;v1 v2&amp;#93; → &amp;#40;k1 v1&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;return a &lt;code&gt;map&lt;/code&gt; with the keys associated with values.  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;tr&gt;   &lt;td&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;map first
+     &amp;#40;filter &amp;#40;comp #{:a :b} first&amp;#41;
+             &amp;#91;&amp;#91;:a&amp;#93; &amp;#91;:d&amp;#93;&amp;#93;&amp;#41;&amp;#41;
+;=&amp;gt; &amp;#40;:a&amp;#41;
+&amp;#40;keep &amp;#40;comp #{:a} first&amp;#41; &amp;#91;&amp;#91;:a&amp;#93; &amp;#91;:b&amp;#93;&amp;#93;&amp;#41;
+;=&amp;gt; &amp;#40;:a&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &lt;/td&gt;  &lt;td&gt;keep = map + filter  &lt;/td&gt;&lt;/tr&gt;&lt;p&gt;&lt;/table&gt;&lt;/p&gt;&lt;p&gt;Inspect a &lt;code&gt;map&lt;/code&gt; :&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;require 'clojure.inspector&amp;#41;
+&amp;#40;clojure.inspector/inspect-tree map&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And finally, some other useful functions, from the excellent &lt;a href='http://blog.jayfields.com/2012/09/replacing-common-code-with-clojureset.html' target='_blank'&gt;Jay Fields's blog&lt;/a&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;def jay {:fname &amp;quot;jay&amp;quot; :lname &amp;quot;fields&amp;quot; :employer &amp;quot;drw&amp;quot;}&amp;#41;
+&amp;#40;def mike {:fname &amp;quot;mike&amp;quot; :lname &amp;quot;jones&amp;quot; :employer &amp;quot;forward&amp;quot;}&amp;#41;
+&amp;#40;def john {:fname &amp;quot;john&amp;quot; :lname &amp;quot;dydo&amp;quot; :employer &amp;quot;drw&amp;quot;}&amp;#41;
+
+; returns a map whose keys are every employers and values are people defined above
+&amp;#40;clojure.set/index &amp;#91;jay mike john&amp;#93; &amp;#91;:employer&amp;#93;&amp;#41;
+; =&amp;gt; {{:employer &amp;quot;drw&amp;quot;} #{{:employer &amp;quot;drw&amp;quot; :fname &amp;quot;jay&amp;quot; :lname &amp;quot;fields&amp;quot;}
+;                         {:employer &amp;quot;drw&amp;quot; :fname &amp;quot;john&amp;quot; :lname &amp;quot;dydo&amp;quot;}}
+; {:employer &amp;quot;forward&amp;quot;} #{{:employer &amp;quot;forward&amp;quot; :fname &amp;quot;mike&amp;quot; :lname &amp;quot;jones&amp;quot;}}}
+
+; projection
+&amp;#40;clojure.set/project &amp;#91;jay mike john&amp;#93; &amp;#91;:fname :lname&amp;#93;&amp;#41;
+; =&amp;gt; #{{:lname &amp;quot;fields&amp;quot;, :fname &amp;quot;jay&amp;quot;}
+;      {:lname &amp;quot;dydo&amp;quot;, :fname &amp;quot;john&amp;quot;}
+;      {:lname &amp;quot;jones&amp;quot;, :fname &amp;quot;mike&amp;quot;}}
+
+; key rename
+&amp;#40;clojure.set/rename &amp;#91;jay mike john&amp;#93; {:fname :first-name :lname :last-name}&amp;#41;
+; =&amp;gt; #{{:last-name &amp;quot;jones&amp;quot;, :first-name &amp;quot;mike&amp;quot;, :employer &amp;quot;forward&amp;quot;}
+;      {:last-name &amp;quot;dydo&amp;quot;, :first-name &amp;quot;john&amp;quot;, :employer &amp;quot;drw&amp;quot;}
+;      {:last-name &amp;quot;fields&amp;quot;, :first-name &amp;quot;jay&amp;quot;, :employer &amp;quot;drw&amp;quot;}}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+<enclosure>
+
+</enclosure>
+<pubDate>
+Thu, 26 May 2016 00:00:00 +0200
+</pubDate>
+</item>
+<item>
+<guid>
+https://obarbeau.github.io/posts-output/2015-02-18-clojure-plugins-tools/
+</guid>
+<link>
+https://obarbeau.github.io/posts-output/2015-02-18-clojure-plugins-tools/
 </link>
 <title>
 Clojure - Plugins &amp; tools
@@ -73,10 +444,10 @@ Wed, 18 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://blogawesome.com/posts-output/2015-02-09-uberjar-and-clojurescript/
+https://obarbeau.github.io/posts-output/2015-02-09-uberjar-and-clojurescript/
 </guid>
 <link>
-http://blogawesome.com/posts-output/2015-02-09-uberjar-and-clojurescript/
+https://obarbeau.github.io/posts-output/2015-02-09-uberjar-and-clojurescript/
 </link>
 <title>
 Uberjar with ClojureScript
@@ -102,10 +473,10 @@ Mon, 09 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://blogawesome.com/posts-output/2015-02-05-dashboard-part2/
+https://obarbeau.github.io/posts-output/2015-02-05-dashboard-part2/
 </guid>
 <link>
-http://blogawesome.com/posts-output/2015-02-05-dashboard-part2/
+https://obarbeau.github.io/posts-output/2015-02-05-dashboard-part2/
 </link>
 <title>
 Dashboard, part 2
@@ -122,10 +493,10 @@ Thu, 05 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://blogawesome.com/posts-output/2015-01-26-link-with-editor/
+https://obarbeau.github.io/posts-output/2015-01-26-link-with-editor/
 </guid>
 <link>
-http://blogawesome.com/posts-output/2015-01-26-link-with-editor/
+https://obarbeau.github.io/posts-output/2015-01-26-link-with-editor/
 </link>
 <title>
 Link with editor
@@ -142,10 +513,10 @@ Mon, 26 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://blogawesome.com/posts-output/2015-01-20-dashboard/
+https://obarbeau.github.io/posts-output/2015-01-20-dashboard/
 </guid>
 <link>
-http://blogawesome.com/posts-output/2015-01-20-dashboard/
+https://obarbeau.github.io/posts-output/2015-01-20-dashboard/
 </link>
 <title>
 Dashboard
@@ -162,10 +533,10 @@ Tue, 20 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://blogawesome.com/posts-output/2015-01-16-flat-cable-earphones/
+https://obarbeau.github.io/posts-output/2015-01-16-flat-cable-earphones/
 </guid>
 <link>
-http://blogawesome.com/posts-output/2015-01-16-flat-cable-earphones/
+https://obarbeau.github.io/posts-output/2015-01-16-flat-cable-earphones/
 </link>
 <title>
 Flat Cable Earphones
@@ -182,10 +553,10 @@ Fri, 16 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://blogawesome.com/posts-output/2015-01-14-moving-git-repo-to-github/
+https://obarbeau.github.io/posts-output/2015-01-14-moving-git-repo-to-github/
 </guid>
 <link>
-http://blogawesome.com/posts-output/2015-01-14-moving-git-repo-to-github/
+https://obarbeau.github.io/posts-output/2015-01-14-moving-git-repo-to-github/
 </link>
 <title>
 Moving Git repo to GitHub
@@ -213,10 +584,10 @@ Wed, 14 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://blogawesome.com/posts-output/2015-01-13-cleaning-day/
+https://obarbeau.github.io/posts-output/2015-01-13-cleaning-day/
 </guid>
 <link>
-http://blogawesome.com/posts-output/2015-01-13-cleaning-day/
+https://obarbeau.github.io/posts-output/2015-01-13-cleaning-day/
 </link>
 <title>
 Cleaning day
