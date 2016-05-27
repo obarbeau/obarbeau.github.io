@@ -12,11 +12,52 @@ https://obarbeau.github.io/
 Blog about Clojure and various thoughts.
 </description>
 <lastBuildDate>
-Thu, 26 May 2016 17:25:39 +0200
+Fri, 27 May 2016 16:44:08 +0200
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
+<item>
+<guid>
+https://obarbeau.github.io/posts/2016-05-27-switch-to-cryogen/
+</guid>
+<link>
+https://obarbeau.github.io/posts/2016-05-27-switch-to-cryogen/
+</link>
+<title>
+Switch to Cryogen
+</title>
+<description>
+&lt;p&gt;My blog was previously served by Jekyll, with a theme adapted from &lt;a href='https://github.com/mmistakes/so-simple-theme' target='_blank'&gt;So Simple&lt;/a&gt;. This suited me very well. Elegant layout, satisfactory responsive design, fast processing of pages.&lt;/p&gt;&lt;p&gt;But then, every time I wanted to write a quick post, at the time of starting Jenkins to heat up the receptacle of my prose, bing! a mismatch is detected between coffeescript / the Jekyll engine / its plugins / gem / bundle or whatever...&lt;/p&gt;&lt;p&gt;And here I am compelled to spend 20 minutes trying to update all of these elements instead of improving my English writing &amp;ndash; and my grammar deserves a good upgrade...&lt;/p&gt;&lt;p&gt;For a while I used a Docker container wrapping Jekyll and its plugins. It's an interesting experience, which has the advantage to freeze versions of tools required for the blog, while letting those of workstation freely evolve.&lt;/p&gt;&lt;p&gt;And then I have wondered: this is a blog about Clojure, why not use a blog engine that is made of it, and enables hosting on Github? And I quickly came across &lt;a href='https://github.com/cryogen-project/cryogen' target='_blank'&gt;Cryogen&lt;/a&gt;, a very good static website generator.&lt;/p&gt;&lt;p&gt;Everything is fine, however, I made two small changes to the &lt;code&gt;core&lt;/code&gt; project.&lt;/p&gt;&lt;p&gt;For this I use &lt;code&gt;intern&lt;/code&gt; function, which allows to change the root binding of a var in another namespace. This is a handy feature when you want to change a single function without cloning the entire project.&lt;/p&gt;&lt;ol&gt;&lt;li&gt;The first in the &lt;code&gt;compiler&lt;/code&gt; namespace, on the &lt;code&gt;add-prev-next&lt;/code&gt; function,  where I reversed the order of the previous and next pages  because I find it more logical to have the historical on the left.&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;intern 'cryogen-core.compiler
+        &amp;#40;with-meta #&amp;#95;1 'add-prev-next
+                   {:doc &amp;#40;str &amp;quot;Adds a :prev and :next key to the page/post&amp;quot;
+                              &amp;quot; data containing the title and uri of the &amp;quot;
+                              &amp;quot;prev/next post/page if it exists&amp;quot;&amp;#41;}&amp;#41;
+        &amp;#40;fn
+          &amp;#91;pages&amp;#93;
+          &amp;#40;map &amp;#40;fn &amp;#91;&amp;#91;next target prev&amp;#93;&amp;#93; ; before: &amp;#91;prev target next&amp;#93;
+                 &amp;#40;assoc target
+                   :prev &amp;#40;if prev &amp;#40;select-keys prev &amp;#91;:title :uri&amp;#93;&amp;#41; nil&amp;#41;
+                   :next &amp;#40;if next &amp;#40;select-keys next &amp;#91;:title :uri&amp;#93;&amp;#41; nil&amp;#41;&amp;#41;&amp;#41;
+               &amp;#40;partition 3 1 &amp;#40;flatten &amp;#91;nil pages nil&amp;#93;&amp;#41;&amp;#41;&amp;#41;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;  &amp;#9312; &lt;code&gt;with-meta&lt;/code&gt; keeps the original docstring and attach it  to the function,  because it is not possible to do this in the &lt;code&gt;fn block &amp;#91;&amp;#93;&lt;/code&gt;.&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;2.The second in the &lt;code&gt;markup&lt;/code&gt; namespace, on the &lt;code&gt;rewrite-hrefs&lt;/code&gt; function,   where I open a new tab when &lt;code&gt;target&lt;/code&gt; is specified at the end of the link.   A little regex makes the substitution.&lt;/p&gt;&lt;p&gt;  &lt;script src=&quot;https://gist.github.com/obarbeau/65d7f487797d8041b6a79c15b532604f.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;&lt;p&gt;Finally, the day you use &lt;code&gt;intern&lt;/code&gt; to define a macro, please remember:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;to add the meta &lt;code&gt;:macro true&lt;/code&gt; in the name of var&lt;/li&gt;&lt;li&gt;to add two arguments to your function, &lt;code&gt;&amp;amp;form&lt;/code&gt; and &lt;code&gt; env&lt;/code&gt;  (which are not required with &lt;code&gt;defmacro&lt;/code&gt;)  otherwise you might look for a moment why  the substitutions do not behave as expected...  &lt;i class=&quot;fa fa-smile-o&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/li&gt;&lt;/ul&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;intern 'monger.query &amp;#40;with-meta 'with-collection {:macro true}&amp;#41;
+        &amp;#40;fn &amp;#91;&amp;amp;form &amp;amp;env &amp;#94;DB db &amp;#94;String coll &amp;amp; body&amp;#93;
+          `&amp;#40;let &amp;#91;coll# &amp;#126;coll
+                 db# &amp;#126;db
+                 db-coll# &amp;#40;if &amp;#40;string? coll#&amp;#41;
+                            &amp;#40;.getCollection &amp;#94;DB db# &amp;#94;String coll#&amp;#41;
+                            coll#&amp;#41;
+                 query# &amp;#40;-&amp;gt; &amp;#40;empty-query db-coll#&amp;#41; &amp;#126;@body&amp;#41;&amp;#93;
+             &amp;#40;exec query#&amp;#41;&amp;#41;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+<enclosure>
+
+</enclosure>
+<pubDate>
+Fri, 27 May 2016 00:00:00 +0200
+</pubDate>
+</item>
 <item>
 <guid>
 https://obarbeau.github.io/posts/2016-05-26-clojure-cheat-sheet/
