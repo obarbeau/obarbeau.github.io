@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Wiaa: About</title>
-    <link rel="canonical" href="https://obarbeau.github.io/pages/about/">
+    <title>Wiaa</title>
+    <link rel="canonical" href="https://obarbeau.github.io">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" type="text/css">-->
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Averia+Libre' type='text/css'>
@@ -36,7 +36,7 @@
                 ><a href="/archives/">Archives</a></li>
                 
                 <li
-                 class="active" >
+                >
                 <a href="/pages/about/">About</a>
                 </li>
                 
@@ -54,15 +54,78 @@
         <div class="col-lg-9">
             <div id="content">
                 
-<div id="custom-page">
-    <div id="page-header">
-        <h1>About</h1>
-    </div>
+<div id="post">
     
-    <blockquote><p>Before, I was complaining against Java and its tooling. Now I have Clojure. I still complain, for not having discovered it earlier. </p><footer>me</footer><p></p></blockquote><p>I'm Olivier, and I live and work in the sweet and sour city of Paris.</p><p>Java architect for over 15 years, I completely switched to Clojure some years ago for an ever increasing pleasure.</p><p>The purpose of this blog is to share some tips on this fabulous language, with the side effect<a href='#fn-1' id='fnref1'><sup>1</sup></a> of working my written English.</p><p>If you want to get in touch with me you can <a href='mailto:olivier.barbeau@gmail.com'>email</a> me or find me on <a href='https://github.com/obarbeau' target='_blank'>GitHub</a>.</p><ol class='footnotes'><li id='fn-1'>this one is allowed!<a href='#fnref1'>&#8617;</a></li></ol>
+    <div class="post-header">
+        <h2>Link with editor</h2>
+        <div id="post-meta">
+            
+            <div class="date">26 janvier 2015</div>
+        </div>
+    </div>
+    <p>I released a very simple LightTable plugin that highlight in the <code>Workspace</code> view the file currently edited. The sources are available on my <a href="https://github.com/obarbeau/lt-link-with-editor" shape="rect" target="_blank">GitHub repo</a>.</p><p>It has been build upon the <a href="https://github.com/mdhaney/lt-plugin-template" shape="rect" target="_blank"><code>mdhaney/lt-plugin-template</code></a>, with the lein command: <code>lein new lt-plugin link-with-editor</code>.</p>
+    <a href="/posts/2015-01-26-link-with-editor/">Continue reading &#8594;</a>
+    <hr>
+    
+    <div class="post-header">
+        <h2>Dashboard</h2>
+        <div id="post-meta">
+            
+            <div class="date">20 janvier 2015</div>
+        </div>
+    </div>
+    <p>Since three days I work on a dashboard that will display statistics in the form of tables and graphs.</p><p>I am using with great pleasure the following tools:</p>
+    <a href="/posts/2015-01-20-dashboard/">Continue reading &#8594;</a>
+    <hr>
+    
+    <div class="post-header">
+        <h2>Flat Cable Earphones</h2>
+        <div id="post-meta">
+            
+            <div class="date">16 janvier 2015</div>
+        </div>
+    </div>
+    <p>The last time that I went to the market, I lost my earphone. I bought some smoked haddock that day, which has proved very good, but this is not the subject of this post.</p><p>In order to continue to listen to Opeth, Marillion and Kamelot in the bus that brings me to work, I bought a <em>Klipsch Image S4</em> earphone. The sound is very good, with powerful and satisfactory bass.</p>
+    <a href="/posts/2015-01-16-flat-cable-earphones/">Continue reading &#8594;</a>
+    <hr>
+    
+    <div class="post-header">
+        <h2>Moving Git repo to GitHub</h2>
+        <div id="post-meta">
+            
+            <div class="date">14 janvier 2015</div>
+        </div>
+    </div>
+    <p>Today I pushed my <a href="https://github.com/obarbeau/repl-tasks" shape="rect" target="_blank"><code>repl-tasks</code></a> project to GitHub, whose repository was previously on a personal <a href="https://www.synology.com/" shape="rect" target="_blank">Synology</a> server.</p><pre><code class="bash"># add the new repo on GitHub
+git remote add new-origin git@github.com:obarbeau/repl-tasks.git
+# push everything
+git push --all new-origin
+git push --tags new-origin
+# rename old syno repo
+git remote rename origin previous-on-syno
+# rename new repo to master
+git remote rename new-origin origin
+# change destination of local master branch to new repo
+git branch master --set-upstream-to=origin/master
+</code></pre>
+    <a href="/posts/2015-01-14-moving-git-repo-to-github/">Continue reading &#8594;</a>
+    <hr>
+    
+    <div class="post-header">
+        <h2>Cleaning day</h2>
+        <div id="post-meta">
+            
+            <div class="date">13 janvier 2015</div>
+        </div>
+    </div>
+    <p>I just spent the morning to sort paper records that were sleeping over my office box. I should say throwing them, because indeed the trash is now overflowing. I kept very little documentation.</p><p>Finally all these paper records have little interest. Most are intermediate versions of documents; so there are 'final' versions elsewhere, often electronic ones. When looking at those files one takes the 'risk' to miss the latest information.</p>
+    <a href="/posts/2015-01-13-cleaning-day/">Continue reading &#8594;</a>
+    <hr>
+    
 
     <div id="prev-next">
         
+        <a class="left" href="/">&laquo; Prev</a>
         
         
     </div>
