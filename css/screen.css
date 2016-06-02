@@ -161,7 +161,6 @@ a code:after {
 
 pre, code, .hljs {
   background-color: #f7f9fd;
-  font-size: 70%;
 }
 
 @media (min-width: 768px) {

@@ -1,28 +1,28 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <rss version='2.0' xmlns:atom='http://www.w3.org/2005/Atom'>
 <channel>
-<atom:link href='https://obarbeau.github.io/' rel='self' type='application/rss+xml'/>
+<atom:link href='http://world-in-atom.com/' rel='self' type='application/rss+xml'/>
 <title>
-Wiaa
+The world in an atom
 </title>
 <link>
-https://obarbeau.github.io/
+http://world-in-atom.com/
 </link>
 <description>
 Blog about Clojure and various thoughts.
 </description>
 <lastBuildDate>
-Wed, 01 Jun 2016 15:06:03 +0200
+Thu, 02 Jun 2016 18:14:06 +0200
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
 <item>
 <guid>
-https://obarbeau.github.io/posts/2016-05-27-switch-to-cryogen/
+http://world-in-atom.com/posts/2016-05-27-switch-to-cryogen/
 </guid>
 <link>
-https://obarbeau.github.io/posts/2016-05-27-switch-to-cryogen/
+http://world-in-atom.com/posts/2016-05-27-switch-to-cryogen/
 </link>
 <title>
 Switch to Cryogen
@@ -60,10 +60,10 @@ Fri, 27 May 2016 00:00:00 +0200
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts/2016-05-26-clojure-cheat-sheet/
+http://world-in-atom.com/posts/2016-05-26-clojure-cheat-sheet/
 </guid>
 <link>
-https://obarbeau.github.io/posts/2016-05-26-clojure-cheat-sheet/
+http://world-in-atom.com/posts/2016-05-26-clojure-cheat-sheet/
 </link>
 <title>
 Clojure core functions - Cheat Sheet
@@ -431,10 +431,10 @@ Thu, 26 May 2016 00:00:00 +0200
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts/2015-02-18-clojure-plugins-tools/
+http://world-in-atom.com/posts/2015-02-18-clojure-plugins-tools/
 </guid>
 <link>
-https://obarbeau.github.io/posts/2015-02-18-clojure-plugins-tools/
+http://world-in-atom.com/posts/2015-02-18-clojure-plugins-tools/
 </link>
 <title>
 Clojure - Plugins &amp; tools
@@ -485,10 +485,10 @@ Wed, 18 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts/2015-02-09-uberjar-and-clojurescript/
+http://world-in-atom.com/posts/2015-02-09-uberjar-and-clojurescript/
 </guid>
 <link>
-https://obarbeau.github.io/posts/2015-02-09-uberjar-and-clojurescript/
+http://world-in-atom.com/posts/2015-02-09-uberjar-and-clojurescript/
 </link>
 <title>
 Uberjar with ClojureScript
@@ -514,10 +514,10 @@ Mon, 09 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts/2015-02-05-dashboard-part2/
+http://world-in-atom.com/posts/2015-02-05-dashboard-part2/
 </guid>
 <link>
-https://obarbeau.github.io/posts/2015-02-05-dashboard-part2/
+http://world-in-atom.com/posts/2015-02-05-dashboard-part2/
 </link>
 <title>
 Dashboard, part 2
@@ -534,10 +534,10 @@ Thu, 05 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts/2015-01-26-link-with-editor/
+http://world-in-atom.com/posts/2015-01-26-link-with-editor/
 </guid>
 <link>
-https://obarbeau.github.io/posts/2015-01-26-link-with-editor/
+http://world-in-atom.com/posts/2015-01-26-link-with-editor/
 </link>
 <title>
 Link with editor
@@ -554,10 +554,10 @@ Mon, 26 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts/2015-01-20-dashboard/
+http://world-in-atom.com/posts/2015-01-20-dashboard/
 </guid>
 <link>
-https://obarbeau.github.io/posts/2015-01-20-dashboard/
+http://world-in-atom.com/posts/2015-01-20-dashboard/
 </link>
 <title>
 Dashboard
@@ -574,10 +574,10 @@ Tue, 20 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts/2015-01-16-flat-cable-earphones/
+http://world-in-atom.com/posts/2015-01-16-flat-cable-earphones/
 </guid>
 <link>
-https://obarbeau.github.io/posts/2015-01-16-flat-cable-earphones/
+http://world-in-atom.com/posts/2015-01-16-flat-cable-earphones/
 </link>
 <title>
 Flat Cable Earphones
@@ -594,10 +594,10 @@ Fri, 16 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts/2015-01-14-moving-git-repo-to-github/
+http://world-in-atom.com/posts/2015-01-14-moving-git-repo-to-github/
 </guid>
 <link>
-https://obarbeau.github.io/posts/2015-01-14-moving-git-repo-to-github/
+http://world-in-atom.com/posts/2015-01-14-moving-git-repo-to-github/
 </link>
 <title>
 Moving Git repo to GitHub
@@ -625,10 +625,10 @@ Wed, 14 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://obarbeau.github.io/posts/2015-01-13-cleaning-day/
+http://world-in-atom.com/posts/2015-01-13-cleaning-day/
 </guid>
 <link>
-https://obarbeau.github.io/posts/2015-01-13-cleaning-day/
+http://world-in-atom.com/posts/2015-01-13-cleaning-day/
 </link>
 <title>
 Cleaning day
