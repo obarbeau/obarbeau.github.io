@@ -12,11 +12,45 @@ http://world-in-atom.com/
 Blog about Clojure and various thoughts.
 </description>
 <lastBuildDate>
-Thu, 02 Jun 2016 18:14:06 +0200
+Fri, 01 Jul 2016 15:30:25 +0200
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
+<item>
+<guid>
+http://world-in-atom.com/posts/2016-07-01-paypal/
+</guid>
+<link>
+http://world-in-atom.com/posts/2016-07-01-paypal/
+</link>
+<title>
+Paypal security upgrade
+</title>
+<description>
+&lt;h2&gt;&lt;a name=&quot;context&quot;&gt;&lt;/a&gt;Context&lt;/h2&gt;&lt;p&gt;Paypal performs in 2016 several changes to the security level of their payment platform. We use their &lt;code&gt;'Express Checkout'&lt;/code&gt; method and therefore this security upgrade will be an opportunity for us to rewrite our library.&lt;/p&gt;&lt;p&gt;Deadlines have shifted, I guess for the same reasons than SEPA one: clients were not ready... (SEPA is Single Euro Payments Area)&lt;/p&gt;&lt;p&gt;Basically, there are three main changes:&lt;/p&gt;&lt;ol&gt;&lt;li&gt;Paypal certificate now uses the G5 root, with a SHA-256 key.   This implies the update of the truststore;&lt;/li&gt;&lt;li&gt;private merchants keys are upgraded from SHA-1 to SHA-256.   The keystore must therefore be updated (for the private key part),   as well as the truststore (for public part);&lt;/li&gt;&lt;li&gt;Finally, upgrade the TLS protocol to version 1.2,   which is not the default mode in Java 7.&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;The first two changes are to be made on the stores of the sandbox and production environments.&lt;/p&gt;&lt;p&gt;No luck, PayPal has already updated their sandbox to TLS1.2, so it is no longer possible, without a compatible code, to use this test platform.&lt;/p&gt;&lt;p&gt;The hardest part when using Paypal is not to implement the technical solution:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;First, patience is required in order to find one's way in the doc,  sometimes redundant, often confused.&lt;/li&gt;&lt;li&gt;On the other hand, foresee a good headache with certificate formats  and conversions from PEM to pkcs12 to jks, ...&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;To this end, a very good tool for the stores management is &lt;a href='http://www.keystore-explorer.org/' target='_blank'&gt;KeyStore Explorer&lt;/a&gt;, much more convenient than command line &lt;code&gt;keytool&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;Last word about key/trust-stores: do not specify them when posting data to the API with signature credentials, or the following error will occur: &lt;code&gt;unable to find valid certification path to requested target&lt;/code&gt;&lt;/p&gt;&lt;p&gt;The stores are not used in this case, but their presence in the options disrupts the connection.&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;express&amp;#95;checkout&amp;#95;api&amp;#95;operations&quot;&gt;&lt;/a&gt;Express Checkout API Operations&lt;/h2&gt;&lt;p&gt;Basically our thin Clojure library, called by our online shopping website, provides 3 methods that reflect those of Paypal's API:&lt;/p&gt;&lt;ol&gt;&lt;li&gt;&lt;code&gt;get-url-paypal&lt;/code&gt;: connects to Paypal EC and retrieves a token   used for a given sale transaction.   User is redirected to Paypal's url and invited to confirm the payment of   his purchase.&lt;/li&gt;&lt;li&gt;&lt;code&gt;do-confirmation&lt;/code&gt;: once the user has validated or cancelled the sale,   Paypal warns the merchant. By posting this 'confirmation', the merchant   gets the status of the transaction, and updates the system and data   accordingly.&lt;/li&gt;&lt;li&gt;&lt;code&gt;get-fee&lt;/code&gt;: if acknowledgment was &lt;code&gt;success&lt;/code&gt;, get the Paypal's final fee,   calculated with obscure maths.&lt;/li&gt;&lt;/ol&gt;&lt;h2&gt;&lt;a name=&quot;tls1.2&quot;&gt;&lt;/a&gt;TLS1.2&lt;/h2&gt;&lt;p&gt;Our legacy is still running Java 1.7, but all new developments with Clojure use Java 1.8.&lt;/p&gt;&lt;p&gt;As a consequence, direct test within a REPL leads to false positive because jdk8's default TLS version is already compatible with the Paypal sandbox.&lt;/p&gt;&lt;p&gt;One can still use jdk8 to launch &lt;code&gt;lein repl&lt;/code&gt;, but version 7 must be forced for the project runtime.&lt;/p&gt;&lt;p&gt;Very easy, just add &lt;code&gt;:java-cmd &amp;quot;/opt/jdk7/bin/java&amp;quot;&lt;/code&gt; to the &lt;code&gt;project.clj&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;All posts to Paypal API will now end with the following exception: &lt;code&gt;javax.net.ssl.SSLHandshakeException: Received fatal alert: handshake&amp;#95;failure&lt;/code&gt;.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;connection&amp;#95;manager&quot;&gt;&lt;/a&gt;Connection manager&lt;/h3&gt;&lt;p&gt;We need to force the TLS protocol to use version 1.2 during our calls to Paypal's API with &lt;code&gt;dakrone/clj-http&lt;/code&gt; library.&lt;/p&gt;&lt;p&gt;Simply specify in the options of each POST a &lt;code&gt;:connection-manager&lt;/code&gt;. We choose to use a reusable one, based on a &lt;code&gt;PoolingHttpClientConnectionManager&lt;/code&gt; so its construction should be memoized.&lt;/p&gt;&lt;p&gt;In its definition, we specify &lt;code&gt;&amp;#40;.use Protocol&amp;quot; TLSv1.2 &amp;quot;&amp;#41;&lt;/code&gt; at the &lt;code&gt;SSLContext&lt;/code&gt; level and everything is now ok.&lt;/p&gt;&lt;p&gt;Calls are now made like this:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;client/post api-endpoint
+             &amp;#40;merge &amp;#40;make-connection-manager&amp;#41;
+                    {:form-params ...}
+                    keystore-truststore&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;&lt;a name=&quot;no&amp;#95;more&amp;#95;properties&amp;#95;files&quot;&gt;&lt;/a&gt;No more properties files&lt;/h2&gt;&lt;p&gt;Previously the connection settings were registered in java properties files, but since these settings are specific and not used in the legacy java code, we gain by integrating them directly into this small clojure library.&lt;/p&gt;&lt;p&gt;By doing this, one of the basic rules of &lt;a href='http://12factor.net/' target='_blank'&gt;12 factor app best practices&lt;/a&gt; is fulfilled.&lt;/p&gt;&lt;p&gt;The classic &lt;code&gt;weavejester/environ&lt;/code&gt; is used because the &lt;code&gt;tolitius/cprop&lt;/code&gt; solution seems a bit overkill in our case.&lt;/p&gt;&lt;p&gt;For the dev environment, the elements are set directly in the &lt;code&gt;project.clj&lt;/code&gt;, or, if one does not want to commit them, in a &lt;code&gt;profile.clj&lt;/code&gt; file, specific to the developer's machine.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;  ; in project's map
+  :profiles {:dev
+             {:env
+              {:dev?             &amp;quot;true&amp;quot;
+               :server-port      &amp;quot;8080&amp;quot;
+               :base-url-wo-port &amp;quot;http://localhost&amp;quot;
+               :api-username     &amp;quot;merchant&amp;#95;api1.mail.com&amp;quot;
+               :api-password     &amp;quot;...&amp;quot;
+               :api-signature    &amp;quot;...&amp;quot;}}}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In production on the other hand, environment variables are used. It is preferable to Java system properties &lt;code&gt;-dXX&lt;/code&gt;, which are visible in the command line of the &lt;code&gt;tomcat/jetty/whatever&lt;/code&gt; process, so not very safe.&lt;/p&gt;&lt;p&gt;&lt;code&gt;environ&lt;/code&gt; comes with a plugin, &lt;code&gt;lein-environ&lt;/code&gt;, that generates a &lt;code&gt;.lein-env&lt;/code&gt; file, extracting the settings from the project map. This file will be used with &lt;code&gt;lein&lt;/code&gt; commands.&lt;/p&gt;&lt;p&gt;It's very useful but think to delete it for non-local tests, because it can interfere with the final configuration, obtained by overriding several sources.&lt;/p&gt;&lt;p&gt;For example the &lt;code&gt;:dev?&lt;/code&gt; property should not be present in staging or production environment. However as it is not explicitly set to &lt;code&gt;false&lt;/code&gt;, it will disrupt the config.&lt;/p&gt;&lt;p&gt;One last thing, the keys with compounds names should be written with &lt;code&gt;'-'&lt;/code&gt; rather than with &lt;code&gt;'.'&lt;/code&gt;. A kind message from &lt;code&gt;environ&lt;/code&gt; reminds that important detail because otherwise &lt;code&gt;nil&lt;/code&gt; values will be recovered...&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;invalid&amp;#95;cookie&quot;&gt;&lt;/a&gt;Invalid cookie&lt;/h2&gt;&lt;p&gt;A painful but harmless warning about &lt;code&gt;invalid 'expires' attribute&lt;/code&gt; in the cookie header is displayed on each post to the API.&lt;/p&gt;&lt;p&gt;To avoid this warning, it is required to import the &lt;code&gt;log4j/log4j&lt;/code&gt; dependency and to increase the alert level for the adequate logger.&lt;/p&gt;&lt;p&gt;Just write at the start of the namespace definition:&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;.setLevel &amp;#40;Logger/getLogger &amp;quot;org.apache.http&amp;quot;&amp;#41; org.apache.log4j.Level/ERROR&amp;#41;
+ &lt;/code&gt;&lt;/pre&gt;&lt;/p&gt;&lt;p&gt;Can't wait for next update &lt;i class=&quot;fa fa-smile-o&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/p&gt;
+</description>
+<enclosure>
+
+</enclosure>
+<pubDate>
+Fri, 01 Jul 2016 00:00:00 +0200
+</pubDate>
+</item>
 <item>
 <guid>
 http://world-in-atom.com/posts/2016-05-27-switch-to-cryogen/

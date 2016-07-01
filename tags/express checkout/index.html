@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>The world in an atom: Switch to Cryogen</title>
-    <link rel="canonical" href="http://world-in-atom.com/posts/2016-05-27-switch-to-cryogen/">
+    <title>The world in an atom: Posts Tagged &quot;express checkout&quot;</title>
+    <link rel="canonical" href="http://world-in-atom.com/tags/express checkout/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" type="text/css">-->
     <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Averia+Libre' type='text/css'>
@@ -54,78 +54,17 @@
         <div class="col-lg-9">
             <div id="content">
                 
-<div id="post">
-    <div class="post-header">
-    <div id="post-meta" class="row">
-        <div class="col-lg-6">27 mai 2016</div>
-        
+<div id="posts-by-tag">
+    <div id="page-header">
+        <h2>Posts Tagged &quot;express checkout&quot;</h2>
     </div>
-    <h1>Switch to Cryogen</h1>
-</div>
-<div class="post-excerpt">from Jekyll to Cryogen</div>
-<div>
+    <ul>
     
-    <p>My blog was previously served by Jekyll, with a theme adapted from <a href='https://github.com/mmistakes/so-simple-theme' target='_blank'>So Simple</a>. This suited me very well. Elegant layout, satisfactory responsive design, fast processing of pages.</p><p>But then, every time I wanted to write a quick post, at the time of starting Jenkins to heat up the receptacle of my prose, bing! a mismatch is detected between coffeescript / the Jekyll engine / its plugins / gem / bundle or whatever...</p><p>And here I am compelled to spend 20 minutes trying to update all of these elements instead of improving my English writing &ndash; and my grammar deserves a good upgrade...</p><p>For a while I used a Docker container wrapping Jekyll and its plugins. It's an interesting experience, which has the advantage to freeze versions of tools required for the blog, while letting those of workstation freely evolve.</p><p>And then I have wondered: this is a blog about Clojure, why not use a blog engine that is made of it, and enables hosting on Github? And I quickly came across <a href='https://github.com/cryogen-project/cryogen' target='_blank'>Cryogen</a>, a very good static website generator.</p><p>Everything is fine, however, I made two small changes to the <code>core</code> project.</p><p>For this I use <code>intern</code> function, which allows to change the root binding of a var in another namespace. This is a handy feature when you want to change a single function without cloning the entire project.</p><ol><li>The first in the <code>compiler</code> namespace, on the <code>add-prev-next</code> function,  where I reversed the order of the previous and next pages  because I find it more logical to have the historical on the left.<pre><code class="clojure">&#40;intern 'cryogen-core.compiler
-        &#40;with-meta #&#95;1 'add-prev-next
-                   {:doc &#40;str &quot;Adds a :prev and :next key to the page/post&quot;
-                              &quot; data containing the title and uri of the &quot;
-                              &quot;prev/next post/page if it exists&quot;&#41;}&#41;
-        &#40;fn
-          &#91;pages&#93;
-          &#40;map &#40;fn &#91;&#91;next target prev&#93;&#93; ; before: &#91;prev target next&#93;
-                 &#40;assoc target
-                   :prev &#40;if prev &#40;select-keys prev &#91;:title :uri&#93;&#41; nil&#41;
-                   :next &#40;if next &#40;select-keys next &#91;:title :uri&#93;&#41; nil&#41;&#41;&#41;
-               &#40;partition 3 1 &#40;flatten &#91;nil pages nil&#93;&#41;&#41;&#41;&#41;&#41;
-</code></pre>  &#9312; <code>with-meta</code> keeps the original docstring and attach it  to the function,  because it is not possible to do this in the <code>fn block &#91;&#93;</code>.</li></ol><p>2.The second in the <code>markup</code> namespace, on the <code>rewrite-hrefs</code> function,   where I open a new tab when <code>target</code> is specified at the end of the link.   A little regex makes the substitution.</p><p>  <script src="https://gist.github.com/obarbeau/65d7f487797d8041b6a79c15b532604f.js"></script></p><p>Finally, the day you use <code>intern</code> to define a macro, please remember:</p><ul><li>to add the meta <code>:macro true</code> in the name of var</li><li>to add two arguments to your function, <code>&amp;form</code> and <code> env</code>  (which are not required with <code>defmacro</code>)  otherwise you might look for a moment why  the substitutions do not behave as expected...  <i class="fa fa-smile-o" aria-hidden="true"></i></li></ul><pre><code class="clojure">&#40;intern 'monger.query &#40;with-meta 'with-collection {:macro true}&#41;
-        &#40;fn &#91;&amp;form &amp;env &#94;DB db &#94;String coll &amp; body&#93;
-          `&#40;let &#91;coll# &#126;coll
-                 db# &#126;db
-                 db-coll# &#40;if &#40;string? coll#&#41;
-                            &#40;.getCollection &#94;DB db# &#94;String coll#&#41;
-                            coll#&#41;
-                 query# &#40;-&gt; &#40;empty-query db-coll#&#41; &#126;@body&#41;&#93;
-             &#40;exec query#&#41;&#41;&#41;&#41;
-</code></pre>
-</div>
-
-<div id="post-tags">
-    <b>Tags: </b>
+        <li>
+            <a href="/posts/2016-07-01-paypal/">Paypal security upgrade</a>
+        </li>
     
-    <a href="/tags/cryogen/">cryogen</a>
-    
-    <a href="/tags/clojure/">clojure</a>
-    
-</div>
-
-
-    <div id="prev-next">
-        
-        <a href="/posts/2016-05-26-clojure-cheat-sheet/">&laquo; Clojure core functions - Cheat Sheet</a>
-        
-        
-        <a class="right" href="/posts/2016-07-01-paypal/">Paypal security upgrade &raquo;</a>
-        
-    </div>
-
-    
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        var disqus_config = function () {
-            this.page.url = "http://world-in-atom.com/posts/2016-05-27-switch-to-cryogen/";
-            this.page.identifier = "2016-05-27-switch-to-cryogen.html";
-        };
-        (function() {
-            var d = document, s = d.createElement('script');
-            s.type = 'text/javascript'; s.async = true;
-            s.src = '//wiaa.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s); })();
-    </script>
-    <noscript>Please enable JavaScript to view the
-      <a href="https://disqus.com/?ref_noscript" rel="nofollow">
-      comments powered by Disqus.</a></noscript>
-    
+    </ul>
 </div>
 
             </div>
