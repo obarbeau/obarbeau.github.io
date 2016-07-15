@@ -99,6 +99,12 @@ lein ring uberwar ; all dependencies included
 mv boot-1.1.1.jar boot
 chmod a+x boot
 mv boot &#126;/bin/boot
+</code></pre><p>Better:</p><pre><code class="bash"># install launch4j
+# on the same partition than m2 repo, otherwise &quot;Invalid cross-device link&quot;
+git clone https://github.com/boot-clj/boot-bin.git
+# must use jdk7
+cd boot-bin &amp;&amp; ./build.sh
+# copy build/boot to /usr/local/bin
 </code></pre><p>Immutable File System -> boot task -> boot task2 -> ...</p>
 </div>
 
@@ -148,11 +154,11 @@ mv boot &#126;/bin/boot
                     <h3>Recent Posts</h3>
                     <ul>
                         
+                        <li><a href="/posts/2016-07-15-leiningen-profiles/">Leiningen profiles and REPL enrichment</a></li>
+                        
                         <li><a href="/posts/2016-07-01-paypal/">Paypal security upgrade</a></li>
                         
                         <li><a href="/posts/2016-05-27-switch-to-cryogen/">Switch to Cryogen</a></li>
-                        
-                        <li><a href="/posts/2016-05-26-clojure-cheat-sheet/">Clojure core functions - Cheat Sheet</a></li>
                         
                     </ul>
                 </div>
@@ -182,7 +188,11 @@ mv boot &#126;/bin/boot
                         
                         <li><a href="/tags/tls/">tls</a></li>
                         
+                        <li><a href="/tags/profiles/">profiles</a></li>
+                        
                         <li><a href="/tags/music/">music</a></li>
+                        
+                        <li><a href="/tags/repl/">repl</a></li>
                         
                         <li><a href="/tags/express checkout/">express checkout</a></li>
                         

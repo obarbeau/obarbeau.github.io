@@ -12,11 +12,198 @@ http://world-in-atom.com/
 Blog about Clojure and various thoughts.
 </description>
 <lastBuildDate>
-Fri, 01 Jul 2016 15:30:25 +0200
+Fri, 15 Jul 2016 17:08:05 +0200
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
+<item>
+<guid>
+http://world-in-atom.com/posts/2016-07-15-leiningen-profiles/
+</guid>
+<link>
+http://world-in-atom.com/posts/2016-07-15-leiningen-profiles/
+</link>
+<title>
+Leiningen profiles and REPL enrichment
+</title>
+<description>
+&lt;h2&gt;&lt;a name=&quot;context&quot;&gt;&lt;/a&gt;Context&lt;/h2&gt;&lt;p&gt;What do you do in Paris in July?&lt;/p&gt;&lt;p&gt;Sip a beer with a friend at the terrace of a café, looking the rain falling, and waiting for the summer really begins.&lt;/p&gt;&lt;p&gt;Serious and less serious subjects follow each other...&lt;/p&gt;&lt;p&gt;There also arises the question of a good development environment for Clojure.&lt;/p&gt;&lt;p&gt;In addition to the excellent pair IntelliJ Idea + Cursive, some profiles for Leiningen can greatly enhance the experience of REPL.&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;official&amp;#95;documentation&quot;&gt;&lt;/a&gt;Official documentation&lt;/h2&gt;&lt;p&gt;The Leiningen doc about profiles is very complete and clear. It is available &lt;a href='https://github.com/technomancy/leiningen/blob/master/doc/PROFILES.md' target='_blank'&gt;here&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;The &lt;a href='https://github.com/technomancy/leiningen/blob/master/sample.project.clj' target='_blank'&gt;sample &lt;code&gt;project.clj&lt;/code&gt;&lt;/a&gt; file of a standard Clojure project can also give you tips about options you can configure or add in your own profiles.&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;overview&quot;&gt;&lt;/a&gt;Overview&lt;/h2&gt;&lt;p&gt;Profiles are simply maps of options, that will be applied to lein tasks. Leiningen provides few defaults and allows to complete with your own needs.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;default&amp;#95;profiles&quot;&gt;&lt;/a&gt;Default profiles&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;code&gt;leiningen/default&lt;/code&gt; is a compound profile, initially made of these profiles:&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;:base      brings base dependencies `org.clojure/tools.nrepl`
+           and `clojure-complete` &amp;#40;completion with the `tab` key&amp;#41;
+:user      will be shared amongst all clojure projects for logged user
+:system    same as `:user` but applies system-wide
+:provided  if you understand Maven's scope it should be the same here...
+:dev       should be defined in every `project.clj`
+&lt;/code&gt;&lt;/pre&gt;  It automatically loads all the specified profiles when you launch a lein task.  Without any additional custom configuration, the last 4 will be empty.&lt;/li&gt;&lt;li&gt;&lt;code&gt;leiningen/test&lt;/code&gt; injects some hooks for tests.&lt;/li&gt;&lt;li&gt;&lt;code&gt;update&lt;/code&gt;, &lt;code&gt;offline&lt;/code&gt; and &lt;code&gt;debug&lt;/code&gt; are three profiles that set  the corresponding 'predicate-keyword' (eg &lt;code&gt;:debug?&lt;/code&gt;)  to &lt;code&gt;true&lt;/code&gt; (ou &lt;code&gt;:always&lt;/code&gt; for &lt;code&gt;update&lt;/code&gt;). They should be merged whenever needed.&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;&lt;a name=&quot;where&amp;#95;to&amp;#95;define&amp;#95;profiles?&quot;&gt;&lt;/a&gt;Where to define profiles?&lt;/h3&gt;&lt;p&gt;They are retrieved in the following order, and override or complement each other.&lt;/p&gt;&lt;ol&gt;&lt;li&gt;&lt;code&gt;/etc/leiningen/profiles.clj&lt;/code&gt; (system-wide)&lt;/li&gt;&lt;li&gt;&lt;code&gt;&amp;#126;/.lein/profiles.clj&lt;/code&gt; (user specific)&lt;/li&gt;&lt;li&gt;&lt;code&gt;project.clj&lt;/code&gt; (in project's root)&lt;/li&gt;&lt;li&gt;&lt;code&gt;profiles.clj&lt;/code&gt; (in project's root)&lt;/li&gt;&lt;/ol&gt;&lt;h3&gt;&lt;a name=&quot;how&amp;#95;to&amp;#95;use&amp;#95;them?&quot;&gt;&lt;/a&gt;How to use them?&lt;/h3&gt;&lt;p&gt;To use only &lt;code&gt;default&lt;/code&gt; and &lt;code&gt;prod&lt;/code&gt; profiles for the &lt;code&gt;&amp;lt;task&amp;gt;&lt;/code&gt; task:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;   lein with-profile default,prod &amp;lt;task&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;To use the specified profile(s) (order matters) in addition to the default one for the &lt;code&gt;&amp;lt;task&amp;gt;&lt;/code&gt; task, use the &lt;code&gt;'+'&lt;/code&gt; character:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;   lein with-profile +prod,+offline,+mongodb &amp;lt;task&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This second writing is best in order to always keep &lt;code&gt;leiningen/default&lt;/code&gt; active. &lt;div class=&quot;alert alert-warning&quot;&gt; &lt;i class=&quot;fa fa-warning&quot;&gt;&lt;/i&gt; Beware however, this one is automatically disabled during the  &lt;code&gt;pom&lt;/code&gt;, &lt;code&gt;jar&lt;/code&gt; and &lt;code&gt;uberjar&lt;/code&gt; tasks, so as not to 'pollute' dependencies and compilation. &lt;/div&gt;&lt;/p&gt;&lt;p&gt;All dependencies and plugins brought in by an activated profile can indeed have an impact the final project's classpath and/or REPL invocation, so pay attention to the clashes.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;merge&amp;#95;profiles&quot;&gt;&lt;/a&gt;Merge profiles&lt;/h3&gt;&lt;p&gt;The merge is performed either from the command line, as seen above, or in the definition of the profile.&lt;/p&gt;&lt;p&gt;For example, to permanently merge &lt;code&gt;offline&lt;/code&gt; and &lt;code&gt;mongodb&lt;/code&gt; profiles in the &lt;code&gt;prod&lt;/code&gt; one, just define &lt;code&gt;prod&lt;/code&gt; as a vector that references others, as follows:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;:prod &amp;#91;:offline
+       :mongodb
+       {; now the prod profile definition
+        :license ...
+       }&amp;#93;
+&lt;/code&gt;&lt;/pre&gt;&lt;h3&gt;&lt;a name=&quot;custom&amp;#95;user&amp;#95;profile&quot;&gt;&lt;/a&gt;Custom user profile&lt;/h3&gt;&lt;p&gt;This is an annotated part of my &lt;code&gt;user&lt;/code&gt; profile, located in the &lt;code&gt;&amp;#126;/.lein/profiles.clj&lt;/code&gt; file, that is shared amongst all clojure projects.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt; :user
+ {; if you are not fortunate enough to have an SSD in your PC,
+  ; you will save time using a ramdisk for compiling classes.
+  ; in this case, you will make a symlink from the 'target' directory
+  ; to the ramdisk.
+  ; Yet paths outside the project root cannot be accessed by `lein clean`,
+  ; except if we 'deprotect' them like show: 
+  :clean-targets &amp;#94;{:protect false} &amp;#91;:target-path&amp;#93;
+
+  ; it is possible to configure any options for a tool in this profile without
+  ; importing the corresponding plugin, which will be done only
+  ; in projects that use it &amp;#40;in `project.clj`&amp;#41;.
+  ; for example, codox is a documentation tool, we set its overall options here
+  ; but don't import the plugin.
+  :codox {:defaults {:doc/format :markdown}
+          :writer codox.writer.html/write-docs
+          ; source links
+          :src-dir-uri &amp;quot;http://github.com/obarbeau/XXX/blob/master/&amp;quot;
+          :src-linenum-anchor-prefix &amp;quot;L&amp;quot;}
+
+  ; `lein release` will work only if deploy repository is named `releases`
+  :deploy-repositories
+  &amp;#91;&amp;#91;&amp;quot;releases&amp;quot;
+    {:url &amp;quot;http://ip:8081/nexus/content/repositories/clj-releases&amp;quot;
+     ; sign releases? &amp;#40;it's not about signing git commits here&amp;#41;
+     :sign-releases true
+     ; `sign` does not work if you must enter a pasword for the gpg key
+     ; so override system's default gpg key with one that does not require
+     ; a password
+     :signing {:gpg-key &amp;quot;XXXXXX&amp;quot;}}&amp;#93;&amp;#93;
+
+  :global-vars { &amp;#42;print-length&amp;#42; 30 }
+
+  ; shared options for compilation
+  :javac-options &amp;#91;&amp;quot;-target&amp;quot; &amp;quot;1.8&amp;quot; &amp;quot;source&amp;quot; &amp;quot;1.8&amp;quot; &amp;quot;-Xlint:-options&amp;quot;&amp;#93;
+
+  ; for debugging an external REPL with eclipse or IntelliJ 
+  ;:jvm-opts &amp;#91;&amp;#40;str &amp;quot;-agentlib:jdwp=transport=dt&amp;#95;socket,server=y,&amp;quot;
+  ;           &amp;quot;suspend=n,address=5005&amp;quot;&amp;#41;&amp;#93;
+  
+  ; common options for the JVM
+  :jvm-opts &amp;#91;&amp;quot;-XX:+AggressiveOpts&amp;quot; &amp;quot;-XX:+UseCompressedOops&amp;quot;
+             &amp;quot;-XX:+OptimizeStringConcat&amp;quot;
+             &amp;quot;-XX:+UseFastAccessorMethods&amp;quot; &amp;quot;-server&amp;quot;
+             &amp;quot;-Duser.timezone=Europe/Paris&amp;quot;&amp;#93;
+
+  ; in this `user` profile, use plugins with the less dependencies as possible
+  :plugins &amp;#91;; executing Clojure scripts &amp;#40;in two words&amp;#41;
+            &amp;#91;lein-exec                        &amp;quot;0.3.6&amp;quot;&amp;#93;
+            ; Add leiningen dependencies quickly
+            &amp;#91;lein-plz                         &amp;quot;0.3.0&amp;quot;&amp;#93;
+            ; Pretty-print a representation of the project map
+            &amp;#91;lein-pprint                      &amp;quot;1.1.2&amp;quot;&amp;#93; ; no dependencies
+            ; trying out new libraries without creating a project
+            &amp;#91;lein-try                         &amp;quot;0.4.3&amp;quot;&amp;#93;&amp;#93; ; no dependencies
+
+  ; avoid polluting root directory with an unnecessary pom
+  :pom-location &amp;quot;target/&amp;quot;
+
+  ; a colored prompt
+  :repl-options {:prompt &amp;#40;fn &amp;#91;ns&amp;#93; &amp;#40;str &amp;quot;&amp;#91;35m&amp;#91;&amp;#91;34m&amp;quot; ns &amp;quot;&amp;#91;35m&amp;#93;&amp;#91;33m λ:&amp;#91;m &amp;quot;&amp;#41;&amp;#41;}}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Remember the &lt;code&gt;dev&lt;/code&gt; profile should not be defined in the &lt;code&gt;profiles.clj&lt;/code&gt; file, but for each project.&lt;/p&gt;&lt;p&gt;I also use a &lt;code&gt;local&lt;/code&gt; profile, mainly when I launch a REPL, &lt;code&gt;lein with-profile +local repl&lt;/code&gt;, with the following content:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt; :local
+ {; set your composite command line aliases here
+  :aliases {; cf. the post 2015-02-18-clojure-plugins-tools
+            &amp;quot;slamhound&amp;quot; &amp;#91;&amp;quot;run&amp;quot; &amp;quot;-m&amp;quot; &amp;quot;slam.hound&amp;quot;&amp;#93;}
+
+  ; dependencies used by injections &amp;#40;see below&amp;#41;
+  :dependencies &amp;#91;; awesome print for datastructure
+                 &amp;#91;aprint                           &amp;quot;0.1.3&amp;quot;&amp;#93;
+                 ; injections in the REPL see below
+                 &amp;#91;im.chit/vinyasa                  &amp;quot;0.4.3&amp;quot;&amp;#93;
+                 &amp;#91;leiningen #=&amp;#40;leiningen.core.main/leiningen-version&amp;#41;&amp;#93;
+                 ; pretty print test outputs
+                 &amp;#91;pjstadig/humane-test-output      &amp;quot;0.8.0&amp;quot;&amp;#93;
+                 ; see https://github.com/obarbeau/repl-tasks
+                 &amp;#91;repl-tasks                       &amp;quot;3.2.0&amp;quot;&amp;#93;
+                 ; trace-oriented debugging tools
+                 &amp;#91;spyscope                         &amp;quot;0.1.5&amp;quot;&amp;#93;
+                 ; extra documentation for core functions
+                 &amp;#91;thalia                           &amp;quot;0.1.0&amp;quot;&amp;#93;&amp;#93;
+
+  ; The following code will be evaluated once at the beginning
+  ; of every lein task &amp;#40;including `repl`, but excluding `jar` and `uberjar`&amp;#41;
+  ; So this is like an 'init' stuff.
+  :injections &amp;#91;&amp;#40;require '&amp;#91;aprint.core&amp;#93;
+                        '&amp;#91;io.aviso.ansi :as ansi&amp;#93;
+                        'pjstadig.humane-test-output
+                        '&amp;#91;repl-tasks.core&amp;#93;
+                        'spyscope.core
+                        '&amp;#91;thalia.doc&amp;#93;
+                        '&amp;#91;vinyasa.inject :as inject&amp;#93;&amp;#41;
+               ; injects in the `clojure.core` ns &amp;#40;so it will be available
+               ; from any other namespace&amp;#41;
+               ; the following functions, from various specified namespaces.
+               ; These functions will be callable with the '&amp;gt;' prefix.
+               ; eg. &amp;#40;&amp;gt;doc f&amp;#41; will be translated to &amp;#40;clojure.repl/doc f&amp;#41;
+               ; &amp;#40;&amp;gt;sh &amp;quot;ls&amp;quot;&amp;#41; will be translated to &amp;#40;clojure.java.shell/sh &amp;quot;ls&amp;quot;&amp;#41;
+               &amp;#40;inject/in
+                clojure.core &amp;gt;
+                &amp;#91;aprint.core aprint&amp;#93;
+                &amp;#91;clojure.repl apropos dir doc find-doc pst source&amp;#93;
+                &amp;#91;clojure.pprint pprint pp&amp;#93;
+                &amp;#91;clojure.java.shell sh&amp;#93;
+                &amp;#91;repl-tasks.core
+                 check-kibit dependencies goto
+                 lein-classpath lein-deploy lein-deps
+                 lein-install lein-midje lein-midje-auto
+                 lein-pprint lein-release lein-run lein-uberjar sdoc&amp;#93;
+                &amp;#91;vinyasa.lein lein&amp;#93;
+                &amp;#91;vinyasa.reflection .&amp;gt; .? .&amp;#42; .% .%&amp;gt;&amp;#93;&amp;#41;
+
+               ; other init stuff
+               &amp;#40;repl-tasks.core/check-kibit&amp;#41;
+               &amp;#40;repl-tasks.core/check-cuttle&amp;#41;
+               ; activate humane-test-output
+               &amp;#40;pjstadig.humane-test-output/activate!&amp;#41;
+               &amp;#40;println
+                &amp;#40;str ansi/green-font &amp;quot;∙ &amp;#91;done&amp;#93; injections vinyasa.&amp;quot;
+                     ansi/reset-font&amp;#41;&amp;#41;
+               ; register extra clojure documentation
+               &amp;#40;thalia.doc/add-extra-docs! :language &amp;quot;en&amp;#95;US&amp;quot;&amp;#41;
+               &amp;#40;println
+                &amp;#40;str ansi/green-font &amp;quot;∙ &amp;#91;done&amp;#93; extra doc.\n&amp;quot;
+                     ansi/reset-font&amp;#41;&amp;#41;&amp;#93;
+
+  ; useful plugins
+  :plugins &amp;#91;&amp;#91;io.aviso/pretty                  &amp;quot;0.1.26&amp;quot;&amp;#93;
+            &amp;#91;venantius/ultra                   &amp;quot;0.4.1&amp;quot;&amp;#93;&amp;#93;
+
+  :repl-options {:timeout 150000}
+
+  ; sign commits and tags
+  :signing {:gpg-key &amp;quot;YYYYY&amp;quot;}
+
+  ; additional source paths
+  :source-paths &amp;#91;&amp;quot;dev/clj&amp;quot; &amp;quot;dev/cljs&amp;quot;&amp;#93;}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And finally, some checks on code quality are always welcomed.&lt;/p&gt;&lt;p&gt;Profile:&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;:new-checks {:dependencies &amp;#91;&amp;#91;repetition-hunter               &amp;quot;1.0.0&amp;quot;&amp;#93;&amp;#93;
+             :plugins &amp;#91;&amp;#91;jonase/eastwood                &amp;quot;0.2.3&amp;quot; :scope &amp;quot;test&amp;quot;&amp;#93;
+                       &amp;#91;lein-bikeshed                  &amp;quot;0.2.0&amp;quot; :scope &amp;quot;test&amp;quot;&amp;#93;
+                       &amp;#91;lein-cloverage                 &amp;quot;1.0.6&amp;quot; :scope &amp;quot;test&amp;quot;&amp;#93;
+                       &amp;#91;lein-kibit                     &amp;quot;0.1.2&amp;quot; :scope &amp;quot;test&amp;quot;&amp;#93;
+                       &amp;#91;lein-repetition-hunter         &amp;quot;0.1.0-SNAPSHOT&amp;quot;&amp;#93;&amp;#93;}
+ &lt;/code&gt;&lt;/pre&gt;&lt;/p&gt;&lt;p&gt;Usage:&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;PROFILES=&amp;quot;with-profile +new-checks&amp;quot;
+lein ${PROFILES} compile
+lein ${PROFILES} bikeshed -m 80 &amp;amp;&amp;gt;&amp;gt; /tmp/bikeshed.txt
+lein ${PROFILES} kibit --reporter markdown $&amp;#40;find . -iname '&amp;#42;.clj&amp;#42;'&amp;#41; &amp;amp;&amp;gt;&amp;gt; /tmp/kibit.md
+lein ${PROFILES} eastwood '{:namespaces &amp;#91;:source-paths&amp;#93;}' | grep -v 'jar:file:/opt/m2&amp;#95;repo' &amp;amp;&amp;gt;&amp;gt; /tmp/eastwood.txt
+lein ${PROFILES} repetition-hunter &amp;amp;&amp;gt;&amp;gt; /tmp/hunter.txt
+lein ${PROFILES} cloverage
+WORK&amp;#95;DIR=$&amp;#40;pwd&amp;#41;
+# open coverage results in browser
+google-chrome --incognito &amp;quot;file://${WORK&amp;#95;DIR}/target/coverage/index.html&amp;quot;
+# open reports in Sublime-text
+sublime-text /tmp/bikeshed.txt /tmp/kibit.md /tmp/eastwood.txt /tmp/hunter.txt
+ &lt;/code&gt;&lt;/pre&gt;&lt;/p&gt;&lt;p&gt;Your productivity is now multiplied by 3.14&lt;/p&gt;
+</description>
+<enclosure>
+
+</enclosure>
+<pubDate>
+Fri, 15 Jul 2016 00:00:00 +0200
+</pubDate>
+</item>
 <item>
 <guid>
 http://world-in-atom.com/posts/2016-07-01-paypal/
@@ -508,6 +695,12 @@ lein ring uberwar ; all dependencies included
 mv boot-1.1.1.jar boot
 chmod a+x boot
 mv boot &amp;#126;/bin/boot
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Better:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;# install launch4j
+# on the same partition than m2 repo, otherwise &amp;quot;Invalid cross-device link&amp;quot;
+git clone https://github.com/boot-clj/boot-bin.git
+# must use jdk7
+cd boot-bin &amp;amp;&amp;amp; ./build.sh
+# copy build/boot to /usr/local/bin
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Immutable File System -&gt; boot task -&gt; boot task2 -&gt; ...&lt;/p&gt;
 </description>
 <enclosure>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>The world in an atom: Leiningen profiles and REPL enrichment</title>
+    <link rel="canonical" href="http://world-in-atom.com/posts/2016-07-15-leiningen-profiles/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" type="text/css">-->
+    <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Averia+Libre' type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/monokai-sublime.min.css">-->
+    <!-- plutot un thème clair -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/github-gist.min.css">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link href="/css/import-ll.css" rel="stylesheet" type="text/css" />
+    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/" title="The world in an atom">(atom #{:world})</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li ><a href="/">Home</a></li>
+                <li
+                ><a href="/archives/">Archives</a></li>
+                
+                <li
+                >
+                <a href="/pages/about/">About</a>
+                </li>
+                
+                <li><a href="/feed.xml">RSS</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-lg-9">
+            <div id="content">
+                
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">15 juillet 2016</div>
+        
+    </div>
+    <h1>Leiningen profiles and REPL enrichment</h1>
+</div>
+<div class="post-excerpt">tl;dr: Quick overview of Leiningen profiles,
+and those I use with lein tasks, more notably `lein repl`.</div>
+<div>
+    <ol class="content"><li><a href="#context">Context</a></li><li><a href="#official_documentation">Official documentation</a></li><li><a href="#overview">Overview</a></li><ol><li><a href="#default_profiles">Default profiles</a></li><li><a href="#where_to_define_profiles?">Where to define profiles?</a></li><li><a href="#how_to_use_them?">How to use them?</a></li><li><a href="#merge_profiles">Merge profiles</a></li><li><a href="#custom_user_profile">Custom user profile</a></li></ol></ol>
+    <h2><a name="context"></a>Context</h2><p>What do you do in Paris in July?</p><p>Sip a beer with a friend at the terrace of a café, looking the rain falling, and waiting for the summer really begins.</p><p>Serious and less serious subjects follow each other...</p><p>There also arises the question of a good development environment for Clojure.</p><p>In addition to the excellent pair IntelliJ Idea + Cursive, some profiles for Leiningen can greatly enhance the experience of REPL.</p><h2><a name="official&#95;documentation"></a>Official documentation</h2><p>The Leiningen doc about profiles is very complete and clear. It is available <a href='https://github.com/technomancy/leiningen/blob/master/doc/PROFILES.md' target='_blank'>here</a>.</p><p>The <a href='https://github.com/technomancy/leiningen/blob/master/sample.project.clj' target='_blank'>sample <code>project.clj</code></a> file of a standard Clojure project can also give you tips about options you can configure or add in your own profiles.</p><h2><a name="overview"></a>Overview</h2><p>Profiles are simply maps of options, that will be applied to lein tasks. Leiningen provides few defaults and allows to complete with your own needs.</p><h3><a name="default&#95;profiles"></a>Default profiles</h3><ul><li><code>leiningen/default</code> is a compound profile, initially made of these profiles:<pre><code class="text">:base      brings base dependencies `org.clojure/tools.nrepl`
+           and `clojure-complete` &#40;completion with the `tab` key&#41;
+:user      will be shared amongst all clojure projects for logged user
+:system    same as `:user` but applies system-wide
+:provided  if you understand Maven's scope it should be the same here...
+:dev       should be defined in every `project.clj`
+</code></pre>  It automatically loads all the specified profiles when you launch a lein task.  Without any additional custom configuration, the last 4 will be empty.</li><li><code>leiningen/test</code> injects some hooks for tests.</li><li><code>update</code>, <code>offline</code> and <code>debug</code> are three profiles that set  the corresponding 'predicate-keyword' (eg <code>:debug?</code>)  to <code>true</code> (ou <code>:always</code> for <code>update</code>). They should be merged whenever needed.</li></ul><h3><a name="where&#95;to&#95;define&#95;profiles?"></a>Where to define profiles?</h3><p>They are retrieved in the following order, and override or complement each other.</p><ol><li><code>/etc/leiningen/profiles.clj</code> (system-wide)</li><li><code>&#126;/.lein/profiles.clj</code> (user specific)</li><li><code>project.clj</code> (in project's root)</li><li><code>profiles.clj</code> (in project's root)</li></ol><h3><a name="how&#95;to&#95;use&#95;them?"></a>How to use them?</h3><p>To use only <code>default</code> and <code>prod</code> profiles for the <code>&lt;task&gt;</code> task:</p><pre><code class="bash">   lein with-profile default,prod &lt;task&gt;
+</code></pre><p>To use the specified profile(s) (order matters) in addition to the default one for the <code>&lt;task&gt;</code> task, use the <code>'+'</code> character:</p><pre><code class="bash">   lein with-profile +prod,+offline,+mongodb &lt;task&gt;
+</code></pre><p>This second writing is best in order to always keep <code>leiningen/default</code> active. <div class="alert alert-warning"> <i class="fa fa-warning"></i> Beware however, this one is automatically disabled during the  <code>pom</code>, <code>jar</code> and <code>uberjar</code> tasks, so as not to 'pollute' dependencies and compilation. </div></p><p>All dependencies and plugins brought in by an activated profile can indeed have an impact the final project's classpath and/or REPL invocation, so pay attention to the clashes.</p><h3><a name="merge&#95;profiles"></a>Merge profiles</h3><p>The merge is performed either from the command line, as seen above, or in the definition of the profile.</p><p>For example, to permanently merge <code>offline</code> and <code>mongodb</code> profiles in the <code>prod</code> one, just define <code>prod</code> as a vector that references others, as follows:</p><pre><code class="clojure">:prod &#91;:offline
+       :mongodb
+       {; now the prod profile definition
+        :license ...
+       }&#93;
+</code></pre><h3><a name="custom&#95;user&#95;profile"></a>Custom user profile</h3><p>This is an annotated part of my <code>user</code> profile, located in the <code>&#126;/.lein/profiles.clj</code> file, that is shared amongst all clojure projects.</p><pre><code class="clojure"> :user
+ {; if you are not fortunate enough to have an SSD in your PC,
+  ; you will save time using a ramdisk for compiling classes.
+  ; in this case, you will make a symlink from the 'target' directory
+  ; to the ramdisk.
+  ; Yet paths outside the project root cannot be accessed by `lein clean`,
+  ; except if we 'deprotect' them like show: 
+  :clean-targets &#94;{:protect false} &#91;:target-path&#93;
+
+  ; it is possible to configure any options for a tool in this profile without
+  ; importing the corresponding plugin, which will be done only
+  ; in projects that use it &#40;in `project.clj`&#41;.
+  ; for example, codox is a documentation tool, we set its overall options here
+  ; but don't import the plugin.
+  :codox {:defaults {:doc/format :markdown}
+          :writer codox.writer.html/write-docs
+          ; source links
+          :src-dir-uri &quot;http://github.com/obarbeau/XXX/blob/master/&quot;
+          :src-linenum-anchor-prefix &quot;L&quot;}
+
+  ; `lein release` will work only if deploy repository is named `releases`
+  :deploy-repositories
+  &#91;&#91;&quot;releases&quot;
+    {:url &quot;http://ip:8081/nexus/content/repositories/clj-releases&quot;
+     ; sign releases? &#40;it's not about signing git commits here&#41;
+     :sign-releases true
+     ; `sign` does not work if you must enter a pasword for the gpg key
+     ; so override system's default gpg key with one that does not require
+     ; a password
+     :signing {:gpg-key &quot;XXXXXX&quot;}}&#93;&#93;
+
+  :global-vars { &#42;print-length&#42; 30 }
+
+  ; shared options for compilation
+  :javac-options &#91;&quot;-target&quot; &quot;1.8&quot; &quot;source&quot; &quot;1.8&quot; &quot;-Xlint:-options&quot;&#93;
+
+  ; for debugging an external REPL with eclipse or IntelliJ 
+  ;:jvm-opts &#91;&#40;str &quot;-agentlib:jdwp=transport=dt&#95;socket,server=y,&quot;
+  ;           &quot;suspend=n,address=5005&quot;&#41;&#93;
+  
+  ; common options for the JVM
+  :jvm-opts &#91;&quot;-XX:+AggressiveOpts&quot; &quot;-XX:+UseCompressedOops&quot;
+             &quot;-XX:+OptimizeStringConcat&quot;
+             &quot;-XX:+UseFastAccessorMethods&quot; &quot;-server&quot;
+             &quot;-Duser.timezone=Europe/Paris&quot;&#93;
+
+  ; in this `user` profile, use plugins with the less dependencies as possible
+  :plugins &#91;; executing Clojure scripts &#40;in two words&#41;
+            &#91;lein-exec                        &quot;0.3.6&quot;&#93;
+            ; Add leiningen dependencies quickly
+            &#91;lein-plz                         &quot;0.3.0&quot;&#93;
+            ; Pretty-print a representation of the project map
+            &#91;lein-pprint                      &quot;1.1.2&quot;&#93; ; no dependencies
+            ; trying out new libraries without creating a project
+            &#91;lein-try                         &quot;0.4.3&quot;&#93;&#93; ; no dependencies
+
+  ; avoid polluting root directory with an unnecessary pom
+  :pom-location &quot;target/&quot;
+
+  ; a colored prompt
+  :repl-options {:prompt &#40;fn &#91;ns&#93; &#40;str &quot;&#91;35m&#91;&#91;34m&quot; ns &quot;&#91;35m&#93;&#91;33m λ:&#91;m &quot;&#41;&#41;}}
+</code></pre><p>Remember the <code>dev</code> profile should not be defined in the <code>profiles.clj</code> file, but for each project.</p><p>I also use a <code>local</code> profile, mainly when I launch a REPL, <code>lein with-profile +local repl</code>, with the following content:</p><pre><code class="clojure"> :local
+ {; set your composite command line aliases here
+  :aliases {; cf. the post 2015-02-18-clojure-plugins-tools
+            &quot;slamhound&quot; &#91;&quot;run&quot; &quot;-m&quot; &quot;slam.hound&quot;&#93;}
+
+  ; dependencies used by injections &#40;see below&#41;
+  :dependencies &#91;; awesome print for datastructure
+                 &#91;aprint                           &quot;0.1.3&quot;&#93;
+                 ; injections in the REPL see below
+                 &#91;im.chit/vinyasa                  &quot;0.4.3&quot;&#93;
+                 &#91;leiningen #=&#40;leiningen.core.main/leiningen-version&#41;&#93;
+                 ; pretty print test outputs
+                 &#91;pjstadig/humane-test-output      &quot;0.8.0&quot;&#93;
+                 ; see https://github.com/obarbeau/repl-tasks
+                 &#91;repl-tasks                       &quot;3.2.0&quot;&#93;
+                 ; trace-oriented debugging tools
+                 &#91;spyscope                         &quot;0.1.5&quot;&#93;
+                 ; extra documentation for core functions
+                 &#91;thalia                           &quot;0.1.0&quot;&#93;&#93;
+
+  ; The following code will be evaluated once at the beginning
+  ; of every lein task &#40;including `repl`, but excluding `jar` and `uberjar`&#41;
+  ; So this is like an 'init' stuff.
+  :injections &#91;&#40;require '&#91;aprint.core&#93;
+                        '&#91;io.aviso.ansi :as ansi&#93;
+                        'pjstadig.humane-test-output
+                        '&#91;repl-tasks.core&#93;
+                        'spyscope.core
+                        '&#91;thalia.doc&#93;
+                        '&#91;vinyasa.inject :as inject&#93;&#41;
+               ; injects in the `clojure.core` ns &#40;so it will be available
+               ; from any other namespace&#41;
+               ; the following functions, from various specified namespaces.
+               ; These functions will be callable with the '&gt;' prefix.
+               ; eg. &#40;&gt;doc f&#41; will be translated to &#40;clojure.repl/doc f&#41;
+               ; &#40;&gt;sh &quot;ls&quot;&#41; will be translated to &#40;clojure.java.shell/sh &quot;ls&quot;&#41;
+               &#40;inject/in
+                clojure.core &gt;
+                &#91;aprint.core aprint&#93;
+                &#91;clojure.repl apropos dir doc find-doc pst source&#93;
+                &#91;clojure.pprint pprint pp&#93;
+                &#91;clojure.java.shell sh&#93;
+                &#91;repl-tasks.core
+                 check-kibit dependencies goto
+                 lein-classpath lein-deploy lein-deps
+                 lein-install lein-midje lein-midje-auto
+                 lein-pprint lein-release lein-run lein-uberjar sdoc&#93;
+                &#91;vinyasa.lein lein&#93;
+                &#91;vinyasa.reflection .&gt; .? .&#42; .% .%&gt;&#93;&#41;
+
+               ; other init stuff
+               &#40;repl-tasks.core/check-kibit&#41;
+               &#40;repl-tasks.core/check-cuttle&#41;
+               ; activate humane-test-output
+               &#40;pjstadig.humane-test-output/activate!&#41;
+               &#40;println
+                &#40;str ansi/green-font &quot;∙ &#91;done&#93; injections vinyasa.&quot;
+                     ansi/reset-font&#41;&#41;
+               ; register extra clojure documentation
+               &#40;thalia.doc/add-extra-docs! :language &quot;en&#95;US&quot;&#41;
+               &#40;println
+                &#40;str ansi/green-font &quot;∙ &#91;done&#93; extra doc.\n&quot;
+                     ansi/reset-font&#41;&#41;&#93;
+
+  ; useful plugins
+  :plugins &#91;&#91;io.aviso/pretty                  &quot;0.1.26&quot;&#93;
+            &#91;venantius/ultra                   &quot;0.4.1&quot;&#93;&#93;
+
+  :repl-options {:timeout 150000}
+
+  ; sign commits and tags
+  :signing {:gpg-key &quot;YYYYY&quot;}
+
+  ; additional source paths
+  :source-paths &#91;&quot;dev/clj&quot; &quot;dev/cljs&quot;&#93;}
+</code></pre><p>And finally, some checks on code quality are always welcomed.</p><p>Profile:<pre><code class="clojure">:new-checks {:dependencies &#91;&#91;repetition-hunter               &quot;1.0.0&quot;&#93;&#93;
+             :plugins &#91;&#91;jonase/eastwood                &quot;0.2.3&quot; :scope &quot;test&quot;&#93;
+                       &#91;lein-bikeshed                  &quot;0.2.0&quot; :scope &quot;test&quot;&#93;
+                       &#91;lein-cloverage                 &quot;1.0.6&quot; :scope &quot;test&quot;&#93;
+                       &#91;lein-kibit                     &quot;0.1.2&quot; :scope &quot;test&quot;&#93;
+                       &#91;lein-repetition-hunter         &quot;0.1.0-SNAPSHOT&quot;&#93;&#93;}
+ </code></pre></p><p>Usage:<pre><code class="bash">PROFILES=&quot;with-profile +new-checks&quot;
+lein ${PROFILES} compile
+lein ${PROFILES} bikeshed -m 80 &amp;&gt;&gt; /tmp/bikeshed.txt
+lein ${PROFILES} kibit --reporter markdown $&#40;find . -iname '&#42;.clj&#42;'&#41; &amp;&gt;&gt; /tmp/kibit.md
+lein ${PROFILES} eastwood '{:namespaces &#91;:source-paths&#93;}' | grep -v 'jar:file:/opt/m2&#95;repo' &amp;&gt;&gt; /tmp/eastwood.txt
+lein ${PROFILES} repetition-hunter &amp;&gt;&gt; /tmp/hunter.txt
+lein ${PROFILES} cloverage
+WORK&#95;DIR=$&#40;pwd&#41;
+# open coverage results in browser
+google-chrome --incognito &quot;file://${WORK&#95;DIR}/target/coverage/index.html&quot;
+# open reports in Sublime-text
+sublime-text /tmp/bikeshed.txt /tmp/kibit.md /tmp/eastwood.txt /tmp/hunter.txt
+ </code></pre></p><p>Your productivity is now multiplied by 3.14</p>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
+    
+    <a href="/tags/clojure/">clojure</a>
+    
+    <a href="/tags/profiles/">profiles</a>
+    
+    <a href="/tags/repl/">repl</a>
+    
+    <a href="/tags/leiningen/">leiningen</a>
+    
+</div>
+
+
+    <div id="prev-next">
+        
+        <a href="/posts/2016-07-01-paypal/">&laquo; Paypal security upgrade</a>
+        
+        
+    </div>
+
+    
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_config = function () {
+            this.page.url = "http://world-in-atom.com/posts/2016-07-15-leiningen-profiles/";
+            this.page.identifier = "2016-07-15-leiningen-profiles.html";
+        };
+        (function() {
+            var d = document, s = d.createElement('script');
+            s.type = 'text/javascript'; s.async = true;
+            s.src = '//wiaa.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s); })();
+    </script>
+    <noscript>Please enable JavaScript to view the
+      <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.</a></noscript>
+    
+</div>
+
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div id="sidebar">
+                <h3><i class="fa fa-external-link-square"></i> Links</h3>
+                <ul id="links">
+                    <li><a href="https://github.com/obarbeau">Olivier Barbeau’s Github</a></li>
+                    <li><a href="https://www.linkedin.com/in/olivier-barbeau-7a4a31b6">Olivier Barbeau’s LinkedIn</a></li>
+                    
+                </ul>
+                
+                <div id="recent">
+                    <h3>Recent Posts</h3>
+                    <ul>
+                        
+                        <li><a href="/posts/2016-07-15-leiningen-profiles/">Leiningen profiles and REPL enrichment</a></li>
+                        
+                        <li><a href="/posts/2016-07-01-paypal/">Paypal security upgrade</a></li>
+                        
+                        <li><a href="/posts/2016-05-27-switch-to-cryogen/">Switch to Cryogen</a></li>
+                        
+                    </ul>
+                </div>
+                
+                
+                <div id="tags">
+                    <h3>Tags</h3>
+                    <ul>
+                        
+                        <li><a href="/tags/dashboard/">dashboard</a></li>
+                        
+                        <li><a href="/tags/ring/">ring</a></li>
+                        
+                        <li><a href="/tags/websocket/">websocket</a></li>
+                        
+                        <li><a href="/tags/cryogen/">cryogen</a></li>
+                        
+                        <li><a href="/tags/clojureScript/">clojureScript</a></li>
+                        
+                        <li><a href="/tags/github/">github</a></li>
+                        
+                        <li><a href="/tags/security/">security</a></li>
+                        
+                        <li><a href="/tags/clojure/">clojure</a></li>
+                        
+                        <li><a href="/tags/plugin/">plugin</a></li>
+                        
+                        <li><a href="/tags/tls/">tls</a></li>
+                        
+                        <li><a href="/tags/profiles/">profiles</a></li>
+                        
+                        <li><a href="/tags/music/">music</a></li>
+                        
+                        <li><a href="/tags/repl/">repl</a></li>
+                        
+                        <li><a href="/tags/express checkout/">express checkout</a></li>
+                        
+                        <li><a href="/tags/git/">git</a></li>
+                        
+                        <li><a href="/tags/hiccup/">hiccup</a></li>
+                        
+                        <li><a href="/tags/leiningen/">leiningen</a></li>
+                        
+                        <li><a href="/tags/nvp/">nvp</a></li>
+                        
+                        <li><a href="/tags/compojure/">compojure</a></li>
+                        
+                        <li><a href="/tags/uberjar/">uberjar</a></li>
+                        
+                        <li><a href="/tags/core.async/">core.async</a></li>
+                        
+                        <li><a href="/tags/paypal/">paypal</a></li>
+                        
+                        <li><a href="/tags/lightTable/">lightTable</a></li>
+                        
+                        <li><a href="/tags/code/">code</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <footer>Copyright &copy; 2015 - 2016 Olivier Barbeau
+        <p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a></p></footer>
+</div>
+<script src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>-->
+<!-- includes clojure: -->
+<script src="/js/highlight.pack.js" type="text/javascript"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['\\(','\\)']],
+    processEscapes: true
+  }
+});
+</script>
+<script type="text/javascript" async
+        src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-60157931-1', 'auto');
+    ga('send', 'pageview');
+</script>
+</body>
+</html>

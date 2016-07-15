@@ -57,6 +57,28 @@
 <div id="post">
     
     <div class="post-header">
+        <h2>Moving Git repo to GitHub</h2>
+        <div id="post-meta">
+            
+            <div class="date">14 janvier 2015</div>
+        </div>
+    </div>
+    <p>Today I pushed my <a href="https://github.com/obarbeau/repl-tasks" shape="rect" target="_blank"><code>repl-tasks</code></a> project to GitHub, whose repository was previously on a personal <a href="https://www.synology.com/" shape="rect" target="_blank">Synology</a> server.</p><pre><code class="bash"># add the new repo on GitHub
+git remote add new-origin git@github.com:obarbeau/repl-tasks.git
+# push everything
+git push --all new-origin
+git push --tags new-origin
+# rename old syno repo
+git remote rename origin previous-on-syno
+# rename new repo to master
+git remote rename new-origin origin
+# change destination of local master branch to new repo
+git branch master --set-upstream-to=origin/master
+</code></pre>
+    <a href="/posts/2015-01-14-moving-git-repo-to-github/">Continue reading &#8594;</a>
+    <hr>
+    
+    <div class="post-header">
         <h2>Cleaning day</h2>
         <div id="post-meta">
             
@@ -70,7 +92,7 @@
 
     <div id="prev-next">
         
-        <a class="left" href="/p/2/">&laquo; Prev</a>
+        <a class="right" href="/p/2/">Next &raquo;</a>
         
         
     </div>
@@ -92,11 +114,11 @@
                     <h3>Recent Posts</h3>
                     <ul>
                         
+                        <li><a href="/posts/2016-07-15-leiningen-profiles/">Leiningen profiles and REPL enrichment</a></li>
+                        
                         <li><a href="/posts/2016-07-01-paypal/">Paypal security upgrade</a></li>
                         
                         <li><a href="/posts/2016-05-27-switch-to-cryogen/">Switch to Cryogen</a></li>
-                        
-                        <li><a href="/posts/2016-05-26-clojure-cheat-sheet/">Clojure core functions - Cheat Sheet</a></li>
                         
                     </ul>
                 </div>
@@ -126,7 +148,11 @@
                         
                         <li><a href="/tags/tls/">tls</a></li>
                         
+                        <li><a href="/tags/profiles/">profiles</a></li>
+                        
                         <li><a href="/tags/music/">music</a></li>
+                        
+                        <li><a href="/tags/repl/">repl</a></li>
                         
                         <li><a href="/tags/express checkout/">express checkout</a></li>
                         
