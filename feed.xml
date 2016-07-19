@@ -12,7 +12,7 @@ http://world-in-atom.com/
 Blog about Clojure and various thoughts.
 </description>
 <lastBuildDate>
-Fri, 15 Jul 2016 17:08:05 +0200
+Tue, 19 Jul 2016 11:28:41 +0200
 </lastBuildDate>
 <generator>
 clj-rss
@@ -28,7 +28,7 @@ http://world-in-atom.com/posts/2016-07-15-leiningen-profiles/
 Leiningen profiles and REPL enrichment
 </title>
 <description>
-&lt;h2&gt;&lt;a name=&quot;context&quot;&gt;&lt;/a&gt;Context&lt;/h2&gt;&lt;p&gt;What do you do in Paris in July?&lt;/p&gt;&lt;p&gt;Sip a beer with a friend at the terrace of a café, looking the rain falling, and waiting for the summer really begins.&lt;/p&gt;&lt;p&gt;Serious and less serious subjects follow each other...&lt;/p&gt;&lt;p&gt;There also arises the question of a good development environment for Clojure.&lt;/p&gt;&lt;p&gt;In addition to the excellent pair IntelliJ Idea + Cursive, some profiles for Leiningen can greatly enhance the experience of REPL.&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;official&amp;#95;documentation&quot;&gt;&lt;/a&gt;Official documentation&lt;/h2&gt;&lt;p&gt;The Leiningen doc about profiles is very complete and clear. It is available &lt;a href='https://github.com/technomancy/leiningen/blob/master/doc/PROFILES.md' target='_blank'&gt;here&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;The &lt;a href='https://github.com/technomancy/leiningen/blob/master/sample.project.clj' target='_blank'&gt;sample &lt;code&gt;project.clj&lt;/code&gt;&lt;/a&gt; file of a standard Clojure project can also give you tips about options you can configure or add in your own profiles.&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;overview&quot;&gt;&lt;/a&gt;Overview&lt;/h2&gt;&lt;p&gt;Profiles are simply maps of options, that will be applied to lein tasks. Leiningen provides few defaults and allows to complete with your own needs.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;default&amp;#95;profiles&quot;&gt;&lt;/a&gt;Default profiles&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;code&gt;leiningen/default&lt;/code&gt; is a compound profile, initially made of these profiles:&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;:base      brings base dependencies `org.clojure/tools.nrepl`
+&lt;h2&gt;&lt;a name=&quot;context&quot;&gt;&lt;/a&gt;Context&lt;/h2&gt;&lt;p&gt;What do you do in Paris in July?&lt;/p&gt;&lt;p&gt;Sip a beer with my friend Wilfried at the terrace of a café, looking the rain falling, and waiting for the summer really begins.&lt;/p&gt;&lt;p&gt;Serious and less serious subjects follow each other...&lt;/p&gt;&lt;p&gt;There also arises the question of a good development environment for Clojure, as a continuation of our discussion when we were at &lt;a href='http://clojure.paris/' target='_blank'&gt;Paris's Clojure meetup&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;In addition to the excellent pair IntelliJ Idea + Cursive, some profiles for Leiningen can greatly enhance the experience of REPL.&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;official&amp;#95;documentation&quot;&gt;&lt;/a&gt;Official documentation&lt;/h2&gt;&lt;p&gt;The Leiningen doc about profiles is very complete and clear. It is available &lt;a href='https://github.com/technomancy/leiningen/blob/master/doc/PROFILES.md' target='_blank'&gt;here&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;The &lt;a href='https://github.com/technomancy/leiningen/blob/master/sample.project.clj' target='_blank'&gt;sample &lt;code&gt;project.clj&lt;/code&gt;&lt;/a&gt; file of a standard Clojure project can also give you tips about options you can configure or add in your own profiles.&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;overview&quot;&gt;&lt;/a&gt;Overview&lt;/h2&gt;&lt;p&gt;Profiles are simply maps of options, that will be applied to lein tasks. Leiningen provides few defaults and allows to complete with your own needs.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;default&amp;#95;profiles&quot;&gt;&lt;/a&gt;Default profiles&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;code&gt;leiningen/default&lt;/code&gt; is a compound profile, initially made of these profiles:&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;:base      brings base dependencies `org.clojure/tools.nrepl`
            and `clojure-complete` &amp;#40;completion with the `tab` key&amp;#41;
 :user      will be shared amongst all clojure projects for logged user
 :system    same as `:user` but applies system-wide
@@ -50,11 +50,11 @@ Leiningen profiles and REPL enrichment
   ; except if we 'deprotect' them like show: 
   :clean-targets &amp;#94;{:protect false} &amp;#91;:target-path&amp;#93;
 
-  ; it is possible to configure any options for a tool in this profile without
-  ; importing the corresponding plugin, which will be done only
+  ; it is possible to configure any options for a tool in this profile
+  ; without importing the corresponding plugin, which will be done only
   ; in projects that use it &amp;#40;in `project.clj`&amp;#41;.
-  ; for example, codox is a documentation tool, we set its overall options here
-  ; but don't import the plugin.
+  ; for example, codox is a documentation tool, we set its overall options
+  ; here but don't import the plugin.
   :codox {:defaults {:doc/format :markdown}
           :writer codox.writer.html/write-docs
           ; source links
@@ -87,7 +87,8 @@ Leiningen profiles and REPL enrichment
              &amp;quot;-XX:+UseFastAccessorMethods&amp;quot; &amp;quot;-server&amp;quot;
              &amp;quot;-Duser.timezone=Europe/Paris&amp;quot;&amp;#93;
 
-  ; in this `user` profile, use plugins with the less dependencies as possible
+  ; in this `user` profile, use plugins with the less dependencies
+  ; as possible
   :plugins &amp;#91;; executing Clojure scripts &amp;#40;in two words&amp;#41;
             &amp;#91;lein-exec                        &amp;quot;0.3.6&amp;quot;&amp;#93;
             ; Add leiningen dependencies quickly
@@ -137,7 +138,8 @@ Leiningen profiles and REPL enrichment
                ; the following functions, from various specified namespaces.
                ; These functions will be callable with the '&amp;gt;' prefix.
                ; eg. &amp;#40;&amp;gt;doc f&amp;#41; will be translated to &amp;#40;clojure.repl/doc f&amp;#41;
-               ; &amp;#40;&amp;gt;sh &amp;quot;ls&amp;quot;&amp;#41; will be translated to &amp;#40;clojure.java.shell/sh &amp;quot;ls&amp;quot;&amp;#41;
+               ; &amp;#40;&amp;gt;sh &amp;quot;ls&amp;quot;&amp;#41; will be translated to
+               ;   &amp;#40;clojure.java.shell/sh &amp;quot;ls&amp;quot;&amp;#41;
                &amp;#40;inject/in
                 clojure.core &amp;gt;
                 &amp;#91;aprint.core aprint&amp;#93;
