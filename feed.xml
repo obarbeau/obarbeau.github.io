@@ -12,11 +12,62 @@ http://world-in-atom.com/
 Blog about Clojure and various thoughts.
 </description>
 <lastBuildDate>
-Tue, 19 Jul 2016 11:28:41 +0200
+Wed, 20 Jul 2016 18:55:30 +0200
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
+<item>
+<guid>
+http://world-in-atom.com/posts/2016-07-20-classpath-and-test-scope/
+</guid>
+<link>
+http://world-in-atom.com/posts/2016-07-20-classpath-and-test-scope/
+</link>
+<title>
+Classpath and 'test' scope
+</title>
+<description>
+&lt;h2&gt;&lt;a name=&quot;context&quot;&gt;&lt;/a&gt;Context&lt;/h2&gt;&lt;p&gt;Leiningen uses the Maven library under the hood, to manage dependencies. As a consequence, the &lt;code&gt;dependency scope&lt;/code&gt; mechanism is used to affect the classpath.&lt;/p&gt;&lt;p&gt;The default, &lt;code&gt;compile&lt;/code&gt;, is never explicitly specified.&lt;/p&gt;&lt;p&gt;The two mainly used scopes are &lt;code&gt;provided&lt;/code&gt; (for the famous &lt;code&gt;javax.servlet/servlet-api&lt;/code&gt; when working with Java EE servers...) and &lt;code&gt;test&lt;/code&gt;, in order to point out that the dependency is for tests only.&lt;/p&gt;&lt;p&gt;Neither is transitive (brings no other deps), and the &lt;code&gt;test&lt;/code&gt; one is not required for normal use of the application.&lt;/p&gt;&lt;p&gt;I'd like to get my project's classpath, the one required at runtime.&lt;/p&gt;&lt;p&gt;And I find annoying that 'test dependencies' are contained in this path.&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;first&amp;#95;try&quot;&gt;&lt;/a&gt;First try&lt;/h2&gt;&lt;p&gt;I start a REPL with &lt;a href='/posts/2016-07-15-leiningen-profiles' target='_blank'&gt;custom profiles&lt;/a&gt;: &lt;code&gt;lein with-profiles +local,+cljs,+om repl&lt;/code&gt;&lt;/p&gt;&lt;p&gt;Let's see what &lt;code&gt;&amp;#40;System/getProperty &amp;quot;java.class.path&amp;quot;&amp;#41;&lt;/code&gt; gives us.&lt;/p&gt;&lt;p&gt;omg! It returns all dependencies, including 'test' ones, and also those of every profiles used to launch the REPL...&lt;/p&gt;&lt;p&gt;What a mess!&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;using&amp;#95;thread&quot;&gt;&lt;/a&gt;Using Thread&lt;/h2&gt;&lt;p&gt;Several solutions equivalent to this one hang out in internet:&lt;/p&gt;&lt;p&gt;&lt;code&gt;&amp;#40;seq &amp;#40;.. Thread currentThread getContextClassLoader getURLs&amp;#41;&amp;#41;&lt;/code&gt;&lt;/p&gt;&lt;p&gt;but with recent &lt;code&gt;lein&lt;/code&gt; versions, it displays &lt;code&gt;nil&lt;/code&gt;...&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;using&amp;#95;lein&quot;&gt;&lt;/a&gt;Using lein&lt;/h2&gt;&lt;p&gt;Outside of the REPL, there is a &lt;code&gt;lein classpath&lt;/code&gt; task.&lt;/p&gt;&lt;p&gt;This task simply wraps a function located in the &lt;code&gt;leiningen.core.classpath&lt;/code&gt; namespace.&lt;/p&gt;&lt;p&gt;As with the other tries, it also gives the full classpath with tests dependencies. But it reads dependencies from the &lt;code&gt;project.clj&lt;/code&gt; file, so there is no interference with optional profiles nor plugins.&lt;/p&gt;&lt;p&gt;So, we'll filter dependencies before passing the project's map to this function.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;step&amp;#95;1:&amp;#95;leiningen-core&quot;&gt;&lt;/a&gt;Step 1: leiningen-core&lt;/h3&gt;&lt;p&gt;Add a dependency to your project's map file: &lt;code&gt;project.clj&lt;/code&gt;, If your &lt;code&gt;&amp;#42;read-eval&amp;#42;&lt;/code&gt; is &lt;code&gt;true&lt;/code&gt; you might use the following notation:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;   :dependencies &amp;#91;...
+                 &amp;#91;leiningen-core #=&amp;#40;leiningen.core.main/leiningen-version&amp;#41;&amp;#93;&amp;#93;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Thus the same version of Leningen than the one used to start the REPL will be used.&lt;/p&gt;&lt;p&gt;If that does not work, go back to basics:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;   :dependencies &amp;#91;...
+                 &amp;#91;leiningen-core &amp;quot;2.6.1&amp;quot;&amp;#93;&amp;#93;
+&lt;/code&gt;&lt;/pre&gt;&lt;h3&gt;&lt;a name=&quot;step&amp;#95;2:&amp;#95;require&quot;&gt;&lt;/a&gt;Step 2: require&lt;/h3&gt;&lt;p&gt;In the REPL session, type: &lt;code&gt;&amp;#40;require '&amp;#91;leiningen.core.classpath :as lcc&amp;#93;&amp;#41;&lt;/code&gt; to be able to use the &lt;code&gt;get-classpath&lt;/code&gt; function.&lt;/p&gt;&lt;p&gt;Also &lt;code&gt;&amp;#40;require '&amp;#91;leiningen.core.main :refer &amp;#91;leiningen-version&amp;#93;&amp;#93;&amp;#41;&lt;/code&gt;  to let the &lt;code&gt;leiningen-version&lt;/code&gt; seen above return the correct number.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;step&amp;#95;3:&amp;#95;dependency&amp;#95;notation&quot;&gt;&lt;/a&gt;Step 3: dependency notation&lt;/h3&gt;&lt;p&gt;&lt;div class=&quot;alert alert-success&quot;&gt; &lt;i class=&quot;fa fa-info-circle&quot;&gt;&lt;/i&gt; &amp;nbsp;A dependency, as added to any project file, is a vector with at least the artifact name (group-id/name coordinate) and its version (version will become optional with managed-dependencies, see last paragraph). Some modifiers might be added, such as &lt;code&gt;:exclusions&lt;/code&gt;, &lt;code&gt;:classifier&lt;/code&gt;, or &lt;code&gt;:scope&lt;/code&gt;, as pairs of key/value. &lt;/div&gt;&lt;/p&gt;&lt;p&gt;Examples:&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;:dependencies &amp;#91;&amp;#91;org.clojure/clojure              &amp;quot;1.8.0&amp;quot;&amp;#93;
+
+               &amp;#91;leiningen-core
+                #=&amp;#40;leiningen.core.main/leiningen-version&amp;#41;&amp;#93;
+
+               &amp;#91;clojurewerkz/propertied          &amp;quot;1.2.0&amp;quot;
+                           :exclusions &amp;#91;&amp;#91;clojurewerkz/support&amp;#93;&amp;#93;&amp;#93;
+
+               &amp;#91;midje/midje                      &amp;quot;1.8.3&amp;quot; :scope &amp;quot;test&amp;quot;&amp;#93;&amp;#93;
+ &lt;/code&gt;&lt;/pre&gt;&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;step&amp;#95;4:&amp;#95;assembly&quot;&gt;&lt;/a&gt;Step 4: assembly&lt;/h3&gt;&lt;p&gt;If the value of the &lt;code&gt;scope&lt;/code&gt; modifier is &lt;code&gt;&amp;quot;test&amp;quot;&lt;/code&gt;, we will remove the dependency.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;; read project's file and call get-classpath with updated dependencies
+&amp;#40;defn classpath-without-test-deps &amp;#91;&amp;#93;
+  &amp;#40;let &amp;#91;pmap &amp;#40;leiningen.core.project/read &amp;quot;project.clj&amp;quot;&amp;#41;&amp;#93;
+    &amp;#40;leiningen.core.classpath/get-classpath
+      ; filter project's dependencies before getting classpath.
+      &amp;#40;update pmap
+              :dependencies
+              &amp;#40;fn &amp;#91;deps&amp;#93;
+                &amp;#40;filter &amp;#40;fn &amp;#91;dep&amp;#93;
+                          &amp;#40;as-&amp;gt; dep $$
+                                &amp;#40;drop-while #&amp;#40;not= :scope %&amp;#41; $$&amp;#41;
+                                &amp;#40;second $$&amp;#41;
+                                &amp;#40;or $$ &amp;quot;&amp;quot;&amp;#41;
+                                &amp;#40;name $$&amp;#41;
+                                &amp;#40;not= &amp;quot;test&amp;quot; $$&amp;#41;&amp;#41;&amp;#41; deps&amp;#41;&amp;#41;&amp;#41;&amp;#41;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;As a bonus, missing deps will be downloaded into your maven repo.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;step&amp;#95;5:&amp;#95;cleaning&quot;&gt;&lt;/a&gt;Step 5: cleaning&lt;/h3&gt;&lt;p&gt;It is not desirable to permanently change the dependencies of a project to add &lt;code&gt;leiningen-core&lt;/code&gt; for this very specific need.&lt;/p&gt;&lt;p&gt;Several solutions are possible:&lt;/p&gt;&lt;ol&gt;&lt;li&gt;add in the project file an entry of the type:&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;:profiles {
+  :dev {:dependencies &amp;#91;&amp;#91;leiningen-core &amp;quot;2.6.1&amp;quot;&amp;#93;&amp;#93;}
+}
+&lt;/code&gt;&lt;/pre&gt;This will set a profile used only in development mode, which will not pollute the standard project dependencies. We can take the opportunity to add a few plugins also, like &lt;code&gt;michaelblume/lein-marginalia&lt;/code&gt; to generate a nice project documentation.&lt;/li&gt;&lt;li&gt;create a profile common for all projects (user-wide or system-wide) in the &lt;code&gt;profiles.clj&lt;/code&gt; configuration file. In this case, the profile should not be called &lt;code&gt;dev&lt;/code&gt;.&lt;/li&gt;&lt;li&gt;use a packaged library such as &lt;code&gt;repl-tasks&lt;/code&gt;, and inject   useful functions in the &lt;code&gt;clojure-core&lt;/code&gt; namespace. See &lt;a href='/posts/2016-07-15-leiningen-profiles' target='_blank'&gt;here&lt;/a&gt;.&lt;/li&gt;&lt;/ol&gt;&lt;h2&gt;&lt;a name=&quot;managed&amp;#95;dependencies&quot;&gt;&lt;/a&gt;Managed dependencies&lt;/h2&gt;&lt;p&gt;Leiningen 2.6.2 will bring a very interesting new feature: managed dependencies. They allow to declare the version of some dependencies in a 'parent' project, and to propagate automatically in child projects. Those coming from Java and Maven's world remember about parent pom and cie.&lt;/p&gt;&lt;p&gt;Small problem, the scope should be set in these &lt;code&gt;managed-dependencies&lt;/code&gt;. So to benefit from this new feature, we'll have to look at both the project deps and those of its optional parent to be able to detect a 'test' scope.&lt;/p&gt;&lt;p&gt;So stay tuned for an update to this post, as soon as lein 2.6.2 is available!&lt;/p&gt;
+</description>
+<enclosure>
+
+</enclosure>
+<pubDate>
+Wed, 20 Jul 2016 00:00:00 +0200
+</pubDate>
+</item>
 <item>
 <guid>
 http://world-in-atom.com/posts/2016-07-15-leiningen-profiles/

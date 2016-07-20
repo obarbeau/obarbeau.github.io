@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>The world in an atom: Uberjar with ClojureScript</title>
-    <link rel="canonical" href="http://world-in-atom.com/posts/2015-02-09-uberjar-and-clojurescript/">
+    <title>The world in an atom: Classpath and &#39;test&#39; scope</title>
+    <link rel="canonical" href="http://world-in-atom.com/posts/2016-07-20-classpath-and-test-scope/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" type="text/css">-->
     <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Averia+Libre' type='text/css'>
@@ -57,46 +57,79 @@
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <div class="col-lg-6">9 février 2015</div>
+        <div class="col-lg-6">20 juillet 2016</div>
         
     </div>
-    <h1>Uberjar with ClojureScript</h1>
+    <h1>Classpath and &#39;test&#39; scope</h1>
 </div>
-<div class="post-excerpt"></div>
+<div class="post-excerpt">tl;dr: How to get a Clojure project's classpath without 
+the 'test' dependencies, from the REPL.</div>
 <div>
-    
-    <p>Today I wanted to deploy a <code>ring</code> project with a ClojureScript part.</p><p>Deployment is done with an uberjar, which I find effective. I use an additional directory to separate the sources, which are located in <code>src/clj/ns</code> and <code>src/cljs/ns</code>.</p><p>So, during the compilation, <code>lein</code> complains it could not locate the namespace:</p><pre><code class="java">...FileNotFoundException: Could not locate ns/main&#95;&#95;init.class ...
-</code></pre><p>The reason is that the standard content of the <code>source-paths</code> option, which is usually <code>src/ns</code>, is no more suitable. So I changed the <code>uberjar</code> profile in order to specify the different structure of the source directories.</p><p>Firstly, the <code>sources-level-down</code> profile shown below replaces the standard content of the <code>source-paths</code>. I found a tip on the Leiningen site to define profiles overrides. It therefore allows to include this kind of source paths only for projects with ClojureScript:</p><p>Once, in the <code>&#126;/.lein/profiles.clj</code> file:</p><pre><code class="clojure">:sources-level-down {:source-paths &#94;:replace &#91;&quot;src/clj&quot; &quot;src/cljs&quot;&#93;}
+    <ol class="content"><li><a href="#context">Context</a></li><li><a href="#first_try">First try</a></li><li><a href="#using_thread">Using Thread</a></li><li><a href="#using_lein">Using lein</a></li><ol><li><a href="#step_1:_leiningen-core">Step 1: leiningen-core</a></li><li><a href="#step_2:_require">Step 2: require</a></li><li><a href="#step_3:_dependency_notation">Step 3: dependency notation</a></li><li><a href="#step_4:_assembly">Step 4: assembly</a></li><li><a href="#step_5:_cleaning">Step 5: cleaning</a></li></ol><li><a href="#managed_dependencies">Managed dependencies</a></li></ol>
+    <h2><a name="context"></a>Context</h2><p>Leiningen uses the Maven library under the hood, to manage dependencies. As a consequence, the <code>dependency scope</code> mechanism is used to affect the classpath.</p><p>The default, <code>compile</code>, is never explicitly specified.</p><p>The two mainly used scopes are <code>provided</code> (for the famous <code>javax.servlet/servlet-api</code> when working with Java EE servers...) and <code>test</code>, in order to point out that the dependency is for tests only.</p><p>Neither is transitive (brings no other deps), and the <code>test</code> one is not required for normal use of the application.</p><p>I'd like to get my project's classpath, the one required at runtime.</p><p>And I find annoying that 'test dependencies' are contained in this path.</p><h2><a name="first&#95;try"></a>First try</h2><p>I start a REPL with <a href='/posts/2016-07-15-leiningen-profiles' target='_blank'>custom profiles</a>: <code>lein with-profiles +local,+cljs,+om repl</code></p><p>Let's see what <code>&#40;System/getProperty &quot;java.class.path&quot;&#41;</code> gives us.</p><p>omg! It returns all dependencies, including 'test' ones, and also those of every profiles used to launch the REPL...</p><p>What a mess!</p><h2><a name="using&#95;thread"></a>Using Thread</h2><p>Several solutions equivalent to this one hang out in internet:</p><p><code>&#40;seq &#40;.. Thread currentThread getContextClassLoader getURLs&#41;&#41;</code></p><p>but with recent <code>lein</code> versions, it displays <code>nil</code>...</p><h2><a name="using&#95;lein"></a>Using lein</h2><p>Outside of the REPL, there is a <code>lein classpath</code> task.</p><p>This task simply wraps a function located in the <code>leiningen.core.classpath</code> namespace.</p><p>As with the other tries, it also gives the full classpath with tests dependencies. But it reads dependencies from the <code>project.clj</code> file, so there is no interference with optional profiles nor plugins.</p><p>So, we'll filter dependencies before passing the project's map to this function.</p><h3><a name="step&#95;1:&#95;leiningen-core"></a>Step 1: leiningen-core</h3><p>Add a dependency to your project's map file: <code>project.clj</code>, If your <code>&#42;read-eval&#42;</code> is <code>true</code> you might use the following notation:</p><pre><code class="clojure">   :dependencies &#91;...
+                 &#91;leiningen-core #=&#40;leiningen.core.main/leiningen-version&#41;&#93;&#93;
+</code></pre><p>Thus the same version of Leningen than the one used to start the REPL will be used.</p><p>If that does not work, go back to basics:</p><pre><code class="clojure">   :dependencies &#91;...
+                 &#91;leiningen-core &quot;2.6.1&quot;&#93;&#93;
+</code></pre><h3><a name="step&#95;2:&#95;require"></a>Step 2: require</h3><p>In the REPL session, type: <code>&#40;require '&#91;leiningen.core.classpath :as lcc&#93;&#41;</code> to be able to use the <code>get-classpath</code> function.</p><p>Also <code>&#40;require '&#91;leiningen.core.main :refer &#91;leiningen-version&#93;&#93;&#41;</code>  to let the <code>leiningen-version</code> seen above return the correct number.</p><h3><a name="step&#95;3:&#95;dependency&#95;notation"></a>Step 3: dependency notation</h3><p><div class="alert alert-success"> <i class="fa fa-info-circle"></i> &nbsp;A dependency, as added to any project file, is a vector with at least the artifact name (group-id/name coordinate) and its version (version will become optional with managed-dependencies, see last paragraph). Some modifiers might be added, such as <code>:exclusions</code>, <code>:classifier</code>, or <code>:scope</code>, as pairs of key/value. </div></p><p>Examples:<pre><code class="clojure">:dependencies &#91;&#91;org.clojure/clojure              &quot;1.8.0&quot;&#93;
 
-:uberjar-common {:aot :all
-                 &lt;other options&gt;}
-:uberjar-additional {} ; nothing by default
-:uberjar &#91;:uberjar-common :uberjar-additional&#93;
-</code></pre><p>In every ClojureScript projects, in their <code>project.clj</code> file:</p><pre><code class="clojure">; overrides profile to include new `source-path` definition
-:profiles {:uberjar-additional &#91;:sources-level-down&#93;}
-</code></pre><p>Remember that the JavaScript compilation will not be automatic during the uberjar build.</p><p>No doubt a hook can be added to the workflow, but in the meantime I recommend using <a href='https://github.com/oakmac/cuttle' target='_blank'><code>cuttle</code></a> defined itself as an <i>User Interface for the ClojureScript Compiler</i>, to keep an eye on the JS compilation status.</p><p>Happy uberjar!</p>
+               &#91;leiningen-core
+                #=&#40;leiningen.core.main/leiningen-version&#41;&#93;
+
+               &#91;clojurewerkz/propertied          &quot;1.2.0&quot;
+                           :exclusions &#91;&#91;clojurewerkz/support&#93;&#93;&#93;
+
+               &#91;midje/midje                      &quot;1.8.3&quot; :scope &quot;test&quot;&#93;&#93;
+ </code></pre></p><h3><a name="step&#95;4:&#95;assembly"></a>Step 4: assembly</h3><p>If the value of the <code>scope</code> modifier is <code>&quot;test&quot;</code>, we will remove the dependency.</p><pre><code class="clojure">; read project's file and call get-classpath with updated dependencies
+&#40;defn classpath-without-test-deps &#91;&#93;
+  &#40;let &#91;pmap &#40;leiningen.core.project/read &quot;project.clj&quot;&#41;&#93;
+    &#40;leiningen.core.classpath/get-classpath
+      ; filter project's dependencies before getting classpath.
+      &#40;update pmap
+              :dependencies
+              &#40;fn &#91;deps&#93;
+                &#40;filter &#40;fn &#91;dep&#93;
+                          &#40;as-&gt; dep $$
+                                &#40;drop-while #&#40;not= :scope %&#41; $$&#41;
+                                &#40;second $$&#41;
+                                &#40;or $$ &quot;&quot;&#41;
+                                &#40;name $$&#41;
+                                &#40;not= &quot;test&quot; $$&#41;&#41;&#41; deps&#41;&#41;&#41;&#41;&#41;&#41;
+</code></pre><p>As a bonus, missing deps will be downloaded into your maven repo.</p><h3><a name="step&#95;5:&#95;cleaning"></a>Step 5: cleaning</h3><p>It is not desirable to permanently change the dependencies of a project to add <code>leiningen-core</code> for this very specific need.</p><p>Several solutions are possible:</p><ol><li>add in the project file an entry of the type:<pre><code class="clojure">:profiles {
+  :dev {:dependencies &#91;&#91;leiningen-core &quot;2.6.1&quot;&#93;&#93;}
+}
+</code></pre>This will set a profile used only in development mode, which will not pollute the standard project dependencies. We can take the opportunity to add a few plugins also, like <code>michaelblume/lein-marginalia</code> to generate a nice project documentation.</li><li>create a profile common for all projects (user-wide or system-wide) in the <code>profiles.clj</code> configuration file. In this case, the profile should not be called <code>dev</code>.</li><li>use a packaged library such as <code>repl-tasks</code>, and inject   useful functions in the <code>clojure-core</code> namespace. See <a href='/posts/2016-07-15-leiningen-profiles' target='_blank'>here</a>.</li></ol><h2><a name="managed&#95;dependencies"></a>Managed dependencies</h2><p>Leiningen 2.6.2 will bring a very interesting new feature: managed dependencies. They allow to declare the version of some dependencies in a 'parent' project, and to propagate automatically in child projects. Those coming from Java and Maven's world remember about parent pom and cie.</p><p>Small problem, the scope should be set in these <code>managed-dependencies</code>. So to benefit from this new feature, we'll have to look at both the project deps and those of its optional parent to be able to detect a 'test' scope.</p><p>So stay tuned for an update to this post, as soon as lein 2.6.2 is available!</p>
 </div>
 
 <div id="post-tags">
     <b>Tags: </b>
     
-    <a href="/tags/clojureScript/">clojureScript</a>
-    
     <a href="/tags/clojure/">clojure</a>
+    
+    <a href="/tags/dependencies/">dependencies</a>
+    
+    <a href="/tags/classpath/">classpath</a>
+    
+    <a href="/tags/managed-dependencies/">managed-dependencies</a>
+    
+    <a href="/tags/lein/">lein</a>
+    
+    <a href="/tags/profiles/">profiles</a>
+    
+    <a href="/tags/scope/">scope</a>
+    
+    <a href="/tags/repl/">repl</a>
     
     <a href="/tags/leiningen/">leiningen</a>
     
-    <a href="/tags/uberjar/">uberjar</a>
+    <a href="/tags/test/">test</a>
     
 </div>
 
 
     <div id="prev-next">
         
-        <a href="/posts/2015-02-05-dashboard-part2/">&laquo; Dashboard, part 2</a>
+        <a href="/posts/2016-07-15-leiningen-profiles/">&laquo; Leiningen profiles and REPL enrichment</a>
         
-        
-        <a class="right" href="/posts/2015-02-18-clojure-plugins-tools/">Clojure - Plugins &amp; tools &raquo;</a>
         
     </div>
 
@@ -104,8 +137,8 @@
     <div id="disqus_thread"></div>
     <script type="text/javascript">
         var disqus_config = function () {
-            this.page.url = "http://world-in-atom.com/posts/2015-02-09-uberjar-and-clojurescript/";
-            this.page.identifier = "2015-02-09-uberjar-and-clojurescript.html";
+            this.page.url = "http://world-in-atom.com/posts/2016-07-20-classpath-and-test-scope/";
+            this.page.identifier = "2016-07-20-classpath-and-test-scope.html";
         };
         (function() {
             var d = document, s = d.createElement('script');
