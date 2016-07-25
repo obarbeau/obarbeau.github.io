@@ -140,7 +140,7 @@ and those I use with lein tasks, more notably `lein repl`.</div>
   :pom-location &quot;target/&quot;
 
   ; a colored prompt
-  :repl-options {:prompt &#40;fn &#91;ns&#93; &#40;str &quot;&#91;35m&#91;&#91;34m&quot; ns &quot;&#91;35m&#93;&#91;33m λ:&#91;m &quot;&#41;&#41;}}
+  :repl-options {:prompt &#40;fn &#91;ns&#93; &#40;str &quot;&#91;35m&#91;&#91;34m&quot; ns &quot;&#91;35m&#93;&#91;33m λ:&#91;m &quot;&#41;&#41;}}
 </code></pre><p>Remember the <code>dev</code> profile should not be defined in the <code>profiles.clj</code> file, but for each project.</p><p>I also use a <code>local</code> profile, mainly when I launch a REPL, <code>lein with-profile +local repl</code>, with the following content:</p><pre><code class="clojure"> :local
  {; set your composite command line aliases here
   :aliases {; cf. the post 2015-02-18-clojure-plugins-tools
@@ -368,6 +368,8 @@ sublime-text /tmp/bikeshed.txt /tmp/kibit.md /tmp/eastwood.txt /tmp/hunter.txt
                         <li><a href="/tags/lightTable/">lightTable</a></li>
                         
                         <li><a href="/tags/code/">code</a></li>
+                        
+                        <li><a href="/tags/plugins/">plugins</a></li>
                         
                         <li><a href="/tags/test/">test</a></li>
                         

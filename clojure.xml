@@ -12,7 +12,7 @@ http://world-in-atom.com/
 Blog about Clojure and various thoughts.
 </description>
 <lastBuildDate>
-Mon, 25 Jul 2016 10:55:23 +0200
+Mon, 25 Jul 2016 10:55:24 +0200
 </lastBuildDate>
 <generator>
 clj-rss
@@ -814,26 +814,6 @@ Thu, 05 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://world-in-atom.com/posts/2015-01-26-link-with-editor/
-</guid>
-<link>
-http://world-in-atom.com/posts/2015-01-26-link-with-editor/
-</link>
-<title>
-Link with editor
-</title>
-<description>
-&lt;p&gt;I released a very simple LightTable plugin that highlight in the &lt;code&gt;Workspace&lt;/code&gt; view the file currently edited. The sources are available on my &lt;a href='https://github.com/obarbeau/lt-link-with-editor' target='_blank'&gt;GitHub repo&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;It has been build upon the &lt;a href='https://github.com/mdhaney/lt-plugin-template' target='_blank'&gt;&lt;code&gt;mdhaney/lt-plugin-template&lt;/code&gt;&lt;/a&gt;, with the lein command: &lt;code&gt;lein new lt-plugin link-with-editor&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;This template generates the same structure and files than those in the &lt;code&gt;&amp;#126;.config/LightTable/User&lt;/code&gt; directory, which is the default user plugin namespace.&lt;/p&gt;&lt;p&gt;I suggest to symlink the project's directory to the Light Table plugin dir &lt;code&gt;&amp;#126;/.config/LightTable/plugins/&lt;/code&gt;. Thus, by running the commands &lt;code&gt;Plugins: Refresh plugin list&lt;/code&gt; then &lt;code&gt;App: reload behaviors&lt;/code&gt;, your plugin is available and ready to test inside Light Table.&lt;/p&gt;&lt;p&gt;Then, running &lt;code&gt;Editor: Build file or project&lt;/code&gt; recompiles the Javascript file. One can also connect to &lt;code&gt;Light Table UI&lt;/code&gt;. Any change made in the source files is taken into account automatically.&lt;/p&gt;&lt;p&gt;Don't forget to open the LT console because all output (via &lt;code&gt;println&lt;/code&gt;) are redirected here.&lt;/p&gt;&lt;p&gt;Finally the &lt;a href='https://github.com/LightTable/LightTable/tree/master/src/lt' target='_blank'&gt;LT's GitHub&lt;/a&gt; is mandatory for discovering useful namespaces, behaviors and commands for your plugin.&lt;/p&gt;
-</description>
-<enclosure>
-
-</enclosure>
-<pubDate>
-Mon, 26 Jan 2015 00:00:00 +0100
-</pubDate>
-</item>
-<item>
-<guid>
 http://world-in-atom.com/posts/2015-01-20-dashboard/
 </guid>
 <link>
@@ -850,77 +830,6 @@ Dashboard
 </enclosure>
 <pubDate>
 Tue, 20 Jan 2015 00:00:00 +0100
-</pubDate>
-</item>
-<item>
-<guid>
-http://world-in-atom.com/posts/2015-01-16-flat-cable-earphones/
-</guid>
-<link>
-http://world-in-atom.com/posts/2015-01-16-flat-cable-earphones/
-</link>
-<title>
-Flat Cable Earphones
-</title>
-<description>
-&lt;p&gt;The last time that I went to the market, I lost my earphone. I bought some smoked haddock that day, which has proved very good, but this is not the subject of this post.&lt;/p&gt;&lt;p&gt;In order to continue to listen to Opeth, Marillion and Kamelot in the bus that brings me to work, I bought a &lt;em&gt;Klipsch Image S4&lt;/em&gt; earphone. The sound is very good, with powerful and satisfactory bass.&lt;/p&gt;&lt;p&gt;One silly thing and yet very pleasant, are the flat cables, which do not intertwine. It is a pleasure every morning to quickly be able to listen to his music, without losing 10 minutes to curse the ball of yarn.&lt;/p&gt;&lt;p&gt;By looking for the link on the site of the manufacturer, I realize that this earphone is already no more sold, and that he has been replaced by &lt;a href='http://www.klipsch.com/R6i' target='_blank'&gt;this one&lt;/a&gt;.&lt;/p&gt;
-</description>
-<enclosure>
-
-</enclosure>
-<pubDate>
-Fri, 16 Jan 2015 00:00:00 +0100
-</pubDate>
-</item>
-<item>
-<guid>
-http://world-in-atom.com/posts/2015-01-14-moving-git-repo-to-github/
-</guid>
-<link>
-http://world-in-atom.com/posts/2015-01-14-moving-git-repo-to-github/
-</link>
-<title>
-Moving Git repo to GitHub
-</title>
-<description>
-&lt;p&gt;Today I pushed my &lt;a href='https://github.com/obarbeau/repl-tasks' target='_blank'&gt;&lt;code&gt;repl-tasks&lt;/code&gt;&lt;/a&gt; project to GitHub, whose repository was previously on a personal &lt;a href='https://www.synology.com/' target='_blank'&gt;Synology&lt;/a&gt; server.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;# add the new repo on GitHub
-git remote add new-origin git@github.com:obarbeau/repl-tasks.git
-# push everything
-git push --all new-origin
-git push --tags new-origin
-# rename old syno repo
-git remote rename origin previous-on-syno
-# rename new repo to master
-git remote rename new-origin origin
-# change destination of local master branch to new repo
-git branch master --set-upstream-to=origin/master
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The history is preserved.&lt;/p&gt;&lt;p&gt;If some branches had existed, it would have been necessary to pull them first to the local repo and then push them to the new one.&lt;/p&gt;&lt;p&gt;See this &lt;a href='http://www.smashingmagazine.com/2014/05/19/moving-git-repository-new-server/' target='_blank'&gt;post&lt;/a&gt; for more information.&lt;/p&gt;&lt;p&gt;This project needs some refactoring and documentation, I'll do it ASAP...&lt;/p&gt;
-</description>
-<enclosure>
-
-</enclosure>
-<pubDate>
-Wed, 14 Jan 2015 00:00:00 +0100
-</pubDate>
-</item>
-<item>
-<guid>
-http://world-in-atom.com/posts/2015-01-13-cleaning-day/
-</guid>
-<link>
-http://world-in-atom.com/posts/2015-01-13-cleaning-day/
-</link>
-<title>
-Cleaning day
-</title>
-<description>
-&lt;p&gt;I just spent the morning to sort paper records that were sleeping over my office box. I should say throwing them, because indeed the trash is now overflowing. I kept very little documentation.&lt;/p&gt;&lt;p&gt;Finally all these paper records have little interest. Most are intermediate versions of documents; so there are 'final' versions elsewhere, often electronic ones. When looking at those files one takes the 'risk' to miss the latest information.&lt;/p&gt;&lt;p&gt;Others are printed emails, which are anyway stored in the mail box.&lt;/p&gt;&lt;p&gt;Finally, the rest are outdated notes or whose ideas were echoed elsewhere.&lt;/p&gt;&lt;p&gt;I only kept the documents relating to actions actually in progress, or whose notes have not been written in electronic form, as well as original bills.&lt;/p&gt;&lt;p&gt;Zero paper is on track.&lt;/p&gt;
-</description>
-<enclosure>
-
-</enclosure>
-<pubDate>
-Tue, 13 Jan 2015 00:00:00 +0100
 </pubDate>
 </item>
 </channel>
