@@ -76,8 +76,8 @@
                  &#40;assoc target
                    :prev &#40;if prev &#40;select-keys prev &#91;:title :uri&#93;&#41; nil&#41;
                    :next &#40;if next &#40;select-keys next &#91;:title :uri&#93;&#41; nil&#41;&#41;&#41;
-               &#40;partition 3 1 &#40;flatten &#91;nil pages nil&#93;&#41;&#41;&#41;&#41;&#41;
-</code></pre>  &#9312; <code>with-meta</code> keeps the original docstring and attach it  to the function,  because it is not possible to do this in the <code>fn block &#91;&#93;</code>.</li></ol><p>2.The second in the <code>markup</code> namespace, on the <code>rewrite-hrefs</code> function,   where I open a new tab when <code>target</code> is specified at the end of the link.   A little regex makes the substitution.</p><p>  <script src="https://gist.github.com/obarbeau/65d7f487797d8041b6a79c15b532604f.js"></script></p><p>Finally, the day you use <code>intern</code> to define a macro, please remember:</p><ul><li>to add the meta <code>:macro true</code> in the name of var</li><li>to add two arguments to your function, <code>&amp;form</code> and <code> env</code>  (which are not required with <code>defmacro</code>)  otherwise you might look for a moment why  the substitutions do not behave as expected...  <i class="fa fa-smile-o" aria-hidden="true"></i></li></ul><pre><code class="clojure">&#40;intern 'monger.query &#40;with-meta 'with-collection {:macro true}&#41;
+</li></ol>               &#40;partition 3 1 &#40;flatten &#91;nil pages nil&#93;&#41;&#41;&#41;&#41;&#41;
+</code></pre><p>  &#9312; <code>with-meta</code> keeps the original docstring and attach it   to the function,   because it is not possible to do this in the <code>fn block &#91;&#93;</code>.</p><p>2.The second in the <code>markup</code> namespace, on the <code>rewrite-hrefs</code> function,   where I open a new tab when <code>target</code> is specified at the end of the link.   A little regex makes the substitution.</p><p>  <script src="https://gist.github.com/obarbeau/65d7f487797d8041b6a79c15b532604f.js"></script></p><p>Finally, the day you use <code>intern</code> to define a macro, please remember:</p><ul><li>to add the meta <code>:macro true</code> in the name of var</li><li>to add two arguments to your function, <code>&amp;form</code> and <code> env</code>  (which are not required with <code>defmacro</code>)  otherwise you might look for a moment why  the substitutions do not behave as expected...  <i class="fa fa-smile-o" aria-hidden="true"></i></li></ul><pre><code class="clojure">&#40;intern 'monger.query &#40;with-meta 'with-collection {:macro true}&#41;
         &#40;fn &#91;&amp;form &amp;env &#94;DB db &#94;String coll &amp; body&#93;
           `&#40;let &#91;coll# &#126;coll
                  db# &#126;db
@@ -136,7 +136,7 @@
                 <h3><i class="fa fa-external-link-square"></i> Links</h3>
                 <ul id="links">
                     <li><a href="https://github.com/obarbeau">Olivier Barbeau’s Github</a></li>
-                    <li><a href="https://www.linkedin.com/in/olivier-barbeau-7a4a31b6">Olivier Barbeau’s LinkedIn</a></li>
+                    <li><a href="https://www.linkedin.com/in/olivier-barbeau">Olivier Barbeau’s LinkedIn</a></li>
                     
                 </ul>
                 
