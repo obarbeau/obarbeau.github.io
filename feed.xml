@@ -1,28 +1,28 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <rss version='2.0' xmlns:atom='http://www.w3.org/2005/Atom'>
 <channel>
-<atom:link href='http://world-in-atom.com/' rel='self' type='application/rss+xml'/>
+<atom:link href='https://world-in-atom.com/' rel='self' type='application/rss+xml'/>
 <title>
 The world in an atom
 </title>
 <link>
-http://world-in-atom.com/
+https://world-in-atom.com/
 </link>
 <description>
 Blog about Clojure and various thoughts.
 </description>
 <lastBuildDate>
-Tue, 18 Jul 2017 14:47:56 +0200
+Fri, 28 Jul 2017 15:43:48 +0200
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
 <item>
 <guid>
-http://world-in-atom.com/posts/2016-07-20-classpath-and-test-scope/
+https://world-in-atom.com/posts/2016-07-20-classpath-and-test-scope/
 </guid>
 <link>
-http://world-in-atom.com/posts/2016-07-20-classpath-and-test-scope/
+https://world-in-atom.com/posts/2016-07-20-classpath-and-test-scope/
 </link>
 <title>
 Classpath and 'test' scope
@@ -67,10 +67,10 @@ Wed, 20 Jul 2016 00:00:00 +0200
 </item>
 <item>
 <guid>
-http://world-in-atom.com/posts/2016-07-15-leiningen-profiles/
+https://world-in-atom.com/posts/2016-07-15-leiningen-profiles/
 </guid>
 <link>
-http://world-in-atom.com/posts/2016-07-15-leiningen-profiles/
+https://world-in-atom.com/posts/2016-07-15-leiningen-profiles/
 </link>
 <title>
 Leiningen profiles and REPL enrichment
@@ -106,13 +106,13 @@ Leiningen profiles and REPL enrichment
   :codox {:defaults {:doc/format :markdown}
           :writer codox.writer.html/write-docs
           ; source links
-          :src-dir-uri &amp;quot;http://github.com/obarbeau/XXX/blob/master/&amp;quot;
+          :src-dir-uri &amp;quot;https://github.com/obarbeau/XXX/blob/master/&amp;quot;
           :src-linenum-anchor-prefix &amp;quot;L&amp;quot;}
 
   ; `lein release` will work only if deploy repository is named `releases`
   :deploy-repositories
   &amp;#91;&amp;#91;&amp;quot;releases&amp;quot;
-    {:url &amp;quot;http://ip:8081/nexus/content/repositories/clj-releases&amp;quot;
+    {:url &amp;quot;https://ip:8081/nexus/content/repositories/clj-releases&amp;quot;
      ; sign releases? &amp;#40;it's not about signing git commits here&amp;#41;
      :sign-releases true
      ; `sign` does not work if you must enter a pasword for the gpg key
@@ -253,10 +253,10 @@ Fri, 15 Jul 2016 00:00:00 +0200
 </item>
 <item>
 <guid>
-http://world-in-atom.com/posts/2016-07-01-paypal/
+https://world-in-atom.com/posts/2016-07-01-paypal/
 </guid>
 <link>
-http://world-in-atom.com/posts/2016-07-01-paypal/
+https://world-in-atom.com/posts/2016-07-01-paypal/
 </link>
 <title>
 Paypal security upgrade
@@ -284,10 +284,10 @@ Fri, 01 Jul 2016 00:00:00 +0200
 </item>
 <item>
 <guid>
-http://world-in-atom.com/posts/2016-05-27-switch-to-cryogen/
+https://world-in-atom.com/posts/2016-05-27-switch-to-cryogen/
 </guid>
 <link>
-http://world-in-atom.com/posts/2016-05-27-switch-to-cryogen/
+https://world-in-atom.com/posts/2016-05-27-switch-to-cryogen/
 </link>
 <title>
 Switch to Cryogen
@@ -322,10 +322,10 @@ Fri, 27 May 2016 00:00:00 +0200
 </item>
 <item>
 <guid>
-http://world-in-atom.com/posts/2016-05-26-clojure-cheat-sheet/
+https://world-in-atom.com/posts/2016-05-26-clojure-cheat-sheet/
 </guid>
 <link>
-http://world-in-atom.com/posts/2016-05-26-clojure-cheat-sheet/
+https://world-in-atom.com/posts/2016-05-26-clojure-cheat-sheet/
 </link>
 <title>
 Clojure core functions - Cheat Sheet
@@ -690,10 +690,10 @@ Thu, 26 May 2016 00:00:00 +0200
 </item>
 <item>
 <guid>
-http://world-in-atom.com/posts/2015-02-18-clojure-plugins-tools/
+https://world-in-atom.com/posts/2015-02-18-clojure-plugins-tools/
 </guid>
 <link>
-http://world-in-atom.com/posts/2015-02-18-clojure-plugins-tools/
+https://world-in-atom.com/posts/2015-02-18-clojure-plugins-tools/
 </link>
 <title>
 Clojure - Plugins &amp; tools
@@ -747,10 +747,10 @@ Wed, 18 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://world-in-atom.com/posts/2015-02-09-uberjar-and-clojurescript/
+https://world-in-atom.com/posts/2015-02-09-uberjar-and-clojurescript/
 </guid>
 <link>
-http://world-in-atom.com/posts/2015-02-09-uberjar-and-clojurescript/
+https://world-in-atom.com/posts/2015-02-09-uberjar-and-clojurescript/
 </link>
 <title>
 Uberjar with ClojureScript
@@ -773,10 +773,10 @@ Mon, 09 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://world-in-atom.com/posts/2015-02-05-dashboard-part2/
+https://world-in-atom.com/posts/2015-02-05-dashboard-part2/
 </guid>
 <link>
-http://world-in-atom.com/posts/2015-02-05-dashboard-part2/
+https://world-in-atom.com/posts/2015-02-05-dashboard-part2/
 </link>
 <title>
 Dashboard, part 2
@@ -790,10 +790,10 @@ Thu, 05 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://world-in-atom.com/posts/2015-01-26-link-with-editor/
+https://world-in-atom.com/posts/2015-01-26-link-with-editor/
 </guid>
 <link>
-http://world-in-atom.com/posts/2015-01-26-link-with-editor/
+https://world-in-atom.com/posts/2015-01-26-link-with-editor/
 </link>
 <title>
 Link with editor
@@ -807,10 +807,10 @@ Mon, 26 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://world-in-atom.com/posts/2015-01-20-dashboard/
+https://world-in-atom.com/posts/2015-01-20-dashboard/
 </guid>
 <link>
-http://world-in-atom.com/posts/2015-01-20-dashboard/
+https://world-in-atom.com/posts/2015-01-20-dashboard/
 </link>
 <title>
 Dashboard
@@ -824,10 +824,10 @@ Tue, 20 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://world-in-atom.com/posts/2015-01-16-flat-cable-earphones/
+https://world-in-atom.com/posts/2015-01-16-flat-cable-earphones/
 </guid>
 <link>
-http://world-in-atom.com/posts/2015-01-16-flat-cable-earphones/
+https://world-in-atom.com/posts/2015-01-16-flat-cable-earphones/
 </link>
 <title>
 Flat Cable Earphones
@@ -841,10 +841,10 @@ Fri, 16 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://world-in-atom.com/posts/2015-01-14-moving-git-repo-to-github/
+https://world-in-atom.com/posts/2015-01-14-moving-git-repo-to-github/
 </guid>
 <link>
-http://world-in-atom.com/posts/2015-01-14-moving-git-repo-to-github/
+https://world-in-atom.com/posts/2015-01-14-moving-git-repo-to-github/
 </link>
 <title>
 Moving Git repo to GitHub
@@ -869,10 +869,10 @@ Wed, 14 Jan 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-http://world-in-atom.com/posts/2015-01-13-cleaning-day/
+https://world-in-atom.com/posts/2015-01-13-cleaning-day/
 </guid>
 <link>
-http://world-in-atom.com/posts/2015-01-13-cleaning-day/
+https://world-in-atom.com/posts/2015-01-13-cleaning-day/
 </link>
 <title>
 Cleaning day
