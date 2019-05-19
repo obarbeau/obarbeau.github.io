@@ -1,28 +1,28 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <rss version='2.0' xmlns:atom='http://www.w3.org/2005/Atom'>
 <channel>
-<atom:link href='https://world-in-atom.com/' rel='self' type='application/rss+xml'/>
+<atom:link href='https://bleu-barbeau.com/' rel='self' type='application/rss+xml'/>
 <title>
-The world in an atom
+Bleu Barbeau - The world in an atom
 </title>
 <link>
-https://world-in-atom.com/
+https://bleu-barbeau.com/
 </link>
 <description>
 Blog about Clojure and various thoughts.
 </description>
 <lastBuildDate>
-Fri, 28 Jul 2017 15:43:48 +0200
+Sun, 19 May 2019 21:33:49 +0200
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
 <item>
 <guid>
-https://world-in-atom.com/posts/2016-07-20-classpath-and-test-scope/
+https://bleu-barbeau.com/posts/2016-07-20-classpath-and-test-scope/
 </guid>
 <link>
-https://world-in-atom.com/posts/2016-07-20-classpath-and-test-scope/
+https://bleu-barbeau.com/posts/2016-07-20-classpath-and-test-scope/
 </link>
 <title>
 Classpath and 'test' scope
@@ -67,10 +67,10 @@ Wed, 20 Jul 2016 00:00:00 +0200
 </item>
 <item>
 <guid>
-https://world-in-atom.com/posts/2016-07-15-leiningen-profiles/
+https://bleu-barbeau.com/posts/2016-07-15-leiningen-profiles/
 </guid>
 <link>
-https://world-in-atom.com/posts/2016-07-15-leiningen-profiles/
+https://bleu-barbeau.com/posts/2016-07-15-leiningen-profiles/
 </link>
 <title>
 Leiningen profiles and REPL enrichment
@@ -253,10 +253,10 @@ Fri, 15 Jul 2016 00:00:00 +0200
 </item>
 <item>
 <guid>
-https://world-in-atom.com/posts/2016-07-01-paypal/
+https://bleu-barbeau.com/posts/2016-07-01-paypal/
 </guid>
 <link>
-https://world-in-atom.com/posts/2016-07-01-paypal/
+https://bleu-barbeau.com/posts/2016-07-01-paypal/
 </link>
 <title>
 Paypal security upgrade
@@ -284,10 +284,10 @@ Fri, 01 Jul 2016 00:00:00 +0200
 </item>
 <item>
 <guid>
-https://world-in-atom.com/posts/2016-05-27-switch-to-cryogen/
+https://bleu-barbeau.com/posts/2016-05-27-switch-to-cryogen/
 </guid>
 <link>
-https://world-in-atom.com/posts/2016-05-27-switch-to-cryogen/
+https://bleu-barbeau.com/posts/2016-05-27-switch-to-cryogen/
 </link>
 <title>
 Switch to Cryogen
@@ -322,10 +322,10 @@ Fri, 27 May 2016 00:00:00 +0200
 </item>
 <item>
 <guid>
-https://world-in-atom.com/posts/2016-05-26-clojure-cheat-sheet/
+https://bleu-barbeau.com/posts/2016-05-26-clojure-cheat-sheet/
 </guid>
 <link>
-https://world-in-atom.com/posts/2016-05-26-clojure-cheat-sheet/
+https://bleu-barbeau.com/posts/2016-05-26-clojure-cheat-sheet/
 </link>
 <title>
 Clojure core functions - Cheat Sheet
@@ -690,10 +690,10 @@ Thu, 26 May 2016 00:00:00 +0200
 </item>
 <item>
 <guid>
-https://world-in-atom.com/posts/2015-02-18-clojure-plugins-tools/
+https://bleu-barbeau.com/posts/2015-02-18-clojure-plugins-tools/
 </guid>
 <link>
-https://world-in-atom.com/posts/2015-02-18-clojure-plugins-tools/
+https://bleu-barbeau.com/posts/2015-02-18-clojure-plugins-tools/
 </link>
 <title>
 Clojure - Plugins &amp; tools
@@ -747,10 +747,10 @@ Wed, 18 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://world-in-atom.com/posts/2015-02-09-uberjar-and-clojurescript/
+https://bleu-barbeau.com/posts/2015-02-09-uberjar-and-clojurescript/
 </guid>
 <link>
-https://world-in-atom.com/posts/2015-02-09-uberjar-and-clojurescript/
+https://bleu-barbeau.com/posts/2015-02-09-uberjar-and-clojurescript/
 </link>
 <title>
 Uberjar with ClojureScript
@@ -773,10 +773,10 @@ Mon, 09 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://world-in-atom.com/posts/2015-02-05-dashboard-part2/
+https://bleu-barbeau.com/posts/2015-02-05-dashboard-part2/
 </guid>
 <link>
-https://world-in-atom.com/posts/2015-02-05-dashboard-part2/
+https://bleu-barbeau.com/posts/2015-02-05-dashboard-part2/
 </link>
 <title>
 Dashboard, part 2
@@ -790,10 +790,10 @@ Thu, 05 Feb 2015 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://world-in-atom.com/posts/2015-01-20-dashboard/
+https://bleu-barbeau.com/posts/2015-01-20-dashboard/
 </guid>
 <link>
-https://world-in-atom.com/posts/2015-01-20-dashboard/
+https://bleu-barbeau.com/posts/2015-01-20-dashboard/
 </link>
 <title>
 Dashboard
