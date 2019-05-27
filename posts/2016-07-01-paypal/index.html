@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns="https://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Bleu Barbeau - The world in an atom: Paypal security upgrade</title>
+    <link rel="canonical" href="http://bleu-barbeau.com/posts/2016-07-01-paypal/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" type="text/css">-->
+    <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Averia+Libre' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/monokai-sublime.min.css">-->
+    <!-- plutôt un thème clair -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/github-gist.min.css">
+    <link rel="shortcut icon" href="/favicon.png">
+    <link href="/css/import-ll.css" rel="stylesheet" type="text/css" />
+    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/" title="Bleu Barbeau - The world in an atom">(atom #{:world})</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li ><a href="/">Home</a></li>
+                <li
+                ><a href="/archives/">Archives</a></li>
+                
+                <li
+                >
+                <a href="/pages/about/">About me</a>
+                </li>
+                
+                <li><a href="/feed.xml">RSS</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-lg-9">
+            <div id="content">
+                
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">1 juillet 2016</div>
+        
+    </div>
+    <h1>Paypal security upgrade</h1>
+</div>
+<div class="post-excerpt">Some words about the Paypal security upgrade that occurs this year.</div>
+<div>
+    
+    <h2 id="context">Context</h2><p>Paypal performs in 2016 several changes to the security level of their payment platform. We use their <code>'Express Checkout'</code> method and therefore this security upgrade will be an opportunity for us to rewrite our library.</p><p>Deadlines have shifted, I guess for the same reasons than SEPA one: clients were not ready... (SEPA is Single Euro Payments Area)</p><p>Basically, there are three main changes:</p><ol><li>Paypal certificate now uses the G5 root, with a SHA-256 key.   This implies the update of the truststore;</li><li>private merchants keys are upgraded from SHA-1 to SHA-256.   The keystore must therefore be updated (for the private key part),   as well as the truststore (for public part);</li><li>Finally, upgrade the TLS protocol to version 1.2,   which is not the default mode in Java 7.</li></ol><p>The first two changes are to be made on the stores of the sandbox and production environments.</p><p>No luck, PayPal has already updated their sandbox to TLS1.2, so it is no longer possible, without a compatible code, to use this test platform.</p><p>The hardest part when using Paypal is not to implement the technical solution:</p><ul><li>First, patience is required in order to find one's way in the doc,  sometimes redundant, often confused.</li><li>On the other hand, foresee a good headache with certificate formats  and conversions from PEM to pkcs12 to jks, ...</li></ul><p>To this end, a very good tool for the stores management is <a href='http://www.keystore-explorer.org/' target='_blank'>KeyStore Explorer</a>, much more convenient than command line <code>keytool</code>.</p><p>Last word about key/trust-stores: do not specify them when posting data to the API with signature credentials, or the following error will occur: <code>unable to find valid certification path to requested target</code></p><p>The stores are not used in this case, but their presence in the options disrupts the connection.</p><h2 id="express&#95;checkout&#95;api&#95;operations">Express Checkout API Operations</h2><p>Basically our thin Clojure library, called by our online shopping website, provides 3 methods that reflect those of Paypal's API:</p><ol><li><code>get-url-paypal</code>: connects to Paypal EC and retrieves a token   used for a given sale transaction.   User is redirected to Paypal's url and invited to confirm the payment of   his purchase.</li><li><code>do-confirmation</code>: once the user has validated or cancelled the sale,   Paypal warns the merchant. By posting this 'confirmation', the merchant   gets the status of the transaction, and updates the system and data   accordingly.</li><li><code>get-fee</code>: if acknowledgment was <code>success</code>, get the Paypal's final fee,   calculated with obscure maths.</li></ol><h2 id="tls1.2">TLS1.2</h2><p>Our legacy is still running Java 1.7, but all new developments with Clojure use Java 1.8.</p><p>As a consequence, direct test within a REPL leads to false positive because jdk8's default TLS version is already compatible with the Paypal sandbox.</p><p>One can still use jdk8 to launch <code>lein repl</code>, but version 7 must be forced for the project runtime.</p><p>Very easy, just add <code>:java-cmd &quot;/opt/jdk7/bin/java&quot;</code> to the <code>project.clj</code>.</p><p>All posts to Paypal API will now end with the following exception: <code>javax.net.ssl.SSLHandshakeException: Received fatal alert: handshake&#95;failure</code>.</p><h3 id="connection&#95;manager">Connection manager</h3><p>We need to force the TLS protocol to use version 1.2 during our calls to Paypal's API with <code>dakrone/clj-http</code> library.</p><p>Simply specify in the options of each POST a <code>:connection-manager</code>. We choose to use a reusable one, based on a <code>PoolingHttpClientConnectionManager</code> so its construction should be memoized.</p><p>In its definition, we specify <code>&#40;.use Protocol&quot; TLSv1.2 &quot;&#41;</code> at the <code>SSLContext</code> level and everything is now ok.</p><p>Calls are now made like this:</p><pre><code class="clojure">&#40;client/post api-endpoint
+             &#40;merge &#40;make-connection-manager&#41;
+                    {:form-params ...}
+                    keystore-truststore&#41;&#41;
+</code></pre><h2 id="no&#95;more&#95;properties&#95;files">No more properties files</h2><p>Previously the connection settings were registered in java properties files, but since these settings are specific and not used in the legacy java code, we gain by integrating them directly into this small clojure library.</p><p>By doing this, one of the basic rules of <a href='http://12factor.net/' target='_blank'>12 factor app best practices</a> is fulfilled.</p><p>The classic <code>weavejester/environ</code> is used because the <code>tolitius/cprop</code> solution seems a bit overkill in our case.</p><p>For the dev environment, the elements are set directly in the <code>project.clj</code>, or, if one does not want to commit them, in a <code>profile.clj</code> file, specific to the developer's machine.</p><pre><code class="clojure">  ; in project's map
+  :profiles {:dev
+             {:env
+              {:dev?             &quot;true&quot;
+               :server-port      &quot;8080&quot;
+               :base-url-wo-port &quot;http://localhost&quot;
+               :api-username     &quot;merchant&#95;api1.mail.com&quot;
+               :api-password     &quot;...&quot;
+               :api-signature    &quot;...&quot;}}}
+</code></pre><p>In production on the other hand, environment variables are used. It is preferable to Java system properties <code>-dXX</code>, which are visible in the command line of the <code>tomcat/jetty/whatever</code> process, so not very safe.</p><p><code>environ</code> comes with a plugin, <code>lein-environ</code>, that generates a <code>.lein-env</code> file, extracting the settings from the project map. This file will be used with <code>lein</code> commands.</p><p>It's very useful but think to delete it for non-local tests, because it can interfere with the final configuration, obtained by overriding several sources.</p><p>For example the <code>:dev?</code> property should not be present in staging or production environment. However as it is not explicitly set to <code>false</code>, it will disrupt the config.</p><p>One last thing, the keys with compounds names should be written with <code>'-'</code> rather than with <code>'.'</code>. A kind message from <code>environ</code> reminds that important detail because otherwise <code>nil</code> values will be recovered...</p><h2 id="invalid&#95;cookie">Invalid cookie</h2><p>A painful but harmless warning about <code>invalid 'expires' attribute</code> in the cookie header is displayed on each post to the API.</p><p>To avoid this warning, it is required to import the <code>log4j/log4j</code> dependency and to increase the alert level for the adequate logger.</p><p>Just write at the start of the namespace definition:</p><pre><code class="clojure">&#40;.setLevel &#40;Logger/getLogger &quot;org.apache.http&quot;&#41; org.apache.log4j.Level/ERROR&#41;
+</code></pre><p>Can't wait for next update <i class="fa fa-smile-o" aria-hidden="true"></i></p>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
+    
+    <a href="/tags/security/">security</a>
+    
+    <a href="/tags/clojure/">clojure</a>
+    
+    <a href="/tags/tls/">tls</a>
+    
+    <a href="/tags/express checkout/">express checkout</a>
+    
+    <a href="/tags/nvp/">nvp</a>
+    
+    <a href="/tags/paypal/">paypal</a>
+    
+</div>
+
+
+    <div id="prev-next">
+        
+        <a href="/posts/2016-05-27-switch-to-cryogen/">&laquo; Switch to Cryogen</a>
+        
+        
+        <a class="right" href="/posts/2016-07-15-leiningen-profiles/">Leiningen profiles and REPL enrichment &raquo;</a>
+        
+    </div>
+
+    
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_config = function () {
+            this.page.url = "http://bleu-barbeau.com/posts/2016-07-01-paypal/";
+            this.page.identifier = "2016-07-01-paypal.html";
+        };
+        (function() {
+            var d = document, s = d.createElement('script');
+            s.type = 'text/javascript'; s.async = true;
+            s.src = '//wiaa.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s); })();
+    </script>
+    <noscript>Please enable JavaScript to view the
+      <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+      comments powered by Disqus.</a></noscript>
+    
+</div>
+
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div id="sidebar">
+                <h3><i class="fa fa-external-link-square"></i> Links</h3>
+                <ul id="links">
+                    <li><a href="https://github.com/obarbeau">Olivier Barbeau’s Github</a></li>
+                    <li><a href="https://www.linkedin.com/in/olivier-barbeau">Olivier Barbeau’s LinkedIn</a></li>
+                    
+                </ul>
+                
+                <div id="recent">
+                    <h3>Recent Posts</h3>
+                    <ul>
+                        
+                        <li><a href="/posts/2016-07-20-classpath-and-test-scope/">Classpath and &#39;test&#39; scope</a></li>
+                        
+                        <li><a href="/posts/2016-07-15-leiningen-profiles/">Leiningen profiles and REPL enrichment</a></li>
+                        
+                        <li><a href="/posts/2016-07-01-paypal/">Paypal security upgrade</a></li>
+                        
+                    </ul>
+                </div>
+                
+                
+                <div id="tags">
+                    <h3>Tags</h3>
+                    <ul>
+                        
+                        <li><a href="/tags/dashboard/">dashboard</a></li>
+                        
+                        <li><a href="/tags/ring/">ring</a></li>
+                        
+                        <li><a href="/tags/websocket/">websocket</a></li>
+                        
+                        <li><a href="/tags/cryogen/">cryogen</a></li>
+                        
+                        <li><a href="/tags/clojureScript/">clojureScript</a></li>
+                        
+                        <li><a href="/tags/github/">github</a></li>
+                        
+                        <li><a href="/tags/security/">security</a></li>
+                        
+                        <li><a href="/tags/clojure/">clojure</a></li>
+                        
+                        <li><a href="/tags/dependencies/">dependencies</a></li>
+                        
+                        <li><a href="/tags/plugin/">plugin</a></li>
+                        
+                        <li><a href="/tags/classpath/">classpath</a></li>
+                        
+                        <li><a href="/tags/managed-dependencies/">managed-dependencies</a></li>
+                        
+                        <li><a href="/tags/tls/">tls</a></li>
+                        
+                        <li><a href="/tags/lein/">lein</a></li>
+                        
+                        <li><a href="/tags/profiles/">profiles</a></li>
+                        
+                        <li><a href="/tags/music/">music</a></li>
+                        
+                        <li><a href="/tags/scope/">scope</a></li>
+                        
+                        <li><a href="/tags/repl/">repl</a></li>
+                        
+                        <li><a href="/tags/express checkout/">express checkout</a></li>
+                        
+                        <li><a href="/tags/git/">git</a></li>
+                        
+                        <li><a href="/tags/hiccup/">hiccup</a></li>
+                        
+                        <li><a href="/tags/leiningen/">leiningen</a></li>
+                        
+                        <li><a href="/tags/nvp/">nvp</a></li>
+                        
+                        <li><a href="/tags/compojure/">compojure</a></li>
+                        
+                        <li><a href="/tags/uberjar/">uberjar</a></li>
+                        
+                        <li><a href="/tags/core.async/">core.async</a></li>
+                        
+                        <li><a href="/tags/paypal/">paypal</a></li>
+                        
+                        <li><a href="/tags/lightTable/">lightTable</a></li>
+                        
+                        <li><a href="/tags/code/">code</a></li>
+                        
+                        <li><a href="/tags/plugins/">plugins</a></li>
+                        
+                        <li><a href="/tags/test/">test</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <footer>Copyright &copy; 2015 - 2019 Olivier Barbeau
+        <p style="text-align: center;">Powered by <a href="https://cryogenweb.org">Cryogen</a></p></footer>
+</div>
+<script src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>-->
+<!-- includes clojure: -->
+<script src="/js/highlight.pack.js" type="text/javascript"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['\\(','\\)']],
+    processEscapes: true
+  }
+});
+</script>
+<script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-60157931-1', 'auto');
+    ga('send', 'pageview');
+</script>
+</body>
+</html>
