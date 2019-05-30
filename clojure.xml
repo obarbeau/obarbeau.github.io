@@ -3,7 +3,7 @@
 <channel>
 <atom:link href='http://bleu-barbeau.com/' rel='self' type='application/rss+xml'/>
 <title>
-Bleu Barbeau - The world in an atom
+Bleu Barbeau
 </title>
 <link>
 http://bleu-barbeau.com/
@@ -12,7 +12,7 @@ http://bleu-barbeau.com/
 Blog about Clojure and various thoughts.
 </description>
 <lastBuildDate>
-Mon, 27 May 2019 21:49:36 +0200
+Thu, 30 May 2019 14:13:43 +0200
 </lastBuildDate>
 <generator>
 clj-rss
